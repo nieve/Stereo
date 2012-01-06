@@ -1,0 +1,17 @@
+*resharper.user
+[Dd]ebug/
+[Rr]elease/
+build/
+[Bb]in/
+[Oo]bj/
+obj
+bin
+deploy
+*.suo
+*.sln.cache
+*.pidb
+*.userprefs
+_ReSharper.*/
+*.user
+TODO.txt
+*.*~

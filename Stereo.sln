@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stereo", "Stereo.csproj", "{6BE494EC-0268-4887-B396-49B13F03FDCD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoDevelop.Stereo", "MonoDevelop.Stereo.csproj", "{6BE494EC-0268-4887-B396-49B13F03FDCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +15,6 @@ Global
 		{6BE494EC-0268-4887-B396-49B13F03FDCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Stereo.csproj
+		StartupItem = MonoDevelop.Stereo.csproj
 	EndGlobalSection
 EndGlobal

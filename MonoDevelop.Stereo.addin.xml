@@ -8,37 +8,36 @@
        category    = "Source Editor Extensions"
        version     = "0.01">
 
-    <Runtime>
+<!--    <Runtime>
 		<Import assembly = "MonoDevelop.Refactoring.dll"/>
-	</Runtime>
+	</Runtime>-->
 
 	<Dependencies>
 		<Addin id="Core" version="2.8.5"/>
 		<Addin id="Ide" version="2.8.5"/>
 		<Addin id="DesignerSupport" version="2.8.5"/>
 		<Addin id="SourceEditor2" version="2.8.5"/>
+		<Addin id="Refactoring" version="2.8.5"/>
 	</Dependencies>
 
     <Extension path = "/MonoDevelop/Ide/Commands">
 	
 		<Category _name = "Code Navigation" id = "CodeNavigation">
 		<Command id = "MonoDevelop.Refactoring.RefactoryCommands.GotoBase"
-					defaultHandler = "MonoDevelop.Refactoring.GotoBaseHandler"
-					_label = "Go to _base" 
-					shortcut = "Alt|F12" />
-<!--		<Command id = "MonoDevelop.Refactoring.RefactoryCommands.FindReferences"
-					defaultHandler = "MonoDevelop.Refactoring.FindReferencesHandler"
-					_label = "_Find references" 
-					shortcut = "Shift|F12"
-					macShortcut = "Shift|Meta|D"/>
-		<Command id = "MonoDevelop.Refactoring.RefactoryCommands.FindDerivedClasses"
-					defaultHandler = "MonoDevelop.Refactoring.FindDerivedClassesHandler"
-					_label = "Find _derived classes" />-->
+					defaultHandler = "MonoDevelop.Stereo.GotoBaseHandler"
+					_label = "Go to _parent" 
+					shortcut = "Alt|Home" />
 		</Category>
     </Extension>
-
-<!--    <Extension path = "/MonoDevelop/Ide/MainMenu/Edit">
-        <CommandItem id="MonoDevelop.Samples.DateInserter.DateInserterCommands.InsertDate" />
-    </Extension>-->
+	
+	<Extension path = "/MonoDevelop/Refactoring/Refactorings">
+		<Class id="ExtractMethod" class = "MonoDevelop.Stereo.Refactoring.GenerateClass.GenerateClassRefactoring" />
+	</Extension>
+	
+	<Extension path = "/MonoDevelop/Ide/Commands/Refactoring">
+		<Command id = "MonoDevelop.Refactoring.RefactoryCommands.ExtractMethod"
+				defaultHandler = "MonoDevelop.Stereo.Refactoring.GenerateClass.GenerateClassHandler"
+				_label = "Generate Class"/>
+	</Extension>
 
 </Addin>

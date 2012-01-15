@@ -1,4 +1,3 @@
-//using System;
 using MonoDevelop.Core;
 using MonoDevelop.Ide.Gui;
 using MonoDevelop.Components.Commands;
@@ -7,13 +6,18 @@ using MonoDevelop.Projects.Dom.Parser;
 using MonoDevelop.Ide.Gui.Content;
 using MonoDevelop.Refactoring;
 using MonoDevelop.Ide;
+using System;
 
-namespace Stereo
+namespace MonoDevelop.Stereo
 {
 	public class GotoBaseHandler : CommandHandler
 	{
-		public GotoBaseHandler ()
+		
+		protected override void Update (CommandInfo info)
 		{
+			Document doc = IdeApp.Workbench.ActiveDocument;
+    		info.Enabled = true; //doc != null && doc.GetContent<IEditableTextBuffer> () != null;
+			//base.Update (info);
 		}
 		
 		protected override void Run (object data)
@@ -31,29 +35,46 @@ namespace Stereo
 			ResolveResult resolveResult;
 			INode item;
 			CurrentRefactoryOperationsHandler.GetItem (ctx, doc, editor, out resolveResult, out item);
-			IMember eitem = resolveResult != null ? (resolveResult.CallingMember ?? resolveResult.CallingType) : null;
-			string itemName = null;
-			if (item is IMember && !(item is IType))
-			itemName = ((IMember)item).FullName;
-			if (item != null && eitem != null && 
-			    (eitem.Equals (item) || (eitem.FullName == itemName && !(eitem is IProperty) && !(eitem is IField) && !(eitem is IMethod)))) {
-				item = eitem;
-				eitem = null;
-			}
+			item = item ?? (resolveResult != null ? 
+				(resolveResult.CallingMember != null ? resolveResult.CallingMember.DeclaringType : resolveResult.CallingType) : null);
+			if (resolveResult == null) return;
+			if (item == null)  item = (INode)resolveResult.ResolvedType.Type;
 			
-			IType eclass = null;
-			if (item is IType) {
-				if (((IType)item).ClassType == ClassType.Interface)
-					eclass = null; //CurrentRefactoryOperationsHandler.FindEnclosingClass (ctx, editor.Name, line, column); 
-				else
-					eclass = (IType)item;
-				if (eitem is IMethod && ((IMethod)eitem).IsConstructor && eitem.DeclaringType.Equals (item)) {
-					item = eitem;
-					eitem = null;
-				}
+			//NOTE: for generate class- if resolveResult.ResolvedType.Type == null && resolveResult.ResolvedExpression != null
+			// continue with Dodo...
+			
+			IType cls = item as IType;
+				if (cls != null && cls.BaseTypes != null) {
+					foreach (IReturnType bc in cls.BaseTypes) {
+						IType bcls = ctx.GetType (bc);
+						if (bcls != null && bcls.ClassType != ClassType.Interface && !bcls.Location.IsEmpty) {
+							IdeApp.Workbench.OpenDocument (bcls.CompilationUnit.FileName, bcls.Location.Line, 
+                            	bcls.Location.Column, OpenDocumentOptions.Default);
+							return;
+						}
+					}
+				return;
 			}
-			Refactorer refactorer = new Refactorer (ctx, doc.CompilationUnit, eclass, item, null);
-			refactorer.GoToDeclaration ();
+			IMethod method = item as IMethod;
+			if (method != null) {
+				foreach (IReturnType bc in method.DeclaringType.BaseTypes) {
+					IType bcls = ctx.GetType (bc);
+					if (bcls != null && bcls.ClassType != ClassType.Interface && !bcls.Location.IsEmpty) {
+						IMethod baseMethod = null;
+						foreach (IMethod m in bcls.Methods) {
+							if (m.Name == method.Name && m.Parameters.Count == m.Parameters.Count) {
+								baseMethod = m;
+								break;
+							}
+						}
+						if (baseMethod != null)
+							IdeApp.Workbench.OpenDocument (bcls.CompilationUnit.FileName, baseMethod.Location.Line, 
+                            	baseMethod.Location.Column, OpenDocumentOptions.Default);
+						return;
+					}
+				}
+				return;
+			}
 		}
 	}
 }

@@ -8,22 +8,27 @@
     <ProjectGuid>{6BE494EC-0268-4887-B396-49B13F03FDCD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Stereo</RootNamespace>
-    <AssemblyName>Stereo</AssemblyName>
+    <AssemblyName>MonoDevelop.Stereo</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
+    <OutputPath>..\..\..\Program Files (x86)\MonoDevelop\AddIns\MonoDevelop.Stereo</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="Execute" command="&quot;..\..\..\Program Files (x86)\MonoDevelop\bin\MonoDevelop.exe&quot;" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Release</OutputPath>
+    <OutputPath>..\..\..\Program Files (x86)\MonoDevelop\AddIns\MonoDevelop.Stereo</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
@@ -39,13 +44,24 @@
     <Reference Include="MonoDevelop.Refactoring">
       <HintPath>..\..\..\Program Files %28x86%29\MonoDevelop\AddIns\MonoDevelop.Refactoring\MonoDevelop.Refactoring.dll</HintPath>
     </Reference>
+    <Reference Include="MonoDevelop.SourceEditor2, Version=2.6.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\Program Files %28x86%29\MonoDevelop\AddIns\MonoDevelop.SourceEditor2.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="GotoBaseHandler.cs" />
+    <Compile Include="Refactoring\GenerateClass\GenerateClassRefactoring.cs" />
+    <Compile Include="Refactoring\GenerateClass\GenerateClassHandler.cs" />
+    <Compile Include="ResolvedTypeNameResultProvider.cs" />
+    <Compile Include="StringsExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <EmbeddedResource Include="MonoDevelop.Stereo.addin.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Refactoring\" />
+    <Folder Include="Refactoring\GenerateClass\" />
   </ItemGroup>
 </Project>

@@ -32,12 +32,17 @@
 	
 	<Extension path = "/MonoDevelop/Refactoring/Refactorings">
 		<Class id="ExtractMethod" class = "MonoDevelop.Stereo.Refactoring.GenerateClass.GenerateClassRefactoring" />
+		<Class id="RenameNamespace" class = "MonoDevelop.Stereo.Refactoring.Rename.RenameNamespaceRefactoring" />
 	</Extension>
 	
 	<Extension path = "/MonoDevelop/Ide/Commands/Refactoring">
 		<Command id = "MonoDevelop.Refactoring.RefactoryCommands.ExtractMethod"
 				defaultHandler = "MonoDevelop.Stereo.Refactoring.GenerateClass.GenerateClassHandler"
 				_label = "Generate Class"/>
+	</Extension>
+	
+	<Extension path = "/MonoDevelop/AnalysisCore/FixHandlers">
+		<Handler fixName="RenameNamespace" class = "MonoDevelop.Stereo.Refactoring.Rename.RenameNamespaceHandler" />
 	</Extension>
 
 </Addin>

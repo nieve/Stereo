@@ -29,7 +29,7 @@ namespace MonoDevelop.Stereo.Refactoring.Rename
 		
 		public override void Run (RefactoringOptions options)
 		{
-			MessageService.ShowCustomDialog((Dialog) new RenameItemDialog(options, this));
+			MessageService.ShowCustomDialog((Dialog) new RenameNamespaceItemDialog(options, this));
 		}
 		
 		public override List<Change> PerformChanges (RefactoringOptions options, object prop)

@@ -35,6 +35,7 @@ using System.Collections.Generic;
 using MonoDevelop.Ide;
 using MonoDevelop.Ide.ProgressMonitoring;
 using MonoDevelop.Refactoring;
+using Stereo;
 
 namespace MonoDevelop.Stereo.Refactoring.Rename
 {
@@ -121,9 +122,7 @@ namespace MonoDevelop.Stereo.Refactoring.Rename
 
 		bool ValidateName ()
 		{
-			INameValidator nameValidator = MonoDevelop.Projects.LanguageBindingService.GetRefactorerForFile (fileName ?? "default.cs");
-			if (nameValidator == null)
-				return true;
+			INameValidator nameValidator = new NamespaceValidator();
 			ValidationResult result = nameValidator.ValidateName (this.options.SelectedItem, entry.Text);
 			if (!result.IsValid) {
 				imageWarning.IconName = Gtk.Stock.DialogError;

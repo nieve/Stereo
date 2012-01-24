@@ -31,12 +31,12 @@
     </Extension>
 	
 	<Extension path = "/MonoDevelop/Refactoring/Refactorings">
-		<Class id="ExtractMethod" class = "MonoDevelop.Stereo.Refactoring.GenerateClass.GenerateClassRefactoring" />
+		<Class id="GenerateClass" class = "MonoDevelop.Stereo.Refactoring.GenerateClass.GenerateClassRefactoring" />
 		<Class id="RenameNamespace" class = "MonoDevelop.Stereo.Refactoring.Rename.RenameNamespaceRefactoring" />
 	</Extension>
 	
 	<Extension path = "/MonoDevelop/Ide/Commands/Refactoring">
-		<Command id = "MonoDevelop.Refactoring.RefactoryCommands.ExtractMethod"
+		<Command id = "MonoDevelop.Refactoring.RefactoryCommands.GenerateClass"
 				defaultHandler = "MonoDevelop.Stereo.Refactoring.GenerateClass.GenerateClassHandler"
 				_label = "Generate Class"/>
 	</Extension>

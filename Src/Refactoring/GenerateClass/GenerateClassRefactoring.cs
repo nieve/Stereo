@@ -7,17 +7,23 @@ using MonoDevelop.Ide.Gui.Content;
 using MonoDevelop.Projects.Dom.Parser;
 using MonoDevelop.Projects.Dom;
 using System.Collections.Generic;
-using MonoDevelop.Stereo;
 
 namespace MonoDevelop.Stereo.Refactoring.GenerateClass
 {
 	public class GenerateClassRefactoring : RefactoringOperation
 	{
-		ResolvedTypeNameResultProvider typeNameProvider;
+		IProvideResolvedTypeNameResult typeNameProvider;
+		
 		public GenerateClassRefactoring ()
 		{
 			this.Name = "Generate Class";
 			typeNameProvider = new ResolvedTypeNameResultProvider();
+		}
+		
+		public GenerateClassRefactoring (IProvideResolvedTypeNameResult provider)
+		{
+			this.Name = "Generate Class";
+			typeNameProvider = provider;
 		}
 		
 		public override string GetMenuDescription(RefactoringOptions options)

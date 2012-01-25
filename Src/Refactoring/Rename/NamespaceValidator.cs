@@ -1,9 +1,8 @@
-using System;
+using MonoDevelop.Core;
 using MonoDevelop.Projects.CodeGeneration;
 using MonoDevelop.Projects.Dom;
-using MonoDevelop.Core;
 
-namespace Stereo
+namespace MonoDevelop.Stereo.Refactoring.Rename
 {
 	public class NamespaceValidator : INameValidator
 	{

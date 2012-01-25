@@ -20,7 +20,7 @@
 		<Addin id="Refactoring" version="2.8.5"/>
 	</Dependencies>
 
-    <Extension path = "/MonoDevelop/Ide/Commands">
+<!--    <Extension path = "/MonoDevelop/Ide/Commands">
 	
 		<Category _name = "Code Navigation" id = "CodeNavigation">
 		<Command id = "MonoDevelop.Refactoring.RefactoryCommands.GotoBase"
@@ -28,7 +28,7 @@
 					_label = "Go to _parent" 
 					shortcut = "Alt|Home" />
 		</Category>
-    </Extension>
+    </Extension>-->
 	
 	<Extension path = "/MonoDevelop/Refactoring/Refactorings">
 		<Class id="GenerateClass" class = "MonoDevelop.Stereo.Refactoring.GenerateClass.GenerateClassRefactoring" />
@@ -41,8 +41,8 @@
 				_label = "Generate Class"/>
 	</Extension>
 	
-	<Extension path = "/MonoDevelop/AnalysisCore/FixHandlers">
+<!--	<Extension path = "/MonoDevelop/AnalysisCore/FixHandlers">
 		<Handler fixName="RenameNamespace" class = "MonoDevelop.Stereo.Refactoring.Rename.RenameNamespaceHandler" />
-	</Extension>
+	</Extension>-->
 
 </Addin>

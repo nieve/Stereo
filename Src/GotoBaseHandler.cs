@@ -1,12 +1,11 @@
-using MonoDevelop.Core;
-using MonoDevelop.Ide.Gui;
 using MonoDevelop.Components.Commands;
+using MonoDevelop.Core;
+using MonoDevelop.Ide;
+using MonoDevelop.Ide.Gui;
+using MonoDevelop.Ide.Gui.Content;
 using MonoDevelop.Projects.Dom;
 using MonoDevelop.Projects.Dom.Parser;
-using MonoDevelop.Ide.Gui.Content;
 using MonoDevelop.Refactoring;
-using MonoDevelop.Ide;
-using System;
 
 namespace MonoDevelop.Stereo
 {
@@ -16,8 +15,7 @@ namespace MonoDevelop.Stereo
 		protected override void Update (CommandInfo info)
 		{
 			Document doc = IdeApp.Workbench.ActiveDocument;
-    		info.Enabled = true; //doc != null && doc.GetContent<IEditableTextBuffer> () != null;
-			//base.Update (info);
+    		info.Enabled = doc != null && doc.GetContent<IEditableTextBuffer> () != null;
 		}
 		
 		protected override void Run (object data)

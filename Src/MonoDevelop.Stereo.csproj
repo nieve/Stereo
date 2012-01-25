@@ -79,19 +79,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="GotoBaseHandler.cs" />
     <Compile Include="Refactoring\GenerateClass\GenerateClassRefactoring.cs" />
     <Compile Include="Refactoring\GenerateClass\GenerateClassHandler.cs" />
-    <Compile Include="ResolvedTypeNameResultProvider.cs" />
     <Compile Include="StringsExtensions.cs" />
     <Compile Include="Refactoring\Rename\RenameNamespaceRefactoring.cs" />
-    <Compile Include="Refactoring\Rename\RenameNamespaceHandler.cs" />
-    <Compile Include="Infrastructure\Tuple.cs" />
     <Compile Include="Infrastructure\NamespaceReferenceFinder.cs" />
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Refactoring\Rename\RenameNamespaceItemDialog.cs" />
     <Compile Include="gtk-gui\Stereo.RenameNamespaceItemDialog.cs" />
     <Compile Include="Refactoring\Rename\NamespaceValidator.cs" />
+    <Compile Include="Infrastructure\ExtractProjectFiles.cs" />
+    <Compile Include="Refactoring\GenerateClass\ResolvedTypeNameResultProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

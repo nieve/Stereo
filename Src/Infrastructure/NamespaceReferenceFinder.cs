@@ -1,47 +1,34 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
+using Mono.TextEditor;
 using MonoDevelop.Core;
 using MonoDevelop.Ide;
-using MonoDevelop.Ide.FindInFiles;
+using MonoDevelop.Ide.Gui;
 using MonoDevelop.Projects;
 using MonoDevelop.Projects.CodeGeneration;
 using MonoDevelop.Projects.Dom;
 using MonoDevelop.Projects.Dom.Parser;
-using MonoDevelop.Ide.Gui;
-using MonoDevelop.CSharp.Refactoring;
-using Mono.TextEditor;
 
 namespace MonoDevelop.Stereo
 {
 	public class NamespaceReferenceFinder
 	{
+		IExtractProjectFiles projectFilesExtractor;
+		public NamespaceReferenceFinder ()
+		{
+			projectFilesExtractor = new ExtractProjectFiles();
+		}
+		
+		public NamespaceReferenceFinder (IExtractProjectFiles extractProjectFiles)
+		{
+			projectFilesExtractor = extractProjectFiles;
+		}
+		
 		public IEnumerable<MemberReference> FindReferences(NamespaceResolveResult resolveResult, IProgressMonitor monitor){
 			return FindReferences(IdeApp.ProjectOperations.CurrentSelectedSolution, resolveResult, monitor);
 		}
-		
-		public IEnumerable<Tuple<ProjectDom, FilePath>> GetFileNames(Solution solution, ProjectDom dom, ICompilationUnit unit, IProgressMonitor monitor)
-	    {
-			int counter = 0;
-			ReadOnlyCollection<Project> allProjects = solution.GetAllProjects();
-			if (monitor != null)
-				monitor.BeginTask(GettextCatalog.GetString("Finding references in solution..."), 
-          			allProjects.Sum<Project>(p => p.Files.Count));
-				foreach (Project project in allProjects) {
-					if (monitor != null && monitor.IsCancelRequested) yield break;
-					ProjectDom currentDom = ProjectDomService.GetProjectDom(project);
-					foreach (ProjectFile projectFile in (Collection<ProjectFile>) project.Files) {
-						if (monitor != null && monitor.IsCancelRequested) yield break;
-						yield return Tuple.Create<ProjectDom, FilePath>(currentDom, projectFile.FilePath);
-						if (monitor != null) {
-							if (counter % 10 == 0) monitor.Step(10);
-							++counter;
-						}
-					}
-				}
-	          if (monitor != null) monitor.EndTask();
-	    }
 		
 		public IEnumerable<MemberReference> FindReferences(Solution solution, NamespaceResolveResult resolveResult, IProgressMonitor monitor){
 	        MonoDevelop.Ide.Gui.Document doc = IdeApp.Workbench.ActiveDocument;
@@ -51,7 +38,7 @@ namespace MonoDevelop.Stereo
       		IEnumerable<INode> searchNodes = (IEnumerable<INode>) new INode[1]{new Namespace(nspace)};
 			
 			string currentMime = null;
-			IEnumerable<Tuple<ProjectDom, FilePath>> projFiles = GetFileNames (solution, dom, unit, monitor);
+			IEnumerable<Tuple<ProjectDom, FilePath>> projFiles = projectFilesExtractor.GetFileNames (solution, dom, unit, monitor);
 			foreach (Tuple<ProjectDom, FilePath> tuple in projFiles) {
 				if (monitor != null && monitor.IsCancelRequested) {
 					break;

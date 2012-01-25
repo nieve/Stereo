@@ -35,7 +35,6 @@ using System.Collections.Generic;
 using MonoDevelop.Ide;
 using MonoDevelop.Ide.ProgressMonitoring;
 using MonoDevelop.Refactoring;
-using Stereo;
 
 namespace MonoDevelop.Stereo.Refactoring.Rename
 {

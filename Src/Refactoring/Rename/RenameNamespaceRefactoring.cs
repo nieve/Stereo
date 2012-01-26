@@ -12,9 +12,17 @@ namespace MonoDevelop.Stereo.Refactoring.Rename
 {
 	public class RenameNamespaceRefactoring : RenameRefactoring
 	{
+		IFindNamespaceReference finder;
 		public RenameNamespaceRefactoring ()
 		{
 			this.Name = "Rename Namespace";
+			finder = new NamespaceReferenceFinder();
+		}
+		
+		public RenameNamespaceRefactoring (IFindNamespaceReference namespaceRefFinder)
+		{
+			this.Name = "Rename Namespace";
+			finder = namespaceRefFinder;
 		}
 		
 		public override bool IsValid (RefactoringOptions options)
@@ -36,9 +44,8 @@ namespace MonoDevelop.Stereo.Refactoring.Rename
 		{
       		RenameRefactoring.RenameProperties renameProperties = (RenameRefactoring.RenameProperties) prop;
 			List<Change> changes = new List<Change>();
-			NamespaceReferenceFinder finder = new NamespaceReferenceFinder();
-			using (MessageDialogProgressMonitor dialogProgressMonitor = new MessageDialogProgressMonitor(true, false, false, true)) {
-		        IEnumerable<MemberReference> references = finder.FindReferences((NamespaceResolveResult)options.ResolveResult, (IProgressMonitor) dialogProgressMonitor);
+			using (var dialogProgressMonitor = new MessageDialogProgressMonitor(true, false, false, true)) {
+		        var references = finder.FindReferences((NamespaceResolveResult)options.ResolveResult, dialogProgressMonitor);
 		        if (references == null)
 		          return changes;
 				foreach (MemberReference memberReference in references)

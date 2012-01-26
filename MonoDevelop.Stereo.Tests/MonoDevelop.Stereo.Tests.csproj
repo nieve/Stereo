@@ -51,6 +51,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Refactoring\Rename\NamespaceValidatorTest.cs" />
     <Compile Include="Refactoring\GenerateClass\GenerateClassRefactoringTest.cs" />
+    <Compile Include="Refactoring\Rename\RenameNamespaceRefactoringTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

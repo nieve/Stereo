@@ -13,7 +13,12 @@ using MonoDevelop.Projects.Dom.Parser;
 
 namespace MonoDevelop.Stereo
 {
-	public class NamespaceReferenceFinder
+	public interface IFindNamespaceReference
+	{
+		IEnumerable<MemberReference> FindReferences(NamespaceResolveResult resolveResult, IProgressMonitor monitor);
+		IEnumerable<MemberReference> FindReferences(Solution solution, NamespaceResolveResult resolveResult, IProgressMonitor monitor);
+	}
+	public class NamespaceReferenceFinder : IFindNamespaceReference
 	{
 		IExtractProjectFiles projectFilesExtractor;
 		public NamespaceReferenceFinder ()

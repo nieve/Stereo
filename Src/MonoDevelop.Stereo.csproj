@@ -89,7 +89,7 @@
     <Compile Include="gtk-gui\Stereo.RenameNamespaceItemDialog.cs" />
     <Compile Include="Refactoring\Rename\NamespaceValidator.cs" />
     <Compile Include="Infrastructure\ExtractProjectFiles.cs" />
-    <Compile Include="Refactoring\GenerateClass\ResolvedTypeNameResultProvider.cs" />
+    <Compile Include="Refactoring\GenerateClass\DocumentParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

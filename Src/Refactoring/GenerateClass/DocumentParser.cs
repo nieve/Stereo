@@ -8,12 +8,19 @@ using MonoDevelop.Refactoring;
 
 namespace MonoDevelop.Stereo.Refactoring.GenerateClass
 {
-	public interface IProvideResolvedTypeNameResult{
+	public interface IParseDocument{
 		MemberResolveResult GetResolvedTypeNameResult ();
+		FilePath GetCurrentFilePath();
 	}
 	
-	public class ResolvedTypeNameResultProvider : IProvideResolvedTypeNameResult
+	public class DocumentParser : IParseDocument
 	{
+		public FilePath GetCurrentFilePath(){
+			Document doc = IdeApp.Workbench.ActiveDocument;
+			if (doc == null) return null;
+			return doc.FileName;
+		}
+		
 		public MemberResolveResult GetResolvedTypeNameResult ()
 		{
 			Document doc = IdeApp.Workbench.ActiveDocument;

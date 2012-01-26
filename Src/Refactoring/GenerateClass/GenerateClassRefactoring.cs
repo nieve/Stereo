@@ -12,18 +12,18 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateClass
 {
 	public class GenerateClassRefactoring : RefactoringOperation
 	{
-		IProvideResolvedTypeNameResult typeNameProvider;
+		IParseDocument docParser;
 		
 		public GenerateClassRefactoring ()
 		{
 			this.Name = "Generate Class";
-			typeNameProvider = new ResolvedTypeNameResultProvider();
+			docParser = new DocumentParser();
 		}
 		
-		public GenerateClassRefactoring (IProvideResolvedTypeNameResult provider)
+		public GenerateClassRefactoring (IParseDocument provider)
 		{
 			this.Name = "Generate Class";
-			typeNameProvider = provider;
+			docParser = provider;
 		}
 		
 		public override string GetMenuDescription(RefactoringOptions options)
@@ -33,23 +33,24 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateClass
 		
 		public override bool IsValid(RefactoringOptions options)
 		{
-			MemberResolveResult resolvedTypeName = typeNameProvider.GetResolvedTypeNameResult();
+			MemberResolveResult resolvedTypeName = docParser.GetResolvedTypeNameResult();
 			return resolvedTypeName != null && resolvedTypeName.ResolvedMember == null 
 				&& resolvedTypeName.ResolvedExpression != null && resolvedTypeName.ResolvedType.Type == null;
 		}
 
 		public override List<Change> PerformChanges (RefactoringOptions options, object properties)
 		{
-			var resolveResult = typeNameProvider.GetResolvedTypeNameResult ();
+			var resolveResult = docParser.GetResolvedTypeNameResult ();
 			if (resolveResult == null) throw new InvalidOperationException("Cannot generate class here");
 			
 			List<Change> changes = new List<Change>();
 			
+			var currentDir = docParser.GetCurrentFilePath().ParentDirectory;
 			var nspace = resolveResult.CallingType.Namespace;
 			var fileFormat = "namespace {0} {{\r\n\tpublic class {1}{{\r\n\t\t\r\n\t}}\r\n}}";
 			string className = resolveResult.ResolvedExpression.Expression;
 			var content = fileFormat.ToFormat(nspace, className);
-			CreateFileChange createFileChange = new CreateFileChange("{0}.cs".ToFormat(className), content);
+			CreateFileChange createFileChange = new CreateFileChange(@"{0}\{1}.cs".ToFormat(currentDir, className), content);
 			changes.Add(createFileChange);
 			
 			return changes;

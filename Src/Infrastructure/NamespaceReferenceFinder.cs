@@ -45,11 +45,12 @@ namespace MonoDevelop.Stereo
 			string currentMime = null;
 			IEnumerable<Tuple<ProjectDom, FilePath>> projFiles = projectFilesExtractor.GetFileNames (solution, dom, unit, monitor);
 			foreach (Tuple<ProjectDom, FilePath> tuple in projFiles) {
+				FilePath filePath = tuple.Item2;
+				if (string.IsNullOrWhiteSpace(filePath.Extension)) continue;
 				if (monitor != null && monitor.IsCancelRequested) {
 					break;
 				}
 				else {
-					FilePath filePath = tuple.Item2;
 					string mime = DesktopService.GetMimeTypeForUri(filePath);
 					currentMime = mime;
   					TextEditorData editor = TextFileProvider.Instance.GetTextEditorData(filePath);

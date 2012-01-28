@@ -50,14 +50,15 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Refactoring\Rename\NamespaceValidatorTest.cs" />
-    <Compile Include="Refactoring\GenerateClass\GenerateClassRefactoringTest.cs" />
     <Compile Include="Refactoring\Rename\RenameNamespaceRefactoringTest.cs" />
+    <Compile Include="Refactoring\GenerateNewType\NewTypeFileFormatResolverTest.cs" />
+    <Compile Include="Refactoring\GenerateNewType\GenerateNewTypeRefactoringTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Refactoring\" />
     <Folder Include="Refactoring\Rename\" />
-    <Folder Include="Refactoring\GenerateClass\" />
+    <Folder Include="Refactoring\GenerateNewType\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Src\MonoDevelop.Stereo.csproj">

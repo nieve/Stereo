@@ -6,7 +6,7 @@ using MonoDevelop.Projects.Dom;
 using MonoDevelop.Projects.Dom.Parser;
 using MonoDevelop.Refactoring;
 
-namespace MonoDevelop.Stereo.Refactoring.GenerateClass
+namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 {
 	public interface IParseDocument{
 		MemberResolveResult GetResolvedTypeNameResult ();

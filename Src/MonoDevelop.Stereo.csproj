@@ -79,8 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Refactoring\GenerateClass\GenerateClassRefactoring.cs" />
-    <Compile Include="Refactoring\GenerateClass\GenerateClassHandler.cs" />
     <Compile Include="StringsExtensions.cs" />
     <Compile Include="Refactoring\Rename\RenameNamespaceRefactoring.cs" />
     <Compile Include="Infrastructure\NamespaceReferenceFinder.cs" />
@@ -89,7 +87,10 @@
     <Compile Include="gtk-gui\Stereo.RenameNamespaceItemDialog.cs" />
     <Compile Include="Refactoring\Rename\NamespaceValidator.cs" />
     <Compile Include="Infrastructure\ExtractProjectFiles.cs" />
-    <Compile Include="Refactoring\GenerateClass\DocumentParser.cs" />
+    <Compile Include="Refactoring\GenerateNewType\GenerateNewTypeRefactoring.cs" />
+    <Compile Include="Refactoring\GenerateNewType\GenerateNewTypeHandler.cs" />
+    <Compile Include="Refactoring\GenerateNewType\DocumentParser.cs" />
+    <Compile Include="Refactoring\GenerateNewType\NewTypeFileFormatResolver.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -100,8 +101,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Refactoring\" />
-    <Folder Include="Refactoring\GenerateClass\" />
     <Folder Include="Refactoring\Rename\" />
     <Folder Include="Infrastructure\" />
+    <Folder Include="Refactoring\GenerateNewType\" />
   </ItemGroup>
 </Project>

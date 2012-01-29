@@ -5,7 +5,9 @@ learning on the way how to work without VS.
 
 Currently the add-in contains: 
 
-* Generating classes from not-yet-existing classes references
-* Renaming namespaces (only usings and namespace declerations, not working for classes yet).
+* Generating classes and interfaces from not-yet-existing types references. Interfaces are generated following name conventions (i.e. ISomething).
+* Renaming namespaces - usings, namespace declerations and full type names references.
 
-More info to come...
+Forkings, testing, bugs & issues, ideas and requests are welcome!
+
+(More info to come...)

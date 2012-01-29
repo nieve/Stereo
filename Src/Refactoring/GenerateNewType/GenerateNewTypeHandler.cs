@@ -11,15 +11,15 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 {
 	public class GenerateNewTypeHandler : AbstractRefactoringCommandHandler
 	{
-		GenerateNewTypeRefactoring methodRefactoring = new GenerateNewTypeRefactoring();
+		GenerateNewTypeRefactoring newTypeGenRefactoring = new GenerateNewTypeRefactoring();
 		protected override void Run (RefactoringOptions options)
 		{
-	      	methodRefactoring.Run(options);
+	      	newTypeGenRefactoring.Run(options);
 		}
 		
 		protected override void Update (MonoDevelop.Components.Commands.CommandInfo info)
 		{
-			info.Enabled = methodRefactoring.IsValid(null);
+			info.Enabled = newTypeGenRefactoring.IsValid(null);
 		}
 		
 		public GenerateNewTypeHandler ()

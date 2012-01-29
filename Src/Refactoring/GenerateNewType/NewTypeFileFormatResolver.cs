@@ -18,9 +18,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 				return null;
 		};
 		
-		static FileFormatResolving classFormat = name => "namespace {0} {{\r\n\tpublic class {1}{{\r\n\t\t\r\n\t}}\r\n}}";
-		
-		FileFormatResolving[] resolvings = new []{interfaceFormat, classFormat};
+		FileFormatResolving[] resolvings = new []{interfaceFormat};
 		
 		public string ResolveFileFormat (string typeName)
 		{
@@ -31,8 +29,10 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 				if (format != null) return format;
 			}
 			
-			throw new ArgumentException("typeName", "{0} cannot be used as a new type name".ToFormat(typeName));
+			return defaultClassFormat(typeName);
 		}
+		
+		static FileFormatResolving defaultClassFormat = name => "namespace {0} {{\r\n\tpublic class {1}{{\r\n\t\t\r\n\t}}\r\n}}";
 	}	
 }
 

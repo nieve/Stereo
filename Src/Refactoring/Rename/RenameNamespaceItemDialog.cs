@@ -40,7 +40,7 @@ namespace MonoDevelop.Stereo.Refactoring.Rename
 {
 	public partial class RenameNamespaceItemDialog : Gtk.Dialog
 	{
-		string fileName;
+//		string fileName = "";
 		RenameNamespaceRefactoring rename;
 		RefactoringOptions options;
 		
@@ -48,65 +48,65 @@ namespace MonoDevelop.Stereo.Refactoring.Rename
 		{
 			this.options = options;
 			this.rename = rename;
-			if (options.SelectedItem is IMethod && ((IMethod)options.SelectedItem).IsConstructor) {
-				options.SelectedItem = ((IMethod)options.SelectedItem).DeclaringType;
-			}
+//			if (options.SelectedItem is IMethod && ((IMethod)options.SelectedItem).IsConstructor) {
+//				options.SelectedItem = ((IMethod)options.SelectedItem).DeclaringType;
+//			}
 			this.Build ();
 
-			if (options.SelectedItem is IType) {
-				IType type = (IType)options.SelectedItem;
-				if (type.DeclaringType == null) {
-					// not supported for inner types
-					this.renameFileFlag.Visible = true;
-					this.renameFileFlag.Active = true;
-					// if more than one type is in the file, only rename the file as defilt if the file name contains the type name
-					// see Bug 603938 - Renaming a Class in a file with multiple classes renames the file
-					if (options.Document.CompilationUnit != null && options.Document.CompilationUnit.Types.Count > 1) 
-						this.renameFileFlag.Active = options.Document.FileName.FileNameWithoutExtension.Contains (type.Name);
-				} else {
-					this.renameFileFlag.Active = false;
-				}
-				if (type.ClassType == ClassType.Interface)
-					this.Title = GettextCatalog.GetString ("Rename Interface");
-				else
-					this.Title = GettextCatalog.GetString ("Rename Class");
-				this.fileName = type.CompilationUnit.FileName;
-			} else if (options.SelectedItem is IField) {
-				this.Title = GettextCatalog.GetString ("Rename Field");
-			} else if (options.SelectedItem is IProperty) {
-				if (((IProperty)options.SelectedItem).IsIndexer) {
-					this.Title = GettextCatalog.GetString ("Rename Indexer");
-				} else {
-					this.Title = GettextCatalog.GetString ("Rename Property");
-				}
-			} else if (options.SelectedItem is IEvent) {
-				this.Title = GettextCatalog.GetString ("Rename Event");
-			} else if (options.SelectedItem is IMethod) {
-				this.Title = GettextCatalog.GetString ("Rename Method");
-			} else if (options.SelectedItem is IParameter) {
-				this.Title = GettextCatalog.GetString ("Rename Parameter");
-			} else if (options.SelectedItem is LocalVariable) {
-				this.Title = GettextCatalog.GetString ("Rename Variable");
-			} else {
-				this.Title = GettextCatalog.GetString ("Rename Item");
-			}
+//			if (options.SelectedItem is IType) {
+//				IType type = (IType)options.SelectedItem;
+//				if (type.DeclaringType == null) {
+//					// not supported for inner types
+//					this.renameFileFlag.Visible = true;
+//					this.renameFileFlag.Active = true;
+//					// if more than one type is in the file, only rename the file as defilt if the file name contains the type name
+//					// see Bug 603938 - Renaming a Class in a file with multiple classes renames the file
+//					if (options.Document.CompilationUnit != null && options.Document.CompilationUnit.Types.Count > 1) 
+//						this.renameFileFlag.Active = options.Document.FileName.FileNameWithoutExtension.Contains (type.Name);
+//				} else {
+//					this.renameFileFlag.Active = false;
+//				}
+//				if (type.ClassType == ClassType.Interface)
+//					this.Title = GettextCatalog.GetString ("Rename Interface");
+//				else
+//					this.Title = GettextCatalog.GetString ("Rename Class");
+//				this.fileName = type.CompilationUnit.FileName;
+//			} else if (options.SelectedItem is IField) {
+//				this.Title = GettextCatalog.GetString ("Rename Field");
+//			} else if (options.SelectedItem is IProperty) {
+//				if (((IProperty)options.SelectedItem).IsIndexer) {
+//					this.Title = GettextCatalog.GetString ("Rename Indexer");
+//				} else {
+//					this.Title = GettextCatalog.GetString ("Rename Property");
+//				}
+//			} else if (options.SelectedItem is IEvent) {
+//				this.Title = GettextCatalog.GetString ("Rename Event");
+//			} else if (options.SelectedItem is IMethod) {
+//				this.Title = GettextCatalog.GetString ("Rename Method");
+//			} else if (options.SelectedItem is IParameter) {
+//				this.Title = GettextCatalog.GetString ("Rename Parameter");
+//			} else if (options.SelectedItem is LocalVariable) {
+//				this.Title = GettextCatalog.GetString ("Rename Variable");
+//			} else {
+				this.Title = GettextCatalog.GetString ("Rename Namespace");
+//			}
 			
-			if (options.SelectedItem is IMember) {
-				IMember member = (IMember)options.SelectedItem;
-				entry.Text = member.Name;
-				if (!(member is IType) && member.DeclaringType != null)
-					this.fileName = member.DeclaringType.CompilationUnit.FileName;
-			} else if (options.SelectedItem is LocalVariable) {
-				LocalVariable lvar = (LocalVariable)options.SelectedItem;
-				entry.Text = lvar.Name;
-				this.fileName = lvar.FileName;
-			} else {
-				IParameter par = options.SelectedItem as IParameter;
-				if (par != null) {
-					entry.Text = par.Name;
-					this.fileName = par.DeclaringMember.DeclaringType.CompilationUnit.FileName;
-				}
-			}
+//			if (options.SelectedItem is IMember) {
+//				IMember member = (IMember)options.SelectedItem;
+//				entry.Text = member.Name;
+//				if (!(member is IType) && member.DeclaringType != null)
+//					this.fileName = member.DeclaringType.CompilationUnit.FileName;
+//			} else if (options.SelectedItem is LocalVariable) {
+//				LocalVariable lvar = (LocalVariable)options.SelectedItem;
+//				entry.Text = lvar.Name;
+//				this.fileName = lvar.FileName;
+//			} else {
+//				IParameter par = options.SelectedItem as IParameter;
+//				if (par != null) {
+//					entry.Text = par.Name;
+//					this.fileName = par.DeclaringMember.DeclaringType.CompilationUnit.FileName;
+//				}
+//			}
 			entry.SelectRegion (0, -1);
 			
 			buttonPreview.Sensitive = buttonOk.Sensitive = false;

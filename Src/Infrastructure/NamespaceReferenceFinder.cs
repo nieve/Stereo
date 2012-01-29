@@ -10,6 +10,8 @@ using MonoDevelop.Projects;
 using MonoDevelop.Projects.CodeGeneration;
 using MonoDevelop.Projects.Dom;
 using MonoDevelop.Projects.Dom.Parser;
+using MonoDevelop.Ide.Gui.Content;
+using MonoDevelop.Refactoring;
 
 namespace MonoDevelop.Stereo
 {
@@ -34,7 +36,7 @@ namespace MonoDevelop.Stereo
 		public IEnumerable<MemberReference> FindReferences(NamespaceResolveResult resolveResult, IProgressMonitor monitor){
 			return FindReferences(IdeApp.ProjectOperations.CurrentSelectedSolution, resolveResult, monitor);
 		}
-		
+				
 		public IEnumerable<MemberReference> FindReferences(Solution solution, NamespaceResolveResult resolveResult, IProgressMonitor monitor){
 	        MonoDevelop.Ide.Gui.Document doc = IdeApp.Workbench.ActiveDocument;
 	        ProjectDom dom = doc.Dom;
@@ -56,6 +58,7 @@ namespace MonoDevelop.Stereo
   					TextEditorData editor = TextFileProvider.Instance.GetTextEditorData(filePath);
     				IParser parser = ProjectDomService.GetParser(filePath);
     				ParsedDocument parsedDoc = parser.Parse(dom, filePath, editor.Text);
+					
 					int lastFoundIndex = 0;
 					int column;
 					int lineOffset;
@@ -67,16 +70,45 @@ namespace MonoDevelop.Stereo
 							lastFoundIndex = lineOffset + line.Length;
 							yield return new MemberReference(null, filePath, lineOffset + column, i, column, nspace, nspace);
 						}
-						if (line != null && line.Trim().EndsWith("namespace " + nspace)) {
+						if (line != null && 
+						    (line.Trim().StartsWith("namespace " + nspace) || line.Contains("namespace " + nspace))) {
 							column = line.IndexOf (nspace);
 							lineOffset = editor.Text.IndexOf(line, lastFoundIndex);
 							lastFoundIndex = lineOffset + line.Length;
 							yield return new MemberReference(null, filePath, lineOffset + column, i, column, nspace, nspace);
 						}
 					}
+					
+					foreach(var memberRef in FindInnerReferences (monitor, nspace, filePath))
+						yield return memberRef;
 				}
 			}
 			yield break;
+		}
+		
+		IEnumerable<MemberReference> FindInnerReferences (IProgressMonitor monitor, string nspace, FilePath filePath)
+		{
+			var document = IdeApp.Workbench.GetDocument(filePath.CanonicalPath);
+			if (document != null){
+				ITextBuffer editor = document.GetContent<ITextBuffer> ();
+				if (editor.Text.Contains(nspace + ".")){
+					var position = -1;
+					while ((position = editor.Text.IndexOf(nspace + ".", position + 1)) > -1) {
+						if (monitor != null && monitor.IsCancelRequested) {
+							break;
+						}
+						int line, column;
+						editor.GetLineColumnFromPosition (position + nspace.Length + 1, out line, out column);
+						editor.CursorPosition = position + nspace.Length + 1;
+						
+						ResolveResult typeResult;
+						INode item;
+						CurrentRefactoryOperationsHandler.GetItem (document.Dom, document, editor, out typeResult, out item);
+						if (typeResult != null && !(typeResult is MethodResolveResult) && typeResult.ResolvedType != null) 
+							yield return new MemberReference(null, filePath, position, line, column, nspace, nspace);
+					}
+				}
+			}
 		}
 	}
 }

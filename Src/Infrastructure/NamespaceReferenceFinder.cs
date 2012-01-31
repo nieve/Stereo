@@ -20,6 +20,7 @@ namespace MonoDevelop.Stereo
 		IEnumerable<MemberReference> FindReferences(NamespaceResolveResult resolveResult, IProgressMonitor monitor);
 		IEnumerable<MemberReference> FindReferences(Solution solution, NamespaceResolveResult resolveResult, IProgressMonitor monitor);
 	}
+	
 	public class NamespaceReferenceFinder : IFindNamespaceReference
 	{
 		IExtractProjectFiles projectFilesExtractor;

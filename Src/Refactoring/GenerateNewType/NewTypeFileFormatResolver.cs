@@ -5,7 +5,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 {
 	public interface IResolveNewTypeFileFormat
 	{
-		string ResolveFileFormat(string typeName);
+		string ResolveFileFormat(string typeName, string indent);
 	}
 	
 	internal delegate string FileFormatResolving(string typeName);
@@ -20,7 +20,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		
 		FileFormatResolving[] resolvings = new []{interfaceFormat};
 		
-		public string ResolveFileFormat (string typeName)
+		public string ResolveFileFormat (string typeName, string indent)
 		{
 			if (typeName == null) throw new ArgumentNullException("typeName", "new type name cannot be null");
 			string format = null;

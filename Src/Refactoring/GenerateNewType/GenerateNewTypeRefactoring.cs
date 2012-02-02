@@ -18,6 +18,9 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 	{
 		IParseDocument docParser;
 		IResolveNewTypeFileFormat fileFormatResolver;
+		string indent = "";
+		InsertionPoint insertionPoint = null;
+		TextEditorData data = null;
 		
 		public GenerateNewTypeRefactoring ()
 		{
@@ -56,9 +59,8 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 				MessageService.ShowError(string.Format("Can't open file {0}.", fileName));
 			}
 			else {
-				var data = openDocument.Editor;
+				data = openDocument.Editor;
 				if (data == null) return;
-				string indent;
 				openDocument.RunWhenLoaded((System.Action) (() => {
 					try {
 						indent = data.Document.GetLine(declaringType.Location.Line).GetIndentation(data.Document) ?? "";
@@ -67,9 +69,8 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 						indent = "";
 					}
 					indent += "\t";
-					Console.WriteLine(declaringType.FullName);
-					Console.WriteLine(declaringType.DeclaringType.FullName);
-					List<InsertionPoint> insertionPoints = CodeGenerationService.GetInsertionPoints (openDocument, declaringType);
+					
+					List<InsertionPoint> insertionPoints = GetInsertionPoints (openDocument, declaringType);
 					InsertionCursorEditMode insertion = new InsertionCursorEditMode(data.Parent, insertionPoints);
 					for (int i = 0; i < insertion.InsertionPoints.Count && insertion.InsertionPoints[i].Location < data.Caret.Location; ++i)
 						insertion.CurIndex = i;
@@ -87,7 +88,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 					insertion.StartMode();
 					insertion.Exited += (EventHandler<InsertionCursorEventArgs>) ((s, args) => {
 						if (!args.Success) return;
-//						this.SetInsertionPoint(args.InsertionPoint);
+						SetInsertionPoint(args.InsertionPoint);
 						base.Run(options);
 						if (string.IsNullOrEmpty(fileName)) return;
 						data.ClearSelection();
@@ -96,6 +97,11 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 					});
 				}));
 			}
+		}
+		
+		public void SetInsertionPoint(InsertionPoint point)
+		{
+			insertionPoint = point;
 		}
 		
 		private List<InsertionPoint> GetInsertionPoints(MonoDevelop.Ide.Gui.Document document, IType type){
@@ -114,95 +120,39 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 				throw new System.ArgumentNullException ("type");
 			}
 			type = (parsedDocument.CompilationUnit.GetTypeAt (type.Location) ?? type);
-			System.Collections.Generic.List<InsertionPoint> list = new System.Collections.Generic.List<InsertionPoint> ();
+			List<InsertionPoint> list = new List<InsertionPoint> ();
 			DomRegion domRegion = type.BodyRegion;
 			DomLocation domLocation = domRegion.Start;
-			int arg_CA_1 = domLocation.Line;
+			int num = data.LocationToOffset (domLocation.Line - 1, domLocation.Column);
+			if (num < 0) return list;
+			DocumentLocation documentLocation = data.OffsetToLocation (num);
+			list.Add (GetInsertionPosition (data.Document, documentLocation.Line, documentLocation.Column));
+			list [0].LineBefore = NewLineInsertion.None;
+			List<InsertionPoint> result;
+			
 			domRegion = type.BodyRegion;
-			domLocation = domRegion.Start;
-			int num = data.LocationToOffset (arg_CA_1, domLocation.Column);
-			System.Collections.Generic.List<InsertionPoint> result;
-			if (num < 0)
-			{
-				result = list;
+			domLocation = domRegion.End;
+			num = data.LocationToOffset (domLocation.Line, domLocation.Column);
+			while (num < data.Length && data.GetCharAt(num) != '}') {
+				num++;
 			}
+			documentLocation = data.OffsetToLocation (num);
+			
+			LineSegment lineAfterClassEnd = data.GetLine (documentLocation.Line + 1);
+			NewLineInsertion lineBefore;
+			if (lineAfterClassEnd != null && lineAfterClassEnd.EditableLength == lineAfterClassEnd.GetIndentation (data.Document).Length)
+				lineBefore = NewLineInsertion.None;
 			else
-			{
-				while (num < data.Length && data.GetCharAt (num) != '{')
-				{
-					num++;
-				}
-				DocumentLocation documentLocation = data.OffsetToLocation (num);
-				list.Add (GetInsertionPosition (data.Document, documentLocation.Line, documentLocation.Column));
-				list [0].LineBefore = NewLineInsertion.None;
-				foreach (IMember current in type.Members)
-				{
-					domRegion = current.BodyRegion;
-					DomLocation end = domRegion.End;
-					if (end.Line <= 0)
-					{
-						domLocation = current.Location;
-						LineSegment line = data.GetLine (domLocation.Line);
-						if (line == null)
-						{
-							continue;
-						}
-						domLocation = current.Location;
-						end = new DomLocation (domLocation.Line, line.EditableLength + 1);
-					}
-					list.Add (GetInsertionPosition (data.Document, end.Line, end.Column));
-				}
-				list [list.Count - 1].LineAfter = NewLineInsertion.None;
-				CheckStartPoint (data.Document, list [0], list.Count == 1);
-				if (list.Count > 1)
-				{
-					list.RemoveAt (list.Count - 1);
-					domRegion = type.BodyRegion;
-					domLocation = domRegion.End;
-					LineSegment line2 = data.GetLine (domLocation.Line - 1);
-					NewLineInsertion lineBefore;
-					if (line2 != null && line2.EditableLength == line2.GetIndentation (data.Document).Length)
-					{
-						lineBefore = NewLineInsertion.None;
-					}
-					else
-					{
-						lineBefore = NewLineInsertion.Eol;
-					}
-					domRegion = type.BodyRegion;
-					domLocation = domRegion.End;
-					LineSegment line3 = data.GetLine (domLocation.Line);
-					domRegion = type.BodyRegion;
-					domLocation = domRegion.End;
-					int num2 = domLocation.Column - 1;
-					while (num2 > 1 && char.IsWhiteSpace (data.GetCharAt (line3.Offset + num2 - 2)))
-					{
-						num2--;
-					}
-					System.Collections.Generic.List<InsertionPoint> arg_36F_0 = list;
-					domRegion = type.BodyRegion;
-					domLocation = domRegion.End;
-					arg_36F_0.Add (new InsertionPoint (new DocumentLocation (domLocation.Line, num2), lineBefore, NewLineInsertion.Eol));
-					CheckEndPoint (data.Document, list [list.Count - 1], list.Count == 1);
-				}
-				foreach (FoldingRegion current2 in parsedDocument.UserRegions.Where(r=>type.BodyRegion.Contains (r.Region)))
-				{
-					System.Collections.Generic.List<InsertionPoint> arg_3F1_0 = list;
-					domRegion = current2.Region;
-					domLocation = domRegion.Start;
-					arg_3F1_0.Add (new InsertionPoint (new DocumentLocation (domLocation.Line + 1, 1), NewLineInsertion.Eol, NewLineInsertion.Eol));
-					System.Collections.Generic.List<InsertionPoint> arg_41E_0 = list;
-					domRegion = current2.Region;
-					domLocation = domRegion.End;
-					arg_41E_0.Add (new InsertionPoint (new DocumentLocation (domLocation.Line, 1), NewLineInsertion.Eol, NewLineInsertion.Eol));
-					System.Collections.Generic.List<InsertionPoint> arg_44D_0 = list;
-					domRegion = current2.Region;
-					domLocation = domRegion.End;
-					arg_44D_0.Add (new InsertionPoint (new DocumentLocation (domLocation.Line + 1, 1), NewLineInsertion.Eol, NewLineInsertion.Eol));
-				}
-				list.Sort ((InsertionPoint left, InsertionPoint right) => left.Location.CompareTo (right.Location));
-				result = list;
+				lineBefore = NewLineInsertion.BlankLine;
+			
+			if (lineBefore == NewLineInsertion.Eol) {
+				list.Add(new InsertionPoint (new DocumentLocation (documentLocation.Line + 1, documentLocation.Column - 1), lineBefore, NewLineInsertion.Eol));
 			}
+			else {
+				list.Add(new InsertionPoint (new DocumentLocation (documentLocation.Line, documentLocation.Column), lineBefore, NewLineInsertion.Eol));
+			}
+			
+			result = list;
 			return result;
 		}
 		
@@ -295,18 +245,32 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 
 		public override List<Change> PerformChanges (RefactoringOptions options, object properties)
 		{
+			List<Change> changes = new List<Change>();
+			TextReplaceChange textReplaceChange = new TextReplaceChange();
+			textReplaceChange.FileName = docParser.GetCurrentFilePath();
+			textReplaceChange.RemovedChars = 0;
+			int num = data.Document.LocationToOffset(insertionPoint.Location);
+			textReplaceChange.Offset = num;
+			
 			var resolveResult = docParser.GetResolvedTypeNameResult ();
 			if (resolveResult == null) throw new InvalidOperationException("Cannot generate class here");
-			
-			List<Change> changes = new List<Change>();
-			
-			var currentDir = docParser.GetCurrentFilePath().ParentDirectory;
 			var nspace = resolveResult.CallingType.Namespace;
 			string newTypeName = resolveResult.ResolvedExpression.Expression;
-			var fileFormat = fileFormatResolver.ResolveFileFormat(newTypeName);
+			var fileFormat = fileFormatResolver.ResolveFileFormat(newTypeName, indent); //TODO: add indent to content resolving, current resolving wont be used to move to new file...
 			var content = fileFormat.ToFormat(nspace, newTypeName);
-			CreateFileChange createFileChange = new CreateFileChange(@"{0}\{1}.cs".ToFormat(currentDir, newTypeName), content);
-			changes.Add(createFileChange);
+			textReplaceChange.InsertedText = "";
+			
+			changes.Add(textReplaceChange);
+//			var resolveResult = docParser.GetResolvedTypeNameResult ();
+//			if (resolveResult == null) throw new InvalidOperationException("Cannot generate class here");
+//				
+//			var currentDir = docParser.GetCurrentFilePath().ParentDirectory;
+//			var nspace = resolveResult.CallingType.Namespace;
+//			string newTypeName = resolveResult.ResolvedExpression.Expression;
+//			var fileFormat = fileFormatResolver.ResolveFileFormat(newTypeName);
+//			var content = fileFormat.ToFormat(nspace, newTypeName);
+//			CreateFileChange createFileChange = new CreateFileChange(@"{0}\{1}.cs".ToFormat(currentDir, newTypeName), content);
+//			changes.Add(createFileChange);
 			
 			return changes;
 		}

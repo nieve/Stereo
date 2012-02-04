@@ -4,23 +4,38 @@ using MonoDevelop.Stereo.Refactoring.GenerateNewType;
 
 namespace MonoDevelop.Stereo.NewTypeFileFormatResolverTest
 {
-	[TestFixture()]
+	[TestFixture]
 	public class ResolveFileFormat
 	{
 		IResolveNewTypeFileFormat resolver = new NewTypeFileFormatResolver();
+		readonly string eol = "\r\n";
 		
-		[Test()]
-		public void Returns_interface_format_when_type_name_starts_with_I_and_another_capital_letter ()
+		[Test]
+		public void Returns_the_exact_new_interface_file_format ()
 		{
-			string fileFormat = resolver.ResolveFileFormat ("IDoSomething", "");
-			Assert.That(fileFormat.Contains("interface"), "interface format wasn't returned");
+			string fileFormat = resolver.ResolveFileFormat ("IDoSomething", "\t", eol, true);
+			Assert.AreEqual("namespace {0} {{\r\n\tpublic interface {1}{{\r\n\t\t\r\n\t}}\r\n}}", fileFormat);
 		}
 		
-		[Test()]
-		public void Returns_class_format_when_type_name_is_not_interface ()
+		[Test]
+		public void Returns_the_exact_new_class_file_format ()
 		{
-			string fileFormat = resolver.ResolveFileFormat ("ImNotAnInterface", "");
-			Assert.That(fileFormat.Contains("class"), "class format wasn't returned");
+			string fileFormat = resolver.ResolveFileFormat ("ImNotAnInterface", "\t", eol, true);
+			Assert.AreEqual("namespace {0} {{\r\n\tpublic class {1}{{\r\n\t\t\r\n\t}}\r\n}}", fileFormat);
+		}
+		
+		[Test]
+		public void Returns_the_exact_interface_format ()
+		{
+			string fileFormat = resolver.ResolveFileFormat ("IDoSomething", "", eol, false);
+			Assert.AreEqual("public interface {1}{{\r\n\t\r\n}}", fileFormat);
+		}
+		
+		[Test]
+		public void Returns_the_exact_class_format ()
+		{
+			string fileFormat = resolver.ResolveFileFormat ("ImNotAnInterface", "", eol, false);
+			Assert.AreEqual("public class {1}{{\r\n\t\r\n}}", fileFormat);
 		}
 	}
 }

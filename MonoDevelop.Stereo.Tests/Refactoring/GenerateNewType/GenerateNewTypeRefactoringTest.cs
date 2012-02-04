@@ -12,6 +12,8 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 	[TestFixture]
 	public class PerformingChanges
 	{
+		// TODO: Fix these tests, start mocking...
+		
 		IParseDocument docParser = MockRepository.GenerateMock<IParseDocument>();
 		GenerateNewTypeRefactoring generateClassRefactoring;
 		string nmspc = "Foo.Bar";

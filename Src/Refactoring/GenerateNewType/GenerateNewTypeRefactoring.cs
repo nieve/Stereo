@@ -21,6 +21,33 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		string indent = "";
 		InsertionPoint insertionPoint = null;
 		TextEditorData data = null;
+
+		public TextEditorData Data {
+			get {
+				return this.data;
+			}
+			set {
+				data = value;
+			}
+		}
+
+		public IParseDocument DocParser {
+			get {
+				return this.docParser;
+			}
+			set {
+				docParser = value;
+			}
+		}
+
+		public InsertionPoint InsertionPoint {
+			get {
+				return this.insertionPoint;
+			}
+			set {
+				insertionPoint = value;
+			}
+		}
 		
 		public GenerateNewTypeRefactoring ()
 		{
@@ -246,7 +273,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		public override List<Change> PerformChanges (RefactoringOptions options, object properties)
 		{
 			List<Change> changes = new List<Change>();
-			TextReplaceChange textReplaceChange = new TextReplaceChange();
+			var textReplaceChange = new TextReplaceChange();
 			textReplaceChange.FileName = docParser.GetCurrentFilePath();
 			textReplaceChange.RemovedChars = 0;
 			int num = data.Document.LocationToOffset(insertionPoint.Location);
@@ -256,9 +283,9 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 			if (resolveResult == null) throw new InvalidOperationException("Cannot generate class here");
 			var nspace = resolveResult.CallingType.Namespace;
 			string newTypeName = resolveResult.ResolvedExpression.Expression;
-			var fileFormat = fileFormatResolver.ResolveFileFormat(newTypeName, indent); //TODO: add indent to content resolving, current resolving wont be used to move to new file...
+			var fileFormat = fileFormatResolver.ResolveFileFormat(newTypeName, indent, data.EolMarker, false);
 			var content = fileFormat.ToFormat(nspace, newTypeName);
-			textReplaceChange.InsertedText = "";
+			textReplaceChange.InsertedText = content;
 			
 			changes.Add(textReplaceChange);
 //			var resolveResult = docParser.GetResolvedTypeNameResult ();

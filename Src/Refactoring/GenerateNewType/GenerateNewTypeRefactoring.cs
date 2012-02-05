@@ -11,6 +11,7 @@ using Mono.TextEditor;
 using Mono.TextEditor.PopupWindow;
 using Gtk;
 using System.Linq;
+using System.Text;
 
 namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 {
@@ -150,34 +151,46 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 			List<InsertionPoint> list = new List<InsertionPoint> ();
 			DomRegion domRegion = type.BodyRegion;
 			DomLocation domLocation = domRegion.Start;
-			int num = data.LocationToOffset (domLocation.Line - 1, domLocation.Column);
+			int num = data.LocationToOffset (domLocation.Line - 1, 1);
 			if (num < 0) return list;
-			DocumentLocation documentLocation = data.OffsetToLocation (num);
-			list.Add (GetInsertionPosition (data.Document, documentLocation.Line, documentLocation.Column));
-			list [0].LineBefore = NewLineInsertion.None;
+			LineSegment lineBeforeClass = data.GetLine (domLocation.Line - 1);
+			NewLineInsertion lineBefore;
+			DocumentLocation documentLocation;
+			if (lineBeforeClass != null && lineBeforeClass.EditableLength == lineBeforeClass.GetIndentation (data.Document).Length) {
+				lineBefore = NewLineInsertion.BlankLine;
+				documentLocation = data.OffsetToLocation (num);
+			}
+			else {
+				lineBefore = NewLineInsertion.Eol;
+				num = data.LocationToOffset (domLocation.Line, 1);
+				documentLocation = data.OffsetToLocation (num);
+			}
+//			list.Add (GetInsertionPosition (data.Document, documentLocation.Line, documentLocation.Column));
+			list.Add(new InsertionPoint (documentLocation, lineBefore, NewLineInsertion.None));
+//			list [0].LineBefore = NewLineInsertion.None;
 			List<InsertionPoint> result;
 			
 			domRegion = type.BodyRegion;
 			domLocation = domRegion.End;
-			num = data.LocationToOffset (domLocation.Line, domLocation.Column);
+			num = data.LocationToOffset (domLocation.Line, 1);
 			while (num < data.Length && data.GetCharAt(num) != '}') {
 				num++;
 			}
+			num++;
 			documentLocation = data.OffsetToLocation (num);
 			
-			LineSegment lineAfterClassEnd = data.GetLine (documentLocation.Line + 1);
-			NewLineInsertion lineBefore;
+			LineSegment lineAfterClassEnd = data.GetLine (domLocation.Line + 1);
+			NewLineInsertion lineAfter;
 			if (lineAfterClassEnd != null && lineAfterClassEnd.EditableLength == lineAfterClassEnd.GetIndentation (data.Document).Length)
-				lineBefore = NewLineInsertion.None;
+				lineAfter = NewLineInsertion.BlankLine;
 			else
-				lineBefore = NewLineInsertion.BlankLine;
+				lineAfter = NewLineInsertion.Eol;
 			
-			if (lineBefore == NewLineInsertion.Eol) {
-				list.Add(new InsertionPoint (new DocumentLocation (documentLocation.Line + 1, documentLocation.Column - 1), lineBefore, NewLineInsertion.Eol));
-			}
-			else {
-				list.Add(new InsertionPoint (new DocumentLocation (documentLocation.Line, documentLocation.Column), lineBefore, NewLineInsertion.Eol));
-			}
+//			if (lineBefore == NewLineInsertion.Eol)
+//				list.Add(new InsertionPoint (new DocumentLocation (documentLocation.Line + 1, documentLocation.Column - 1), lineBefore, NewLineInsertion.Eol));
+//
+//			else
+			list.Add(new InsertionPoint (documentLocation, NewLineInsertion.None, lineAfter));
 			
 			result = list;
 			return result;
@@ -216,60 +229,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 			}
 			return result;
 		}
-		
-		private static void CheckEndPoint (Mono.TextEditor.Document doc, InsertionPoint point, bool isStartPoint)
-		{
-			DocumentLocation location = point.Location;
-			LineSegment line = doc.GetLine (location.Line);
-			if (line != null)
-			{
-				int arg_3F_0 = doc.GetLineIndent (line).Length + 1;
-				location = point.Location;
-				if (arg_3F_0 < location.Column)
-				{
-					point.LineBefore = NewLineInsertion.BlankLine;
-				}
-				location = point.Location;
-				if (location.Column < line.EditableLength + 1)
-				{
-					point.LineAfter = NewLineInsertion.Eol;
-				}
-			}
-		}
-		
-		private static void CheckStartPoint (Mono.TextEditor.Document doc, InsertionPoint point, bool isEndPoint)
-		{
-			DocumentLocation location = point.Location;
-			LineSegment line = doc.GetLine (location.Line);
-			if (line != null)
-			{
-				int arg_42_0 = doc.GetLineIndent (line).Length + 1;
-				location = point.Location;
-				if (arg_42_0 == location.Column)
-				{
-					location = point.Location;
-					int num = location.Line;
-					while (num > 1 && doc.GetLineIndent (num - 1).Length == doc.GetLine (num - 1).EditableLength)
-					{
-						num--;
-					}
-					line = doc.GetLine (num);
-					point.Location = new DocumentLocation (num, doc.GetLineIndent (line).Length + 1);
-				}
-				int arg_CC_0 = doc.GetLineIndent (line).Length + 1;
-				location = point.Location;
-				if (arg_CC_0 < location.Column)
-				{
-					point.LineBefore = NewLineInsertion.Eol;
-				}
-				location = point.Location;
-				if (location.Column < line.EditableLength + 1)
-				{
-					point.LineAfter = (isEndPoint ? NewLineInsertion.Eol : NewLineInsertion.BlankLine);
-				}
-			}
-		}
-
+				
 		public override List<Change> PerformChanges (RefactoringOptions options, object properties)
 		{
 			List<Change> changes = new List<Change>();
@@ -284,8 +244,14 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 			var nspace = resolveResult.CallingType.Namespace;
 			string newTypeName = resolveResult.ResolvedExpression.Expression;
 			var fileFormat = fileFormatResolver.ResolveFileFormat(newTypeName, indent, data.EolMarker, false);
+			StringBuilder contentBuilder = new StringBuilder();
+			if (insertionPoint.LineBefore == NewLineInsertion.Eol) contentBuilder.Append(data.EolMarker);
+			contentBuilder.Append(data.EolMarker);
 			var content = fileFormat.ToFormat(nspace, newTypeName);
-			textReplaceChange.InsertedText = content;
+			contentBuilder.Append(content);
+			if (insertionPoint.LineAfter == NewLineInsertion.Eol) contentBuilder.Append(data.EolMarker);
+			contentBuilder.Append(data.EolMarker);
+			textReplaceChange.InsertedText = contentBuilder.ToString();
 			
 			changes.Add(textReplaceChange);
 //			var resolveResult = docParser.GetResolvedTypeNameResult ();

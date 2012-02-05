@@ -32,15 +32,6 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 			}
 		}
 
-		public IParseDocument DocParser {
-			get {
-				return this.docParser;
-			}
-			set {
-				docParser = value;
-			}
-		}
-
 		public InsertionPoint InsertionPoint {
 			get {
 				return this.insertionPoint;
@@ -52,21 +43,21 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		
 		public GenerateNewTypeRefactoring ()
 		{
-			this.Name = "Generate Class";
+			this.Name = "Generate new type";
 			docParser = new DocumentParser();
 			fileFormatResolver = new NewTypeFormatResolver();
 		}
 		
 		public GenerateNewTypeRefactoring (IParseDocument provider, IResolveNewTypeFormat resolver)
 		{
-			this.Name = "Generate Class";
+			this.Name = "Generate new type";
 			docParser = provider;
 			fileFormatResolver = resolver;
 		}
 		
 		public override string GetMenuDescription(RefactoringOptions options)
 	    {
-	    	return "Generate _Class";
+	    	return "Generate new _type";
 	    }
 		
 		public override bool IsValid(RefactoringOptions options)

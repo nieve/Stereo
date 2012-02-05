@@ -90,7 +90,7 @@
     <Compile Include="Refactoring\GenerateNewType\GenerateNewTypeRefactoring.cs" />
     <Compile Include="Refactoring\GenerateNewType\GenerateNewTypeHandler.cs" />
     <Compile Include="Refactoring\GenerateNewType\DocumentParser.cs" />
-    <Compile Include="Refactoring\GenerateNewType\NewTypeFileFormatResolver.cs" />
+    <Compile Include="Refactoring\GenerateNewType\NewTypeFormatResolver.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -3,18 +3,18 @@ using System.Globalization;
 
 namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 {
-	public interface IResolveNewTypeFileFormat
+	public interface IResolveNewTypeFormat
 	{
 		string ResolveFileFormat(string typeName, string indent, string eol, bool isNewFile);
 	}
 	
 	internal delegate string FileFormatResolving(string typeName, string indent, string eol, bool isNewFile);
 	
-	public class NewTypeFileFormatResolver : IResolveNewTypeFileFormat
+	public class NewTypeFormatResolver : IResolveNewTypeFormat
 	{
 		static string fileFormat= @"namespace {{0}} {{{{{0}}}}}";
-		static string interfaceFileFormat = "<indent>public interface {1}{{<eol><indent>\t<eol><indent>}}";
-		static string classFormat = "<indent>public class {1}{{<eol><indent>\t<eol><indent>}}";
+		static string interfaceFileFormat = "<indent>public interface {1} {{<eol><indent>\t<eol><indent>}}";
+		static string classFormat = "<indent>public class {1} {{<eol><indent>\t<eol><indent>}}";
 		
 		static FileFormatResolving interfaceFormat = (name, indent, eol, isNewFile) => {
 			var ifrmt = interfaceFileFormat.Replace("<indent>", indent);

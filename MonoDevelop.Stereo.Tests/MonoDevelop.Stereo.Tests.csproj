@@ -46,6 +46,9 @@
     <Reference Include="MonoDevelop.Refactoring">
       <HintPath>..\..\..\..\Program Files %28x86%29\MonoDevelop\AddIns\MonoDevelop.Refactoring\MonoDevelop.Refactoring.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.TextEditor">
+      <HintPath>..\lib\Mono.TextEditor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />

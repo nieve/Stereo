@@ -7,24 +7,29 @@ using MonoDevelop.Refactoring;
 using MonoDevelop.Stereo;
 using MonoDevelop.Core;
 using System.Collections.Generic;
+using Mono.TextEditor;
 
 namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 	[TestFixture]
 	public class PerformingChanges
 	{
-		// TODO: Fix these tests, start mocking...
-		
 		IParseDocument docParser = MockRepository.GenerateMock<IParseDocument>();
+		IResolveNewTypeFormat resolver = MockRepository.GenerateMock<IResolveNewTypeFormat>();
 		GenerateNewTypeRefactoring generateClassRefactoring;
-		string nmspc = "Foo.Bar";
-		string clsName = "NewClass";
-		string dir = @"c:\some\path\";
+		readonly string nmspc = "Foo.Bar";
+		readonly string clsName = "NewClass";
+		readonly string dir = @"c:\some\path\";
+		readonly string fileName = "current.cs";
 		List<Change> changes = null;
 		MemberResolveResult resolvedResult;
 		
 		[TestFixtureSetUp]
 		public void SetUp(){
-			generateClassRefactoring = new GenerateNewTypeRefactoring(docParser, new NewTypeFileFormatResolver());
+			generateClassRefactoring = new GenerateNewTypeRefactoring(docParser, resolver);
+			generateClassRefactoring.Data = new Mono.TextEditor.TextEditorData{Document = new Document()};
+			generateClassRefactoring.InsertionPoint = new InsertionPoint(new DocumentLocation(0,0),NewLineInsertion.None,NewLineInsertion.None);
+			generateClassRefactoring.InsertionPoint.LineBefore = NewLineInsertion.Eol;
+			generateClassRefactoring.InsertionPoint.LineAfter = NewLineInsertion.None;
 		}
 		
 		[SetUp]
@@ -34,7 +39,9 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 			resolvedResult.CallingType = anonymousType;
 			resolvedResult.ResolvedExpression = new ExpressionResult(clsName);
 			docParser.Stub(p=>p.GetResolvedTypeNameResult()).Return(resolvedResult);
-			docParser.Stub(p=>p.GetCurrentFilePath()).Return(new FilePath(dir + "current.cs"));
+			docParser.Stub(p=>p.GetCurrentFilePath()).Return(new FilePath(dir + fileName));
+			
+			resolver.Stub(r=>r.ResolveFileFormat(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<bool>.Is.Anything)).Return ("{0} {1}");
 			
 			changes = generateClassRefactoring.PerformChanges(null, null);
 		}
@@ -49,25 +56,25 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 		}
 		
 		[Test()]
-		public void Returns_a_create_file_change ()
+		public void Returns_a_text_replace_change ()
 		{
 			changes = generateClassRefactoring.PerformChanges(null, null);
-			Assert.IsInstanceOfType(typeof(CreateFileChange), changes[0]);
+			Assert.IsInstanceOfType(typeof(TextReplaceChange), changes[0]);
 		}
 		
 		[Test()]
 		public void Returns_change_with_new_full_file_name ()
 		{
-			var change = changes[0] as CreateFileChange;
-			Assert.AreEqual(dir + clsName + ".cs", change.FileName);
+			var change = changes[0] as TextReplaceChange;
+			Assert.AreEqual(dir + fileName, change.FileName);
 		}
 		
 		[Test()]
 		public void Returns_change_with_new_type_content ()
 		{
-			var change = changes[0] as CreateFileChange;
-			string contentFormat = "namespace {0} {{\r\n\tpublic class {1}{{\r\n\t\t\r\n\t}}\r\n}}";
-			Assert.AreEqual(contentFormat.ToFormat(nmspc,clsName), change.Content);
+			var change = changes[0] as TextReplaceChange;
+			string contentFormat = "\r\n\r\n\r\n{0} {1}\r\n";
+			Assert.AreEqual(contentFormat.ToFormat(nmspc,clsName), change.InsertedText);
 		}
 	}
 

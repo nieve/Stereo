@@ -5,28 +5,63 @@ using MonoDevelop.Ide.Gui.Content;
 using MonoDevelop.Projects.Dom;
 using MonoDevelop.Projects.Dom.Parser;
 using MonoDevelop.Refactoring;
+using System.Collections.Generic;
+using System;
 
 namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 {
 	public interface IParseDocument{
 		MemberResolveResult GetResolvedTypeNameResult ();
 		FilePath GetCurrentFilePath();
+		IEnumerable<IType> GetTypes();
+		bool IsCurrentPositionFileNameType();
 	}
 	
-	public class DocumentParser : IParseDocument
-	{
+	public class DocumentParser : IParseDocument {
+		public IEnumerable<IType> GetTypes ()
+		{
+			Document doc = GetActiveDocument ();
+			if (doc == null || doc.FileName == FilePath.Null || doc.Dom == null)
+				return null;
+			return doc.Dom.GetTypes(doc.FileName);
+		}
+		
 		public FilePath GetCurrentFilePath(){
-			Document doc = IdeApp.Workbench.ActiveDocument;
+			Document doc = GetActiveDocument();
 			if (doc == null) return null;
 			return doc.FileName;
 		}
-		
-		public MemberResolveResult GetResolvedTypeNameResult ()
+
+		static Document GetActiveDocument ()
 		{
-			Document doc = IdeApp.Workbench.ActiveDocument;
+			return IdeApp.Workbench.ActiveDocument;
+		}
+		
+		public bool IsCurrentPositionFileNameType() {
+			var res = GetResolvedResult();
+			if (res != null) {
+				return res.CallingMember == null && res.ResolvedType != null 
+					&& res.ResolvedType.Name == GetActiveDocument().FileName.FileNameWithoutExtension;
+			}
+			return false;
+		}
+
+		private ITextBuffer GetEditor (Document doc)
+		{
+			return doc.GetContent<ITextBuffer> ();
+		}
+
+		private ITextBuffer GetEditor ()
+		{
+			return GetActiveDocument().GetContent<ITextBuffer> ();
+		}
+
+		private ResolveResult GetResolvedResult ()
+		{
+			Document doc = GetActiveDocument();
 			if (doc == null || doc.FileName == FilePath.Null || IdeApp.ProjectOperations.CurrentSelectedSolution == null)
 				return null;
-			ITextBuffer editor = doc.GetContent<ITextBuffer> ();
+			ITextBuffer editor = GetEditor (doc);
 			if (editor == null)
 				return null;
 			int line, column;
@@ -36,6 +71,12 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 			ResolveResult resolveResult;
 			INode item;
 			CurrentRefactoryOperationsHandler.GetItem (ctx, doc, editor, out resolveResult, out item);
+			return resolveResult;
+		}
+		
+		public MemberResolveResult GetResolvedTypeNameResult ()
+		{
+			ResolveResult resolveResult = GetResolvedResult ();
 			
 			return (resolveResult is MemberResolveResult) ?
 				(MemberResolveResult)resolveResult : null;

@@ -19,6 +19,16 @@
 		<Addin id="SourceEditor2" version="2.8.5"/>
 		<Addin id="Refactoring" version="2.8.5"/>
 	</Dependencies>
+
+    <Extension path = "/MonoDevelop/Ide/Commands">
+	
+		<Category _name = "Code Generation" id = "CodeGeneration">
+		<Command id = "MonoDevelop.Refactoring.RefactoryCommands.MoveToAnotherFile"
+					defaultHandler = "MonoDevelop.Stereo.Refactoring.MoveToAnotherFileHandler"
+					_label = "Move to another _file" 
+					shortcut = "Alt|Return" />
+		</Category>
+    </Extension>
 	
 	<Extension path = "/MonoDevelop/Refactoring/Refactorings">
 		<Class id="GenerateNewType" class = "MonoDevelop.Stereo.Refactoring.GenerateNewType.GenerateNewTypeRefactoring" />

@@ -41,7 +41,7 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 			docParser.Stub(p=>p.GetResolvedTypeNameResult()).Return(resolvedResult);
 			docParser.Stub(p=>p.GetCurrentFilePath()).Return(new FilePath(dir + fileName));
 			
-			resolver.Stub(r=>r.ResolveFileFormat(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<bool>.Is.Anything)).Return ("{0} {1}");
+			resolver.Stub(r=>r.ResolveFileFormat(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<string>.Is.Anything)).Return ("{0} {1}");
 			
 			changes = generateClassRefactoring.PerformChanges(null, null);
 		}

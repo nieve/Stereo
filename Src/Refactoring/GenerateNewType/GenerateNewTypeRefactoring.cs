@@ -77,8 +77,6 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 				MessageService.ShowError(string.Format("Can't open file {0}.", fileName));
 			}
 			else {
-				data = openDocument.Editor;
-				if (data == null) return;
 				insertionPoint = GetInsertionPoint(openDocument, declaringType);
 				base.Run(options);
 			}
@@ -87,17 +85,14 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		private InsertionPoint GetInsertionPoint (MonoDevelop.Ide.Gui.Document document, IType type)
 		{
 			var data = document.Editor;
-			var parsedDocument = document.ParsedDocument;
-			if (data == null)
-			{
+			if (data == null) {
 				throw new System.ArgumentNullException ("data");
 			}
-			if (parsedDocument == null)
-			{
+			var parsedDocument = document.ParsedDocument;
+			if (parsedDocument == null) {
 				throw new System.ArgumentNullException ("parsedDocument");
 			}
-			if (type == null)
-			{
+			if (type == null) {
 				throw new System.ArgumentNullException ("type");
 			}
 			type = (parsedDocument.CompilationUnit.GetTypeAt (type.Location) ?? type);
@@ -135,7 +130,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 			if (resolveResult == null) throw new InvalidOperationException("Cannot generate class here");
 			var nspace = resolveResult.CallingType.Namespace;
 			string newTypeName = resolveResult.ResolvedExpression.Expression;
-			var fileFormat = fileFormatResolver.ResolveFileFormat(newTypeName, indent, data.EolMarker, false);
+			var fileFormat = fileFormatResolver.ResolveFileFormat(newTypeName, indent, data.EolMarker);
 			StringBuilder contentBuilder = new StringBuilder();
 			if (insertionPoint.LineBefore == NewLineInsertion.Eol) contentBuilder.Append(data.EolMarker);
 			contentBuilder.Append(data.EolMarker);
@@ -146,17 +141,6 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 			textReplaceChange.InsertedText = contentBuilder.ToString();
 			
 			changes.Add(textReplaceChange);
-//			var resolveResult = docParser.GetResolvedTypeNameResult ();
-//			if (resolveResult == null) throw new InvalidOperationException("Cannot generate class here");
-//				
-//			var currentDir = docParser.GetCurrentFilePath().ParentDirectory;
-//			var nspace = resolveResult.CallingType.Namespace;
-//			string newTypeName = resolveResult.ResolvedExpression.Expression;
-//			var fileFormat = fileFormatResolver.ResolveFileFormat(newTypeName);
-//			var content = fileFormat.ToFormat(nspace, newTypeName);
-//			CreateFileChange createFileChange = new CreateFileChange(@"{0}\{1}.cs".ToFormat(currentDir, newTypeName), content);
-//			changes.Add(createFileChange);
-			
 			return changes;
 		}
 	}

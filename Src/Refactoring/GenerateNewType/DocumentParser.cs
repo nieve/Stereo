@@ -41,7 +41,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 			var res = GetResolvedResult();
 			if (res != null) {
 				return res.CallingMember == null && res.ResolvedType != null 
-					&& res.ResolvedType.Name == GetActiveDocument().FileName.FileNameWithoutExtension;
+					&& res.ResolvedType.Name != GetActiveDocument().FileName.FileNameWithoutExtension;
 			}
 			return false;
 		}

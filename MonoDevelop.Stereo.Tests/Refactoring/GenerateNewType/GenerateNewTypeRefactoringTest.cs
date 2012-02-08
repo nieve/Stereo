@@ -14,7 +14,7 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 	public class PerformingChanges
 	{
 		IParseDocument docParser = MockRepository.GenerateMock<IParseDocument>();
-		IResolveNewTypeFormat resolver = MockRepository.GenerateMock<IResolveNewTypeFormat>();
+		IResolveTypeContent resolver = MockRepository.GenerateMock<IResolveTypeContent>();
 		GenerateNewTypeRefactoring generateClassRefactoring;
 		readonly string nmspc = "Foo.Bar";
 		readonly string clsName = "NewClass";
@@ -22,6 +22,7 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 		readonly string fileName = "current.cs";
 		List<Change> changes = null;
 		MemberResolveResult resolvedResult;
+		string fileContent = "some file content";
 		
 		[TestFixtureSetUp]
 		public void SetUp(){
@@ -41,7 +42,7 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 			docParser.Stub(p=>p.GetResolvedTypeNameResult()).Return(resolvedResult);
 			docParser.Stub(p=>p.GetCurrentFilePath()).Return(new FilePath(dir + fileName));
 			
-			resolver.Stub(r=>r.ResolveFileFormat(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<string>.Is.Anything)).Return ("{0} {1}");
+			resolver.Stub(r=>r.GetNewTypeContent(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<string>.Is.Anything)).Return (fileContent);
 			
 			changes = generateClassRefactoring.PerformChanges(null, null);
 		}
@@ -73,8 +74,8 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 		public void Returns_change_with_new_type_content ()
 		{
 			var change = changes[0] as TextReplaceChange;
-			string contentFormat = "\r\n\r\n\r\n{0} {1}\r\n";
-			Assert.AreEqual(contentFormat.ToFormat(nmspc,clsName), change.InsertedText);
+			string contentFormat = "\r\n\r\n\r\n{0}\r\n";
+			Assert.AreEqual(contentFormat.ToFormat(fileContent), change.InsertedText);
 		}
 	}
 

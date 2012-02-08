@@ -5,21 +5,23 @@ using MonoDevelop.Projects.Dom;
 using MonoDevelop.Ide;
 using System.Linq;
 using System.Collections.Generic;
+using Gtk;
+using MonoDevelop.Stereo.Gui;
 
 namespace MonoDevelop.Stereo.Refactoring
 {
 	public class MoveToAnotherFileRefactoring : RefactoringOperation
 	{
 		IParseDocument docParser;
-		IResolveNewTypeFormat fileFormatResolver;
+		IResolveTypeContent fileFormatResolver;
 		
 		public MoveToAnotherFileRefactoring ()
 		{
 			docParser = new DocumentParser();
-			fileFormatResolver = new NewTypeFormatResolver();
+			fileFormatResolver = new TypeContentResolver();
 		}
 		
-		public MoveToAnotherFileRefactoring (IParseDocument provider, IResolveNewTypeFormat resolver)
+		public MoveToAnotherFileRefactoring (IParseDocument provider, IResolveTypeContent resolver)
 		{
 			docParser = provider;
 			fileFormatResolver = resolver;
@@ -30,9 +32,14 @@ namespace MonoDevelop.Stereo.Refactoring
 		{
 			var types = docParser.GetTypes();
 			if (types == null) return false;
-			if (types.Count() > 1 && docParser.IsCurrentPositionFileNameType())
+			if (types.Count() > 1 && docParser.IsCurrentPositionNotFileNameType())
 				return true;
 			return false;
+		}
+		
+		public override void Run (RefactoringOptions options)
+		{
+			MessageService.ShowCustomDialog((Dialog) new QuickFixDialog(options, this));
 		}
 		
 		public override List<Change> PerformChanges (RefactoringOptions options, object properties)
@@ -50,7 +57,7 @@ namespace MonoDevelop.Stereo.Refactoring
 			var body = resType.Type.BodyRegion;
 			var content = editor.GetTextBetween(body.Start.Line, 1, body.End.Line, body.End.Column);
 			var contentLength = content.Length;
-			content = fileFormatResolver.ResolveNewFile(editor.EolMarker + content + editor.EolMarker, nspace);
+			content = fileFormatResolver.GetNewTypeFileContent(content, nspace, editor.EolMarker);
 			CreateFileChange createFileChange = new CreateFileChange(@"{0}\{1}.cs".ToFormat(currentDir, typeName), content);
 			changes.Add(createFileChange);
 			

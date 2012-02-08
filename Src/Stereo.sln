@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoDevelop.Stereo", "MonoD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoDevelop.Stereo.Tests", "..\MonoDevelop.Stereo.Tests\MonoDevelop.Stereo.Tests.csproj", "{8A07E113-3769-4C4E-A88C-90D9760AFDA0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoDevelop.Stereo.Gui", "MonoDevelop.Stereo.Gui\MonoDevelop.Stereo.Gui.csproj", "{AF19E650-C170-48CA-B187-34A64D5F73FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,12 @@ Global
 		{8A07E113-3769-4C4E-A88C-90D9760AFDA0}.Default|Any CPU.Build.0 = Debug|Any CPU
 		{8A07E113-3769-4C4E-A88C-90D9760AFDA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A07E113-3769-4C4E-A88C-90D9760AFDA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF19E650-C170-48CA-B187-34A64D5F73FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF19E650-C170-48CA-B187-34A64D5F73FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF19E650-C170-48CA-B187-34A64D5F73FC}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF19E650-C170-48CA-B187-34A64D5F73FC}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{AF19E650-C170-48CA-B187-34A64D5F73FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF19E650-C170-48CA-B187-34A64D5F73FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = MonoDevelop.Stereo.csproj

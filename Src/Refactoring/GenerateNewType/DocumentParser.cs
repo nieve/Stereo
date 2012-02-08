@@ -14,7 +14,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		MemberResolveResult GetResolvedTypeNameResult ();
 		FilePath GetCurrentFilePath();
 		IEnumerable<IType> GetTypes();
-		bool IsCurrentPositionFileNameType();
+		bool IsCurrentPositionNotFileNameType();
 	}
 	
 	public class DocumentParser : IParseDocument {
@@ -37,7 +37,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 			return IdeApp.Workbench.ActiveDocument;
 		}
 		
-		public bool IsCurrentPositionFileNameType() {
+		public bool IsCurrentPositionNotFileNameType() {
 			var res = GetResolvedResult();
 			if (res != null) {
 				return res.CallingMember == null && res.ResolvedType != null 

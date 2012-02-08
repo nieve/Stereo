@@ -18,7 +18,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 	public class GenerateNewTypeRefactoring : RefactoringOperation
 	{
 		IParseDocument docParser;
-		IResolveNewTypeFormat fileFormatResolver;
+		IResolveTypeContent fileFormatResolver;
 		string indent = "";
 		InsertionPoint insertionPoint = null;
 		TextEditorData data = null;
@@ -45,10 +45,10 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		{
 			this.Name = "Generate new type";
 			docParser = new DocumentParser();
-			fileFormatResolver = new NewTypeFormatResolver();
+			fileFormatResolver = new TypeContentResolver();
 		}
 		
-		public GenerateNewTypeRefactoring (IParseDocument provider, IResolveNewTypeFormat resolver)
+		public GenerateNewTypeRefactoring (IParseDocument provider, IResolveTypeContent resolver)
 		{
 			this.Name = "Generate new type";
 			docParser = provider;
@@ -130,12 +130,11 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 			if (resolveResult == null) throw new InvalidOperationException("Cannot generate class here");
 			var nspace = resolveResult.CallingType.Namespace;
 			string newTypeName = resolveResult.ResolvedExpression.Expression;
-			var fileFormat = fileFormatResolver.ResolveFileFormat(newTypeName, indent, data.EolMarker);
 			StringBuilder contentBuilder = new StringBuilder();
 			if (insertionPoint.LineBefore == NewLineInsertion.Eol) contentBuilder.Append(data.EolMarker);
 			contentBuilder.Append(data.EolMarker);
 			contentBuilder.Append(data.EolMarker);
-			var content = fileFormat.ToFormat(nspace, newTypeName);
+			var content = fileFormatResolver.GetNewTypeContent(newTypeName, indent, data.EolMarker);
 			contentBuilder.Append(content);
 			if (insertionPoint.LineAfter == NewLineInsertion.None) contentBuilder.Append(data.EolMarker);
 			textReplaceChange.InsertedText = contentBuilder.ToString();

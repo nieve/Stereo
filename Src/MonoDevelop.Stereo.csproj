@@ -83,16 +83,16 @@
     <Compile Include="Refactoring\Rename\RenameNamespaceRefactoring.cs" />
     <Compile Include="Infrastructure\NamespaceReferenceFinder.cs" />
     <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="Refactoring\Rename\RenameNamespaceItemDialog.cs" />
-    <Compile Include="gtk-gui\Stereo.RenameNamespaceItemDialog.cs" />
     <Compile Include="Refactoring\Rename\NamespaceValidator.cs" />
     <Compile Include="Infrastructure\ExtractProjectFiles.cs" />
     <Compile Include="Refactoring\GenerateNewType\GenerateNewTypeRefactoring.cs" />
     <Compile Include="Refactoring\GenerateNewType\GenerateNewTypeHandler.cs" />
     <Compile Include="Refactoring\GenerateNewType\DocumentParser.cs" />
-    <Compile Include="Refactoring\GenerateNewType\NewTypeFormatResolver.cs" />
     <Compile Include="Refactoring\MoveToAnotherFileHandler.cs" />
     <Compile Include="Refactoring\MoveToAnotherFileRefactoring.cs" />
+    <Compile Include="Refactoring\GenerateNewType\TypeContentResolver.cs" />
+    <Compile Include="Refactoring\Rename\RenameNamespaceItemDialog.cs" />
+    <Compile Include="gtk-gui\Stereo.RenameNamespaceItemDialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -106,5 +106,11 @@
     <Folder Include="Refactoring\Rename\" />
     <Folder Include="Infrastructure\" />
     <Folder Include="Refactoring\GenerateNewType\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="MonoDevelop.Stereo.Gui\MonoDevelop.Stereo.Gui.csproj">
+      <Project>{AF19E650-C170-48CA-B187-34A64D5F73FC}</Project>
+      <Name>MonoDevelop.Stereo.Gui</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

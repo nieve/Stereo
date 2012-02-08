@@ -84,7 +84,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		
 		private InsertionPoint GetInsertionPoint (MonoDevelop.Ide.Gui.Document document, IType type)
 		{
-			var data = document.Editor;
+			data = document.Editor;
 			if (data == null) {
 				throw new System.ArgumentNullException ("data");
 			}

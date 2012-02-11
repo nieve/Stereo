@@ -6,7 +6,7 @@ using Rhino.Mocks;
 namespace MonoDevelop.Stereo.DuplicateTextHandlerTest
 {	
 	public class DuplicateTextHandlerToTest : DuplicateTextHandler{
-		public DuplicateTextHandlerToTest (IParseDocument parser) : base(parser) {}
+		public DuplicateTextHandlerToTest (ITextDuplicationContext ctx) : base(ctx) {}
 		public void TestUpdate(CommandInfo info){base.Update (info);}
 		public void TestRun(){base.Run ();}
 	}
@@ -14,24 +14,24 @@ namespace MonoDevelop.Stereo.DuplicateTextHandlerTest
 	[TestFixture]
 	public class Update
 	{
-		IParseDocument docParser = MockRepository.GenerateStub<IParseDocument>();
+		ITextDuplicationContext ctx = MockRepository.GenerateStub<ITextDuplicationContext>();
 		DuplicateTextHandlerToTest subject;
 		
 		[TestFixtureSetUp]
 		public void SetUp(){
-			subject = new DuplicateTextHandlerToTest(docParser);
+			subject = new DuplicateTextHandlerToTest(ctx);
 		}
 		
 		[SetUp]
 		public void BeforeEach ()
 		{
-			docParser.BackToRecord(BackToRecordOptions.All);
-			docParser.Replay();
+			ctx.BackToRecord(BackToRecordOptions.All);
+			ctx.Replay();
 		}
 		
 		[Test]
 		public void Enables_info_when_active_document_and_editor_exist(){
-			docParser.Stub(p=>p.ActiveDocumentAndEditorExist()).Return(true);
+			ctx.Stub(p=>p.ActiveDocumentAndEditorExist()).Return(true);
 			
 			CommandInfo commandInfo = new CommandInfo{Enabled=false};
 			subject.TestUpdate(commandInfo);
@@ -41,7 +41,7 @@ namespace MonoDevelop.Stereo.DuplicateTextHandlerTest
 		
 		[Test]
 		public void Enables_info_when_active_document_and_editor_dont_exist(){
-			docParser.Stub(p=>p.ActiveDocumentAndEditorExist()).Return(false);
+			ctx.Stub(p=>p.ActiveDocumentAndEditorExist()).Return(false);
 			
 			CommandInfo commandInfo = new CommandInfo{Enabled=false};
 			subject.TestUpdate(commandInfo);
@@ -53,23 +53,23 @@ namespace MonoDevelop.Stereo.DuplicateTextHandlerTest
 	[TestFixture]
 	public class Run
 	{
-		IParseDocument docParser = MockRepository.GenerateStub<IParseDocument>();
+		ITextDuplicationContext ctx = MockRepository.GenerateStub<ITextDuplicationContext>();
 		DuplicateText text = new EmptyDuplicateText();
 		
 		DuplicateTextHandlerToTest subject;
 		
 		[TestFixtureSetUp]
 		public void SetUp(){
-			subject = new DuplicateTextHandlerToTest(docParser);
+			subject = new DuplicateTextHandlerToTest(ctx);
 		}
 		
 		[Test]
 		public void Appends_duplicated_text(){
-			docParser.Stub(p=>p.GetTextToDuplicate()).Return(text);
+			ctx.Stub(p=>p.GetTextToDuplicate()).Return(text);
 			
 			subject.TestRun();
 			
-			docParser.AssertWasCalled(p=>p.AppendDuplicatedText(text));
+			ctx.AssertWasCalled(p=>p.AppendDuplicatedText(text));
 		}
 	}
 }

@@ -13,7 +13,7 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 	[TestFixture]
 	public class PerformingChanges
 	{
-		IParseDocument docParser = MockRepository.GenerateMock<IParseDocument>();
+		INonexistantTypeContext ctx = MockRepository.GenerateMock<INonexistantTypeContext>();
 		IResolveTypeContent resolver = MockRepository.GenerateMock<IResolveTypeContent>();
 		GenerateNewTypeRefactoring generateClassRefactoring;
 		readonly string nmspc = "Foo.Bar";
@@ -26,7 +26,7 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 		
 		[TestFixtureSetUp]
 		public void SetUp(){
-			generateClassRefactoring = new GenerateNewTypeRefactoring(docParser, resolver);
+			generateClassRefactoring = new GenerateNewTypeRefactoring(ctx, resolver);
 			generateClassRefactoring.Data = new Mono.TextEditor.TextEditorData{Document = new Document()};
 			generateClassRefactoring.InsertionPoint = new InsertionPoint(new DocumentLocation(0,0),NewLineInsertion.None,NewLineInsertion.None);
 			generateClassRefactoring.InsertionPoint.LineBefore = NewLineInsertion.Eol;
@@ -39,8 +39,8 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 			resolvedResult = new MemberResolveResult(anonymousType);
 			resolvedResult.CallingType = anonymousType;
 			resolvedResult.ResolvedExpression = new ExpressionResult(clsName);
-			docParser.Stub(p=>p.GetResolvedTypeNameResult()).Return(resolvedResult);
-			docParser.Stub(p=>p.GetCurrentFilePath()).Return(new FilePath(dir + fileName));
+			ctx.Stub(p=>p.GetResolvedTypeNameResult()).Return(resolvedResult);
+			ctx.Stub(p=>p.GetCurrentFilePath()).Return(new FilePath(dir + fileName));
 			
 			resolver.Stub(r=>r.GetNewTypeContent(Arg<string>.Is.Anything, Arg<string>.Is.Anything, Arg<string>.Is.Anything)).Return (fileContent);
 			
@@ -81,12 +81,12 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 
 	[TestFixture]
 	public class IsValid {
-		IParseDocument docParser = MockRepository.GenerateMock<IParseDocument>();
+		INonexistantTypeContext ctx = MockRepository.GenerateMock<INonexistantTypeContext>();
 		GenerateNewTypeRefactoring generateClassRefactoring;
 		
 		[TestFixtureSetUp]
 		public void SetUp(){
-			generateClassRefactoring = new GenerateNewTypeRefactoring(docParser, null);
+			generateClassRefactoring = new GenerateNewTypeRefactoring(ctx, null);
 		}
 		
 		[Test()]
@@ -97,7 +97,7 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 				ResolvedType = new DomReturnType{Type = null},
 				ResolvedExpression = new ExpressionResult("SomeClass")
 			};
-			docParser.Stub(p=>p.GetResolvedTypeNameResult()).Return(result);
+			ctx.Stub(p=>p.GetResolvedTypeNameResult()).Return(result);
 			
 			Assert.IsTrue(generateClassRefactoring.IsValid(null));
 		}

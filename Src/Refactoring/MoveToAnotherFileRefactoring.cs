@@ -11,25 +11,25 @@ namespace MonoDevelop.Stereo.Refactoring
 {
 	public class MoveToAnotherFileRefactoring : RefactoringOperation
 	{
-		IParseDocument docParser;
+		IMoveTypeContext context;
 		IResolveTypeContent fileFormatResolver;
 		
 		public MoveToAnotherFileRefactoring ()
 		{
-			docParser = new DocumentParser();
+			context = new MoveTypeContext();
 			fileFormatResolver = new TypeContentResolver();
 		}
 		
-		public MoveToAnotherFileRefactoring (IParseDocument provider, IResolveTypeContent resolver)
+		public MoveToAnotherFileRefactoring (IMoveTypeContext ctx, IResolveTypeContent resolver)
 		{
-			docParser = provider;
+			context = ctx;
 			fileFormatResolver = resolver;
 		}
 		
 		public override bool IsValid(RefactoringOptions options)
 		{
-			if (docParser.IsCurrentPositionTypeDeclarationUnmatchingFileName()) {
-				var types = docParser.GetTypes ();
+			if (context.IsCurrentPositionTypeDeclarationUnmatchingFileName()) {
+				var types = context.GetTypes ();
 				if (types == null)
 					return false;
 				return types.Count () > 1;
@@ -62,7 +62,7 @@ namespace MonoDevelop.Stereo.Refactoring
 			changes.Add(createFileChange);
 			
 			TextReplaceChange textReplaceChange = new TextReplaceChange();
-			textReplaceChange.FileName = docParser.GetCurrentFilePath();
+			textReplaceChange.FileName = context.GetCurrentFilePath();
 			textReplaceChange.RemovedChars = contentLength + 1;
 			int num = editor.Document.LocationToOffset(body.Start.Line, 1);
 			textReplaceChange.Offset = num - 1;

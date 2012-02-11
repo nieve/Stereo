@@ -94,7 +94,10 @@
     <Compile Include="gtk-gui\Stereo.RenameNamespaceItemDialog.cs" />
     <Compile Include="TextEditor\DuplicateTextHandler.cs" />
     <Compile Include="TextEditor\DuplicateText.cs" />
-    <Compile Include="Infrastructure\DocumentParser.cs" />
+    <Compile Include="Infrastructure\Contexts\DocumentContext.cs" />
+    <Compile Include="Infrastructure\Contexts\MoveTypeContext.cs" />
+    <Compile Include="Infrastructure\Contexts\NonexistantTypeContext.cs" />
+    <Compile Include="Infrastructure\Contexts\TextDuplicationContext.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -109,6 +112,7 @@
     <Folder Include="Infrastructure\" />
     <Folder Include="Refactoring\GenerateNewType\" />
     <Folder Include="TextEditor\" />
+    <Folder Include="Infrastructure\Contexts\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="MonoDevelop.Stereo.Gui\MonoDevelop.Stereo.Gui.csproj">

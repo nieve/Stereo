@@ -11,23 +11,24 @@ namespace MonoDevelop.Stereo.MoveToAnotherFileRefactoringTest
 	[TestFixture]
 	public class IsValid
 	{
-		IParseDocument docParser = MockRepository.GenerateMock<IParseDocument>();
+		IMoveTypeContext ctx = MockRepository.GenerateMock<IMoveTypeContext>();
 		MoveToAnotherFileRefactoring subject;
 		
 		[SetUp]
 		public void SetUp(){
-			subject = new MoveToAnotherFileRefactoring(docParser, null);
+			subject = new MoveToAnotherFileRefactoring(ctx, null);
 		}
 		
 		[TearDown]
 		public void TearDown(){
-			docParser = MockRepository.GenerateMock<IParseDocument>();
+			ctx.BackToRecord(BackToRecordOptions.All);
+			ctx.Replay();
 		} 
 		
 		[Test]
 		public void Validates_when_types_were_found_and_current_location_is_not_type_with_file_name(){
-			docParser.Stub(dp=>dp.IsCurrentPositionTypeDeclarationUnmatchingFileName()).Return(true);
-			docParser.Stub(dp=>dp.GetTypes()).Return(new List<IType>{new AnonymousType(),new AnonymousType()});
+			ctx.Stub(dp=>dp.IsCurrentPositionTypeDeclarationUnmatchingFileName()).Return(true);
+			ctx.Stub(dp=>dp.GetTypes()).Return(new List<IType>{new AnonymousType(),new AnonymousType()});
 			
 			var validation = subject.IsValid(null);
 			
@@ -36,8 +37,8 @@ namespace MonoDevelop.Stereo.MoveToAnotherFileRefactoringTest
 		
 		[Test]
 		public void Invalidates_when_one_type_was_found(){
-			docParser.Stub(dp=>dp.IsCurrentPositionTypeDeclarationUnmatchingFileName()).Return(true);
-			docParser.Stub(dp=>dp.GetTypes()).Return(new List<IType>{new AnonymousType()});
+			ctx.Stub(dp=>dp.IsCurrentPositionTypeDeclarationUnmatchingFileName()).Return(true);
+			ctx.Stub(dp=>dp.GetTypes()).Return(new List<IType>{new AnonymousType()});
 			
 			var validation = subject.IsValid(null);
 			
@@ -46,8 +47,8 @@ namespace MonoDevelop.Stereo.MoveToAnotherFileRefactoringTest
 		
 		[Test]
 		public void Invalidates_when_current_location_is_type_with_file_name(){
-			docParser.Stub(dp=>dp.IsCurrentPositionTypeDeclarationUnmatchingFileName()).Return(false);
-			docParser.Stub(dp=>dp.GetTypes()).Return(new List<IType>{new AnonymousType(),new AnonymousType()});
+			ctx.Stub(dp=>dp.IsCurrentPositionTypeDeclarationUnmatchingFileName()).Return(false);
+			ctx.Stub(dp=>dp.GetTypes()).Return(new List<IType>{new AnonymousType(),new AnonymousType()});
 			
 			var validation = subject.IsValid(null);
 			

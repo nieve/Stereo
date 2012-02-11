@@ -17,7 +17,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 {
 	public class GenerateNewTypeRefactoring : RefactoringOperation
 	{
-		IParseDocument docParser;
+		INonexistantTypeContext context;
 		IResolveTypeContent fileFormatResolver;
 		string indent = "";
 		InsertionPoint insertionPoint = null;
@@ -44,14 +44,14 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		public GenerateNewTypeRefactoring ()
 		{
 			this.Name = "Generate new type";
-			docParser = new DocumentParser();
+			context = new NonexistantTypeContext();
 			fileFormatResolver = new TypeContentResolver();
 		}
 		
-		public GenerateNewTypeRefactoring (IParseDocument provider, IResolveTypeContent resolver)
+		public GenerateNewTypeRefactoring (INonexistantTypeContext ctx, IResolveTypeContent resolver)
 		{
 			this.Name = "Generate new type";
-			docParser = provider;
+			context = ctx;
 			fileFormatResolver = resolver;
 		}
 		
@@ -62,7 +62,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		
 		public override bool IsValid(RefactoringOptions options)
 		{
-			MemberResolveResult resolvedTypeName = docParser.GetResolvedTypeNameResult();
+			MemberResolveResult resolvedTypeName = context.GetResolvedTypeNameResult();
 			return resolvedTypeName != null && resolvedTypeName.ResolvedMember == null 
 				&& resolvedTypeName.ResolvedExpression != null && resolvedTypeName.ResolvedType.Type == null;
 		}
@@ -121,12 +121,12 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		{
 			List<Change> changes = new List<Change>();
 			var textReplaceChange = new TextReplaceChange();
-			textReplaceChange.FileName = docParser.GetCurrentFilePath();
+			textReplaceChange.FileName = context.GetCurrentFilePath();
 			textReplaceChange.RemovedChars = 0;
 			int num = data.Document.LocationToOffset(insertionPoint.Location);
 			textReplaceChange.Offset = num;
 			
-			var resolveResult = docParser.GetResolvedTypeNameResult ();
+			var resolveResult = context.GetResolvedTypeNameResult ();
 			if (resolveResult == null) throw new InvalidOperationException("Cannot generate class here");
 			var nspace = resolveResult.CallingType.Namespace;
 			string newTypeName = resolveResult.ResolvedExpression.Expression;

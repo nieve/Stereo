@@ -5,27 +5,27 @@ namespace MonoDevelop.Stereo.TextEditor
 {
 	public class DuplicateTextHandler : CommandHandler
 	{
-		IParseDocument docParser;
+		ITextDuplicationContext context;
 		
-		public DuplicateTextHandler (IParseDocument parser)
+		public DuplicateTextHandler (ITextDuplicationContext ctx)
 		{
-			docParser = parser;
+			context = ctx;
 		}
 		
 		public DuplicateTextHandler ()
 		{
-			docParser = new DocumentParser();
+			context = new TextDuplicationContext();
 		}
 		
 		protected override void Update (CommandInfo info)
 		{
-			info.Enabled = docParser.ActiveDocumentAndEditorExist();
+			info.Enabled = context.ActiveDocumentAndEditorExist();
 		}
 		
 		protected override void Run ()
 		{
-	      	var textToDuplicate = docParser.GetTextToDuplicate();
-			docParser.AppendDuplicatedText(textToDuplicate);
+	      	var textToDuplicate = context.GetTextToDuplicate();
+			context.AppendDuplicatedText(textToDuplicate);
 		}
 	}
 }

@@ -19,6 +19,7 @@ namespace MonoDevelop.Stereo.Gui
 			buttonOk.Clicked += OnOKClicked;
 			this.Title = "Quick Fix";
 			this.label1.Text = "Are you sure you want to move this type to a new file?";
+			this.GdkWindow.Opacity = 0.75;
 		}
 		
 		void OnOKClicked (object sender, EventArgs e)

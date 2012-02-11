@@ -14,6 +14,7 @@ namespace MonoDevelop.Stereo.Gui
 			// Widget MonoDevelop.Stereo.Gui.QuickFixDialog
 			this.Name = "MonoDevelop.Stereo.Gui.QuickFixDialog";
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
+			this.DestroyWithParent = true;
 			// Internal child MonoDevelop.Stereo.Gui.QuickFixDialog.VBox
 			global::Gtk.VBox w1 = this.VBox;
 			w1.Name = "dialog1_VBox";
@@ -21,6 +22,8 @@ namespace MonoDevelop.Stereo.Gui
 			// Container child dialog1_VBox.Gtk.Box+BoxChild
 			this.label1 = new global::Gtk.Label ();
 			this.label1.Name = "label1";
+			this.label1.Xalign = 0F;
+			this.label1.Yalign = 0F;
 			this.label1.LabelProp = global::Mono.Unix.Catalog.GetString ("label1");
 			w1.Add (this.label1);
 			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(w1 [this.label1]));
@@ -62,7 +65,7 @@ namespace MonoDevelop.Stereo.Gui
 				this.Child.ShowAll ();
 			}
 			this.DefaultWidth = 354;
-			this.DefaultHeight = 110;
+			this.DefaultHeight = 58;
 			this.Show ();
 		}
 	}

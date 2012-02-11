@@ -57,6 +57,8 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="QuickFixDialog.cs" />
     <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.QuickFixDialog.cs" />
+    <Compile Include="SomeWidget.cs" />
+    <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.SomeWidget.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

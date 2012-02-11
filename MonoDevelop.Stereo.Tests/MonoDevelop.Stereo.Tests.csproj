@@ -49,6 +49,9 @@
     <Reference Include="Mono.TextEditor">
       <HintPath>..\lib\Mono.TextEditor.dll</HintPath>
     </Reference>
+    <Reference Include="MonoDevelop.Ide">
+      <HintPath>..\..\..\..\Program Files %28x86%29\MonoDevelop\bin\MonoDevelop.Ide.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -57,6 +60,7 @@
     <Compile Include="Refactoring\GenerateNewType\GenerateNewTypeRefactoringTest.cs" />
     <Compile Include="Refactoring\GenerateNewType\TypeContentResolverTest.cs" />
     <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileRefactoringTest.cs" />
+    <Compile Include="TextEditor\DuplicateTextHandlerTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -64,6 +68,7 @@
     <Folder Include="Refactoring\Rename\" />
     <Folder Include="Refactoring\GenerateNewType\" />
     <Folder Include="Refactoring\MoveToAnotherFile\" />
+    <Folder Include="TextEditor\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Src\MonoDevelop.Stereo.csproj">

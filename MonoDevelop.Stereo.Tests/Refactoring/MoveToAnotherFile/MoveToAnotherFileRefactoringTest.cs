@@ -6,7 +6,7 @@ using MonoDevelop.Stereo.Refactoring;
 using System.Collections.Generic;
 using MonoDevelop.Projects.Dom;
 
-namespace MonoDevelop.Stereo.Tests
+namespace MonoDevelop.Stereo.MoveToAnotherFileRefactoringTest
 {
 	[TestFixture]
 	public class IsValid
@@ -26,7 +26,7 @@ namespace MonoDevelop.Stereo.Tests
 		
 		[Test]
 		public void Validates_when_types_were_found_and_current_location_is_not_type_with_file_name(){
-			docParser.Stub(dp=>dp.IsCurrentPositionNotFileNameType()).Return(true);
+			docParser.Stub(dp=>dp.IsCurrentPositionTypeDeclarationUnmatchingFileName()).Return(true);
 			docParser.Stub(dp=>dp.GetTypes()).Return(new List<IType>{new AnonymousType(),new AnonymousType()});
 			
 			var validation = subject.IsValid(null);
@@ -36,7 +36,7 @@ namespace MonoDevelop.Stereo.Tests
 		
 		[Test]
 		public void Invalidates_when_one_type_was_found(){
-			docParser.Stub(dp=>dp.IsCurrentPositionNotFileNameType()).Return(true);
+			docParser.Stub(dp=>dp.IsCurrentPositionTypeDeclarationUnmatchingFileName()).Return(true);
 			docParser.Stub(dp=>dp.GetTypes()).Return(new List<IType>{new AnonymousType()});
 			
 			var validation = subject.IsValid(null);
@@ -46,7 +46,7 @@ namespace MonoDevelop.Stereo.Tests
 		
 		[Test]
 		public void Invalidates_when_current_location_is_type_with_file_name(){
-			docParser.Stub(dp=>dp.IsCurrentPositionNotFileNameType()).Return(false);
+			docParser.Stub(dp=>dp.IsCurrentPositionTypeDeclarationUnmatchingFileName()).Return(false);
 			docParser.Stub(dp=>dp.GetTypes()).Return(new List<IType>{new AnonymousType(),new AnonymousType()});
 			
 			var validation = subject.IsValid(null);

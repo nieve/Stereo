@@ -87,12 +87,14 @@
     <Compile Include="Infrastructure\ExtractProjectFiles.cs" />
     <Compile Include="Refactoring\GenerateNewType\GenerateNewTypeRefactoring.cs" />
     <Compile Include="Refactoring\GenerateNewType\GenerateNewTypeHandler.cs" />
-    <Compile Include="Refactoring\GenerateNewType\DocumentParser.cs" />
     <Compile Include="Refactoring\MoveToAnotherFileHandler.cs" />
     <Compile Include="Refactoring\MoveToAnotherFileRefactoring.cs" />
     <Compile Include="Refactoring\GenerateNewType\TypeContentResolver.cs" />
     <Compile Include="Refactoring\Rename\RenameNamespaceItemDialog.cs" />
     <Compile Include="gtk-gui\Stereo.RenameNamespaceItemDialog.cs" />
+    <Compile Include="TextEditor\DuplicateTextHandler.cs" />
+    <Compile Include="TextEditor\DuplicateText.cs" />
+    <Compile Include="Infrastructure\DocumentParser.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -106,6 +108,7 @@
     <Folder Include="Refactoring\Rename\" />
     <Folder Include="Infrastructure\" />
     <Folder Include="Refactoring\GenerateNewType\" />
+    <Folder Include="TextEditor\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="MonoDevelop.Stereo.Gui\MonoDevelop.Stereo.Gui.csproj">

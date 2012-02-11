@@ -1,12 +1,11 @@
 using System;
-using MonoDevelop.Refactoring;
-using MonoDevelop.Stereo.Refactoring.GenerateNewType;
-using MonoDevelop.Projects.Dom;
-using MonoDevelop.Ide;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using Gtk;
+using MonoDevelop.Ide;
+using MonoDevelop.Refactoring;
 using MonoDevelop.Stereo.Gui;
+using MonoDevelop.Stereo.Refactoring.GenerateNewType;
 
 namespace MonoDevelop.Stereo.Refactoring
 {
@@ -27,13 +26,14 @@ namespace MonoDevelop.Stereo.Refactoring
 			fileFormatResolver = resolver;
 		}
 		
-		//TODO: Test!
 		public override bool IsValid(RefactoringOptions options)
 		{
-			var types = docParser.GetTypes();
-			if (types == null) return false;
-			if (types.Count() > 1 && docParser.IsCurrentPositionNotFileNameType())
-				return true;
+			if (docParser.IsCurrentPositionTypeDeclarationUnmatchingFileName()) {
+				var types = docParser.GetTypes ();
+				if (types == null)
+					return false;
+				return types.Count () > 1;
+			}
 			return false;
 		}
 		

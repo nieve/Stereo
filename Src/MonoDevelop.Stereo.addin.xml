@@ -29,6 +29,13 @@
 					shortcut = "Alt|Return" />
 		</Category>
     </Extension>
+
+    <Extension path = "/MonoDevelop/Ide/Commands/TextEditor">
+		<Command id = "MonoDevelop.Stereo.TextEditor.Commands.DuplicateText"
+					defaultHandler = "MonoDevelop.Stereo.TextEditor.DuplicateTextHandler"
+					_label = "_Duplicate text" 
+					shortcut = "Ctrl|Alt|D" />
+    </Extension>
 	
 	<Extension path = "/MonoDevelop/Refactoring/Refactorings">
 		<Class id="GenerateNewType" class = "MonoDevelop.Stereo.Refactoring.GenerateNewType.GenerateNewTypeRefactoring" />

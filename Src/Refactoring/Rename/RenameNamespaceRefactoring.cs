@@ -1,12 +1,12 @@
 using System.Collections.Generic;
+using Gtk;
 using MonoDevelop.Core;
+using MonoDevelop.Ide;
 using MonoDevelop.Ide.ProgressMonitoring;
+using MonoDevelop.Projects.CodeGeneration;
 using MonoDevelop.Projects.Dom;
 using MonoDevelop.Refactoring;
-using MonoDevelop.Projects.CodeGeneration;
 using MonoDevelop.Refactoring.Rename;
-using MonoDevelop.Ide;
-using Gtk;
 
 namespace MonoDevelop.Stereo.Refactoring.Rename
 {

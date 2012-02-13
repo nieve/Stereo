@@ -72,7 +72,7 @@ namespace MonoDevelop.Stereo
 							yield return new MemberReference(null, filePath, lineOffset + column, i, column, nspace, nspace);
 						}
 						if (line != null && 
-						    (line.Trim().StartsWith("namespace " + nspace) || line.Contains("namespace " + nspace))) {
+						    (line.Trim().StartsWith("namespace " + nspace + ";") || line.Contains("namespace " + nspace + ";"))) {
 							column = line.IndexOf (nspace);
 							lineOffset = editor.Text.IndexOf(line, lastFoundIndex);
 							lastFoundIndex = lineOffset + line.Length;

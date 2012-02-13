@@ -202,9 +202,9 @@ namespace MonoDevelop.Stereo.Gui
 				buttonOk.Click ();
 		}
 		
-		Tuple<string, bool> Properties {
+		string Properties {
 			get {
-				return new Tuple<string, bool> (entry.Text,renameFileFlag.Visible && renameFileFlag.Active);
+				return entry.Text;
 			}
 		}
 		

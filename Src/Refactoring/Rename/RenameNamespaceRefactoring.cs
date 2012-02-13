@@ -8,6 +8,7 @@ using MonoDevelop.Projects.Dom;
 using MonoDevelop.Refactoring;
 using MonoDevelop.Refactoring.Rename;
 using MonoDevelop.Stereo.Gui;
+using System;
 
 namespace MonoDevelop.Stereo.Refactoring.Rename
 {
@@ -43,7 +44,7 @@ namespace MonoDevelop.Stereo.Refactoring.Rename
 		
 		public override List<Change> PerformChanges (RefactoringOptions options, object prop)
 		{
-      		RenameRefactoring.RenameProperties renameProperties = (RenameRefactoring.RenameProperties) prop;
+      		string newName = (string) prop;
 			List<Change> changes = new List<Change>();
 			using (var dialogProgressMonitor = new MessageDialogProgressMonitor(true, false, false, true)) {
 		        var references = finder.FindReferences((NamespaceResolveResult)options.ResolveResult, dialogProgressMonitor);
@@ -55,8 +56,8 @@ namespace MonoDevelop.Stereo.Refactoring.Rename
 					textReplaceChange.FileName = (string) memberReference.FileName;
 					textReplaceChange.Offset = memberReference.Position;
 					textReplaceChange.RemovedChars = memberReference.Name.Length;
-					textReplaceChange.InsertedText = renameProperties.NewName;
-					textReplaceChange.Description = string.Format(GettextCatalog.GetString("Replace '{0}' with '{1}'"), (object) memberReference.Name, (object) renameProperties.NewName);
+					textReplaceChange.InsertedText = newName;
+					textReplaceChange.Description = string.Format(GettextCatalog.GetString("Replace '{0}' with '{1}'"), (object) memberReference.Name, (object) newName);
 					changes.Add((Change) textReplaceChange);
 		        }
 			}

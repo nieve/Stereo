@@ -59,6 +59,8 @@
     <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.QuickFixDialog.cs" />
     <Compile Include="SomeWidget.cs" />
     <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.SomeWidget.cs" />
+    <Compile Include="RenameNamespaceItemDialog.cs" />
+    <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.RenameNamespaceItemDialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

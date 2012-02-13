@@ -7,6 +7,7 @@ using MonoDevelop.Projects.CodeGeneration;
 using MonoDevelop.Projects.Dom;
 using MonoDevelop.Refactoring;
 using MonoDevelop.Refactoring.Rename;
+using MonoDevelop.Stereo.Gui;
 
 namespace MonoDevelop.Stereo.Refactoring.Rename
 {

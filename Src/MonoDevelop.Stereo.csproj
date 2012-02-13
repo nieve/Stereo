@@ -82,7 +82,6 @@
     <Compile Include="StringsExtensions.cs" />
     <Compile Include="Refactoring\Rename\RenameNamespaceRefactoring.cs" />
     <Compile Include="Infrastructure\NamespaceReferenceFinder.cs" />
-    <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Refactoring\Rename\NamespaceValidator.cs" />
     <Compile Include="Infrastructure\ExtractProjectFiles.cs" />
     <Compile Include="Refactoring\GenerateNewType\GenerateNewTypeRefactoring.cs" />
@@ -90,8 +89,6 @@
     <Compile Include="Refactoring\MoveToAnotherFileHandler.cs" />
     <Compile Include="Refactoring\MoveToAnotherFileRefactoring.cs" />
     <Compile Include="Refactoring\GenerateNewType\TypeContentResolver.cs" />
-    <Compile Include="Refactoring\Rename\RenameNamespaceItemDialog.cs" />
-    <Compile Include="gtk-gui\Stereo.RenameNamespaceItemDialog.cs" />
     <Compile Include="TextEditor\DuplicateTextHandler.cs" />
     <Compile Include="TextEditor\DuplicateText.cs" />
     <Compile Include="Infrastructure\Contexts\DocumentContext.cs" />
@@ -102,9 +99,6 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <EmbeddedResource Include="MonoDevelop.Stereo.addin.xml" />
-    <EmbeddedResource Include="gtk-gui\gui.stetic">
-      <LogicalName>gui.stetic</LogicalName>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Refactoring\" />

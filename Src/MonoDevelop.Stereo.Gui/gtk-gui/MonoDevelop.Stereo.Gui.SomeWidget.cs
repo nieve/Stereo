@@ -6,7 +6,7 @@ namespace MonoDevelop.Stereo.Gui
 	{
 		private global::Gtk.VButtonBox vbuttonbox1;
 		private global::Gtk.Button btnMoveToNewFile;
-		private global::Gtk.Button btnElse;
+		private global::Gtk.Button btnOther;
 		
 		protected virtual void Build ()
 		{
@@ -31,14 +31,14 @@ namespace MonoDevelop.Stereo.Gui
 			w1.Expand = false;
 			w1.Fill = false;
 			// Container child vbuttonbox1.Gtk.ButtonBox+ButtonBoxChild
-			this.btnElse = new global::Gtk.Button ();
-			this.btnElse.CanFocus = true;
-			this.btnElse.Name = "btnElse";
-			this.btnElse.UseUnderline = true;
-			this.btnElse.Xalign = 0F;
-			this.btnElse.Label = global::Mono.Unix.Catalog.GetString ("Do Something Else");
-			this.vbuttonbox1.Add (this.btnElse);
-			global::Gtk.ButtonBox.ButtonBoxChild w2 = ((global::Gtk.ButtonBox.ButtonBoxChild)(this.vbuttonbox1 [this.btnElse]));
+			this.btnOther = new global::Gtk.Button ();
+			this.btnOther.CanFocus = true;
+			this.btnOther.Name = "btnOther";
+			this.btnOther.UseUnderline = true;
+			this.btnOther.Xalign = 0F;
+			this.btnOther.Label = global::Mono.Unix.Catalog.GetString ("Do Something Else");
+			this.vbuttonbox1.Add (this.btnOther);
+			global::Gtk.ButtonBox.ButtonBoxChild w2 = ((global::Gtk.ButtonBox.ButtonBoxChild)(this.vbuttonbox1 [this.btnOther]));
 			w2.Position = 1;
 			w2.Expand = false;
 			w2.Fill = false;

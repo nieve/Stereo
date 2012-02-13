@@ -14,7 +14,7 @@ Currently the add-in contains:
 
 If you wish to start using the MonoDevelop.Stereo add-in without going through the pain of building, simply download the libraries only (found on the download page) and extract the MonoDevelop.Stereo folder found inside the zip directly to your %MonoDevelop Installation Path%\AddIns directory and you're ready to go.
 
-## Building Pre-requisits
+## Building Prerequisites
 
 You will need to have the Mono Libraries Package installed on your machine in order to build the solution.
 You can get it here: http://monodevelop.com/files/Windows/MonoLibraries.msi

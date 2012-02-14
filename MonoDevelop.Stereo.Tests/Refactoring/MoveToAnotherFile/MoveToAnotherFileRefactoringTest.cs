@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using MonoDevelop.Stereo.Refactoring.GenerateNewType;
 using Rhino.Mocks;
-using MonoDevelop.Stereo.Refactoring;
+using MonoDevelop.Stereo.Refactoring.MoveToAnotherFile;
 using System.Collections.Generic;
 using MonoDevelop.Projects.Dom;
 
@@ -30,7 +30,7 @@ namespace MonoDevelop.Stereo.MoveToAnotherFileRefactoringTest
 			ctx.Stub(dp=>dp.IsCurrentPositionTypeDeclarationUnmatchingFileName()).Return(true);
 			ctx.Stub(dp=>dp.GetTypes()).Return(new List<IType>{new AnonymousType(),new AnonymousType()});
 			
-			var validation = subject.IsValid(null);
+			var validation = subject.IsValid();
 			
 			Assert.IsTrue(validation);
 		}
@@ -40,7 +40,7 @@ namespace MonoDevelop.Stereo.MoveToAnotherFileRefactoringTest
 			ctx.Stub(dp=>dp.IsCurrentPositionTypeDeclarationUnmatchingFileName()).Return(true);
 			ctx.Stub(dp=>dp.GetTypes()).Return(new List<IType>{new AnonymousType()});
 			
-			var validation = subject.IsValid(null);
+			var validation = subject.IsValid();
 			
 			Assert.IsFalse(validation);
 		}
@@ -50,7 +50,7 @@ namespace MonoDevelop.Stereo.MoveToAnotherFileRefactoringTest
 			ctx.Stub(dp=>dp.IsCurrentPositionTypeDeclarationUnmatchingFileName()).Return(false);
 			ctx.Stub(dp=>dp.GetTypes()).Return(new List<IType>{new AnonymousType(),new AnonymousType()});
 			
-			var validation = subject.IsValid(null);
+			var validation = subject.IsValid();
 			
 			Assert.IsFalse(validation);
 		}

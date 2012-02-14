@@ -12,10 +12,11 @@ using Mono.TextEditor.PopupWindow;
 using Gtk;
 using System.Linq;
 using System.Text;
+using MonoDevelop.Stereo.Refactoring.MoveToAnotherFile;
 
 namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 {
-	public class GenerateNewTypeRefactoring : RefactoringOperation
+	public class GenerateNewTypeRefactoring : RefactoringOperation, IRefactorTask
 	{
 		INonexistantTypeContext context;
 		IResolveTypeContent fileFormatResolver;
@@ -62,6 +63,10 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		
 		public override bool IsValid(RefactoringOptions options)
 		{
+			return IsValid ();
+		}
+		
+		public bool IsValid(){
 			MemberResolveResult resolvedTypeName = context.GetResolvedTypeNameResult();
 			return resolvedTypeName != null && resolvedTypeName.ResolvedMember == null 
 				&& resolvedTypeName.ResolvedExpression != null && resolvedTypeName.ResolvedType.Type == null;

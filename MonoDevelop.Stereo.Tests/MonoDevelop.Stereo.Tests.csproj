@@ -61,6 +61,7 @@
     <Compile Include="Refactoring\GenerateNewType\TypeContentResolverTest.cs" />
     <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileRefactoringTest.cs" />
     <Compile Include="TextEditor\DuplicateTextHandlerTest.cs" />
+    <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileHandlerTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

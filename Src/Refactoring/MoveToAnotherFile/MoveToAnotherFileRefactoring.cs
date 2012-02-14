@@ -7,9 +7,9 @@ using MonoDevelop.Refactoring;
 using MonoDevelop.Stereo.Gui;
 using MonoDevelop.Stereo.Refactoring.GenerateNewType;
 
-namespace MonoDevelop.Stereo.Refactoring
+namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 {
-	public class MoveToAnotherFileRefactoring : RefactoringOperation
+	public class MoveToAnotherFileRefactoring : RefactoringOperation, IRefactorTask
 	{
 		IMoveTypeContext context;
 		IResolveTypeContent fileFormatResolver;
@@ -26,8 +26,7 @@ namespace MonoDevelop.Stereo.Refactoring
 			fileFormatResolver = resolver;
 		}
 		
-		public override bool IsValid(RefactoringOptions options)
-		{
+		public bool IsValid() {
 			if (context.IsCurrentPositionTypeDeclarationUnmatchingFileName()) {
 				var types = context.GetTypes ();
 				if (types == null)
@@ -35,6 +34,11 @@ namespace MonoDevelop.Stereo.Refactoring
 				return types.Count () > 1;
 			}
 			return false;
+		}
+		
+		public override bool IsValid(RefactoringOptions options)
+		{
+			return IsValid();
 		}
 		
 		public override void Run (RefactoringOptions options)

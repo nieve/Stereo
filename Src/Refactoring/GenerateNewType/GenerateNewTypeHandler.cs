@@ -19,7 +19,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		
 		protected override void Update (MonoDevelop.Components.Commands.CommandInfo info)
 		{
-			info.Enabled = newTypeGenRefactoring.IsValid(null);
+			info.Enabled = newTypeGenRefactoring.IsValid();
 		}
 		
 		public GenerateNewTypeHandler ()

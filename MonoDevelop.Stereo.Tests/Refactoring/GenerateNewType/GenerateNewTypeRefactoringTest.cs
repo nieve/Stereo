@@ -99,7 +99,7 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 			};
 			ctx.Stub(p=>p.GetResolvedTypeNameResult()).Return(result);
 			
-			Assert.IsTrue(generateClassRefactoring.IsValid(null));
+			Assert.IsTrue(generateClassRefactoring.IsValid());
 		}
 	}
 }

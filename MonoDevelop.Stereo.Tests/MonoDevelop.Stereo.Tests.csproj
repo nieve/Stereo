@@ -37,20 +37,20 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="MonoDevelop.Core">
-      <HintPath>..\..\..\..\Program Files %28x86%29\MonoDevelop\bin\MonoDevelop.Core.dll</HintPath>
+      <HintPath>..\lib\MonoDevelop.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="Rhino.Mocks">
       <HintPath>..\lib\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="MonoDevelop.Refactoring">
-      <HintPath>..\..\..\..\Program Files %28x86%29\MonoDevelop\AddIns\MonoDevelop.Refactoring\MonoDevelop.Refactoring.dll</HintPath>
+      <HintPath>..\lib\MonoDevelop.Refactoring.dll</HintPath>
     </Reference>
     <Reference Include="Mono.TextEditor">
       <HintPath>..\lib\Mono.TextEditor.dll</HintPath>
     </Reference>
     <Reference Include="MonoDevelop.Ide">
-      <HintPath>..\..\..\..\Program Files %28x86%29\MonoDevelop\bin\MonoDevelop.Ide.dll</HintPath>
+      <HintPath>..\lib\MonoDevelop.Ide.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

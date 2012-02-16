@@ -24,7 +24,7 @@
 	
 		<Category _name = "Code Generation" id = "CodeGeneration">
 		<Command id = "MonoDevelop.Refactoring.RefactoryCommands.MoveToAnotherFile"
-					defaultHandler = "MonoDevelop.Stereo.Refactoring.MoveToAnotherFileHandler"
+					defaultHandler = "MonoDevelop.Stereo.Refactoring.MoveToAnotherFile.MoveToAnotherFileHandler"
 					_label = "Move to another _file" 
 					shortcut = "Alt|Return" />
 		</Category>

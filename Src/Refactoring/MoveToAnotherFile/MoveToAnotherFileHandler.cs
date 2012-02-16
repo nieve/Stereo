@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using MonoDevelop.Refactoring;
 using System.Linq;
+using MonoDevelop.Stereo.Refactoring.QuickFixes;
 
 namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 {
@@ -39,22 +40,5 @@ namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 		}
 	}
 	
-	public interface IProvideRefactoringTasks
-	{
-		List<IRefactorTask> GetPossibleRefactoring();
-	}
 	
-	public interface IRefactorTask //TODO: used on Quick Fix Refactoring (MoveToAnotherFile & GenerateNewType); Add Title propg for display purpose
-	{
-		bool IsValid();
-		void Run (RefactoringOptions options);
-	}
-	
-	public class RefactoringTasksProvider : IProvideRefactoringTasks
-	{
-		public List<IRefactorTask> GetPossibleRefactoring() {
-			throw new NotImplementedException ();
-		}
-	}
 }
-

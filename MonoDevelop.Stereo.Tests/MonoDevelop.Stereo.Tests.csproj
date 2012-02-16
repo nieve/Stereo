@@ -62,6 +62,7 @@
     <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileRefactoringTest.cs" />
     <Compile Include="TextEditor\DuplicateTextHandlerTest.cs" />
     <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileHandlerTest.cs" />
+    <Compile Include="Refactoring\QuickFixes\RefactoringTasksProviderTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -70,6 +71,7 @@
     <Folder Include="Refactoring\GenerateNewType\" />
     <Folder Include="Refactoring\MoveToAnotherFile\" />
     <Folder Include="TextEditor\" />
+    <Folder Include="Refactoring\QuickFixes\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Src\MonoDevelop.Stereo.csproj">

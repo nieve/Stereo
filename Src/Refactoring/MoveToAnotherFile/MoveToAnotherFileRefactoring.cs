@@ -6,6 +6,7 @@ using MonoDevelop.Ide;
 using MonoDevelop.Refactoring;
 using MonoDevelop.Stereo.Gui;
 using MonoDevelop.Stereo.Refactoring.GenerateNewType;
+using MonoDevelop.Stereo.Refactoring.QuickFixes;
 
 namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 {

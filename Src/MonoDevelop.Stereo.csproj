@@ -95,6 +95,8 @@
     <Compile Include="Infrastructure\Contexts\TextDuplicationContext.cs" />
     <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileHandler.cs" />
     <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileRefactoring.cs" />
+    <Compile Include="Refactoring\QuickFixes\RefactoringTasksProvider.cs" />
+    <Compile Include="Refactoring\QuickFixes\IRefactorTask.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -108,6 +110,7 @@
     <Folder Include="TextEditor\" />
     <Folder Include="Infrastructure\Contexts\" />
     <Folder Include="Refactoring\MoveToAnotherFile\" />
+    <Folder Include="Refactoring\QuickFixes\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="MonoDevelop.Stereo.Gui\MonoDevelop.Stereo.Gui.csproj">

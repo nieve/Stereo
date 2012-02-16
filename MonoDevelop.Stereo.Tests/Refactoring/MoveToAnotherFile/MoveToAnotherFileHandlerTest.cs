@@ -1,9 +1,9 @@
-using System;
 using System.Collections.Generic;
-using NUnit.Framework;
-using MonoDevelop.Stereo.Refactoring.MoveToAnotherFile;
-using Rhino.Mocks;
 using MonoDevelop.Refactoring;
+using MonoDevelop.Stereo.Refactoring.MoveToAnotherFile;
+using MonoDevelop.Stereo.Refactoring.QuickFixes;
+using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace MonoDevelop.Stereo.MoveToAnotherFileHandlerTest
 {

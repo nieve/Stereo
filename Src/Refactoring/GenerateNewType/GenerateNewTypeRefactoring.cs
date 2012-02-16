@@ -1,18 +1,12 @@
 using System;
-using MonoDevelop.Refactoring;
-using MonoDevelop.Ide.Gui;
-using MonoDevelop.Ide;
-using MonoDevelop.Core;
-using MonoDevelop.Ide.Gui.Content;
-using MonoDevelop.Projects.Dom.Parser;
-using MonoDevelop.Projects.Dom;
 using System.Collections.Generic;
-using Mono.TextEditor;
-using Mono.TextEditor.PopupWindow;
-using Gtk;
-using System.Linq;
 using System.Text;
-using MonoDevelop.Stereo.Refactoring.MoveToAnotherFile;
+using Mono.TextEditor;
+using MonoDevelop.Ide;
+using MonoDevelop.Ide.Gui;
+using MonoDevelop.Projects.Dom;
+using MonoDevelop.Refactoring;
+using MonoDevelop.Stereo.Refactoring.QuickFixes;
 
 namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 {

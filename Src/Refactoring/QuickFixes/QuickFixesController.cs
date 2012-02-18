@@ -11,7 +11,7 @@ namespace MonoDevelop.Stereo.Refactoring.QuickFixes
 		
 		public QuickFixesController ()
 		{
-			selectionDisplay = new QuickFixesSelectionWidget();
+//			selectionDisplay = new QuickFixesSelectionWidget();
 		}
 		
 		public QuickFixesController (ISelectQuickFix selectionDisplay)
@@ -23,6 +23,24 @@ namespace MonoDevelop.Stereo.Refactoring.QuickFixes
 			IRefactorTask selectedFix = selectionDisplay.GetSelectedFix(tasks);
 			if (selectedFix != null) selectedFix.Run(options);
 		}
+	}
+	
+	public class Tmp : IRefactorTask
+	{
+		public bool IsValid ()
+		{
+			return true;
+		}
+	
+		public void Run (MonoDevelop.Refactoring.RefactoringOptions options)
+		{
+		}
+	
+		public string Title {
+			get {
+				return "Something stupid just for a test";
+			}
+		}		
 	}
 	
 	public interface IQuickFixesController

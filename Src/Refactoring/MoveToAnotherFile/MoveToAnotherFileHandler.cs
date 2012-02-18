@@ -28,9 +28,9 @@ namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 		protected override void Run (RefactoringOptions options)
 		{
 			if (validTasks.Any()) {
-				if (validTasks.Count() == 1) 
-					validTasks.First ().Run (options);
-				else if (validTasks.Count() > 1)
+//				if (validTasks.Count() == 1) 
+//					validTasks.First ().Run (options);
+//				else if (validTasks.Count() > 1)
 					controller.ProcessSelection(validTasks, options);
 			}
 	      	//moveToAnotherFileRefactoring.Run(options);

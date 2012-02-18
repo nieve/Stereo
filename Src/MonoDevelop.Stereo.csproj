@@ -122,4 +122,7 @@
       <Name>MonoDevelop.Stereo.Gui</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="gtk-gui\Stereo.QuickFixesSelectionWidget.cs" />
+  </ItemGroup>
 </Project>

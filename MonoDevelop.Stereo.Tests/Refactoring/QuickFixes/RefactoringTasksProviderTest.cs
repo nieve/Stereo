@@ -3,7 +3,7 @@ using MonoDevelop.Stereo.Refactoring.QuickFixes;
 using NUnit.Framework;
 using System.Linq;
 
-namespace MonoDevelop.Stereo.Tests.RefactoringTasksProviderTest
+namespace MonoDevelop.Stereo.RefactoringTasksProviderTest
 {
 	[TestFixture]
 	public class GetPossibleRefactoring

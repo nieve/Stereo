@@ -61,6 +61,10 @@
     <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.SomeWidget.cs" />
     <Compile Include="RenameNamespaceItemDialog.cs" />
     <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.RenameNamespaceItemDialog.cs" />
+    <Compile Include="QuickFixesSelectionWidget.cs" />
+    <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.QuickFixesSelectionWidget.cs" />
+    <Compile Include="ISelectQuickFix.cs" />
+    <Compile Include="IRefactorTask.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

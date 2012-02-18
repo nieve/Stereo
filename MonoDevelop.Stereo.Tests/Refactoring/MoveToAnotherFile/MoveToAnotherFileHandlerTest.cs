@@ -105,7 +105,7 @@ namespace MonoDevelop.Stereo.MoveToAnotherFileHandlerTest
 			var tasksArg = Arg<IEnumerable<IRefactorTask>>.Matches(ts=>
 				ts.Contains(someValidTask) && ts.Contains(anotherValidTask)
 			);
-			controller.AssertWasCalled(c=>c.DisplayPossibilities(tasksArg));
+			controller.AssertWasCalled(c=>c.ProcessSelection(tasksArg, Arg<RefactoringOptions>.Is.Anything));
 		}
 	}
 }

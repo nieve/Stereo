@@ -31,7 +31,7 @@ namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 				if (validTasks.Count() == 1) 
 					validTasks.First ().Run (options);
 				else if (validTasks.Count() > 1)
-					controller.DisplayPossibilities(validTasks);
+					controller.ProcessSelection(validTasks, options);
 			}
 	      	//moveToAnotherFileRefactoring.Run(options);
 		}

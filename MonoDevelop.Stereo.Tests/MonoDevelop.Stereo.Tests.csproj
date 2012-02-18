@@ -63,6 +63,7 @@
     <Compile Include="TextEditor\DuplicateTextHandlerTest.cs" />
     <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileHandlerTest.cs" />
     <Compile Include="Refactoring\QuickFixes\RefactoringTasksProviderTest.cs" />
+    <Compile Include="Refactoring\QuickFixes\QuickFixesControllerTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -77,6 +78,10 @@
     <ProjectReference Include="..\Src\MonoDevelop.Stereo.csproj">
       <Project>{6BE494EC-0268-4887-B396-49B13F03FDCD}</Project>
       <Name>MonoDevelop.Stereo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Src\MonoDevelop.Stereo.Gui\MonoDevelop.Stereo.Gui.csproj">
+      <Project>{AF19E650-C170-48CA-B187-34A64D5F73FC}</Project>
+      <Name>MonoDevelop.Stereo.Gui</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

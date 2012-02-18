@@ -96,12 +96,15 @@
     <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileHandler.cs" />
     <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileRefactoring.cs" />
     <Compile Include="Refactoring\QuickFixes\RefactoringTasksProvider.cs" />
-    <Compile Include="Refactoring\QuickFixes\IRefactorTask.cs" />
     <Compile Include="Refactoring\QuickFixes\QuickFixesController.cs" />
+    <Compile Include="gtk-gui\generated.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <EmbeddedResource Include="MonoDevelop.Stereo.addin.xml" />
+    <EmbeddedResource Include="gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Refactoring\" />

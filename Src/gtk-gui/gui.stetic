@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stetic-interface>
+  <configuration>
+    <images-root-path>..</images-root-path>
+    <target-gtk-version>2.12</target-gtk-version>
+  </configuration>
+  <import>
+    <widget-library name="../../../../../Program Files (x86)/MonoDevelop/bin/MonoDevelop.Ide.dll" />
+    <widget-library name="../../lib/MonoDevelop.Refactoring.dll" />
+    <widget-library name="../../lib/MonoDevelop.SourceEditor2.dll" />
+    <widget-library name="../../lib/Mono.TextEditor.dll" />
+    <widget-library name="../../lib/MonoDevelop.CSharpBinding.dll" />
+    <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <widget-library name="../MonoDevelop.Stereo.Gui/bin/Debug/MonoDevelop.Stereo.Gui.dll" />
+    <widget-library name="../../../../../Program Files (x86)/MonoDevelop/AddIns/MonoDevelop.Stereo/MonoDevelop.Stereo.dll" internal="true" />
+  </import>
+  <widget class="Gtk.Bin" id="Stereo.QuickFixesSelectionWidget" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+</stetic-interface>

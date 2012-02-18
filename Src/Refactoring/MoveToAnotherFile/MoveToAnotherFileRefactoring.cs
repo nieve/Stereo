@@ -15,6 +15,8 @@ namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 		IMoveTypeContext context;
 		IResolveTypeContent fileFormatResolver;
 		
+		public string Title{ get {return "Move to another file";}}
+		
 		public MoveToAnotherFileRefactoring ()
 		{
 			context = new MoveTypeContext();

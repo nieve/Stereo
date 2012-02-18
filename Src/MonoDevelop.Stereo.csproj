@@ -97,6 +97,7 @@
     <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileRefactoring.cs" />
     <Compile Include="Refactoring\QuickFixes\RefactoringTasksProvider.cs" />
     <Compile Include="Refactoring\QuickFixes\IRefactorTask.cs" />
+    <Compile Include="Refactoring\QuickFixes\QuickFixesController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

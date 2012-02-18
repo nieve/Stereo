@@ -10,23 +10,28 @@ namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 	{
 		MoveToAnotherFileRefactoring moveToAnotherFileRefactoring = new MoveToAnotherFileRefactoring();
 		IProvideRefactoringTasks provider;
+		IQuickFixesController controller;
 		IEnumerable<IRefactorTask> validTasks;
 		
 		public MoveToAnotherFileHandler ()
 		{
 			provider = new RefactoringTasksProvider();
+			controller = new QuickFixesController();
 		}
 		
-		public MoveToAnotherFileHandler (IProvideRefactoringTasks provider)
+		public MoveToAnotherFileHandler (IProvideRefactoringTasks provider, IQuickFixesController controller)
 		{
 			this.provider = provider;
+			this.controller = controller;
 		}
 		
 		protected override void Run (RefactoringOptions options)
 		{
 			if (validTasks.Any()) {
-				if (validTasks.Count() == 1) validTasks.First ().Run (options);
-				//TODO: else => pass validTasks for user to decide which to use, need Title propg for display purpose
+				if (validTasks.Count() == 1) 
+					validTasks.First ().Run (options);
+				else if (validTasks.Count() > 1)
+					controller.DisplayPossibilities(validTasks);
 			}
 	      	//moveToAnotherFileRefactoring.Run(options);
 		}
@@ -34,7 +39,7 @@ namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 		protected override void Update (MonoDevelop.Components.Commands.CommandInfo info)
 		{
 			var possibleTasks = provider.GetPossibleRefactoring();
-			validTasks = possibleTasks.Where(t=>t.IsValid()).ToList();
+			validTasks = possibleTasks.Where(t=>t.IsValid());
 			
 			info.Enabled = validTasks.Any();
 		}

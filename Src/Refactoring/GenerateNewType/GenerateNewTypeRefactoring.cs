@@ -17,7 +17,9 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		string indent = "";
 		InsertionPoint insertionPoint = null;
 		TextEditorData data = null;
-
+		
+		public string Title{ get {return "Generate new type";}}
+		
 		public TextEditorData Data {
 			get {
 				return this.data;

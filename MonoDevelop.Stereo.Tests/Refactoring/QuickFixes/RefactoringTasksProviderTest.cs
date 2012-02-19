@@ -21,7 +21,7 @@ namespace MonoDevelop.Stereo.RefactoringTasksProviderTest
 		public void Returns_two_tasks ()
 		{
 			var tasks = subject.GetPossibleRefactoring();
-			Assert.That(tasks.Count() == 3, "should have returned 2 tasks, but returned " + tasks.Count()); //TODO: remove back to 2 when testing done
+			Assert.That(tasks.Count() == 2, "should have returned 2 tasks, but returned " + tasks.Count());
 		}
 		
 		[Test()]

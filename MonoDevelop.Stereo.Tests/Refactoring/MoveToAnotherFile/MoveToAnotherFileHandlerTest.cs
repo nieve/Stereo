@@ -6,11 +6,11 @@ using MonoDevelop.Stereo.Refactoring.QuickFixes;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace MonoDevelop.Stereo.MoveToAnotherFileHandlerTest
+namespace MonoDevelop.Stereo.QuickFixesHandlerTest
 {
-	public class TestedMoveToAnotherFileHandler : MoveToAnotherFileHandler
+	public class TestedQuickFixesHandler : QuickFixesHandler
 	{
-		public TestedMoveToAnotherFileHandler (IProvideRefactoringTasks provider, IQuickFixesController controller) : base(provider, controller) { }
+		public TestedQuickFixesHandler (IProvideRefactoringTasks provider, IQuickFixesController controller) : base(provider, controller) { }
 		public void Update (){base.Update (new MonoDevelop.Components.Commands.CommandInfo());}
 		public new void Update (MonoDevelop.Components.Commands.CommandInfo info){base.Update (info);}
 		public new void Run(){base.Run((RefactoringOptions)null);}
@@ -19,7 +19,7 @@ namespace MonoDevelop.Stereo.MoveToAnotherFileHandlerTest
 	[TestFixture]
 	public class Update
 	{
-		TestedMoveToAnotherFileHandler subject;
+		TestedQuickFixesHandler subject;
 		IProvideRefactoringTasks provider = MockRepository.GenerateStub<IProvideRefactoringTasks>();
 		IRefactorTask validTask = MockRepository.GenerateStub<IRefactorTask>();
 		IRefactorTask invalidTask = MockRepository.GenerateStub<IRefactorTask>();
@@ -30,7 +30,7 @@ namespace MonoDevelop.Stereo.MoveToAnotherFileHandlerTest
 			invalidTask.Stub(t=>t.IsValid()).Return(false);
 			provider.Stub(p=>p.GetPossibleRefactoring()).Return(new List<IRefactorTask>{invalidTask, validTask});
 			
-			subject = new TestedMoveToAnotherFileHandler(provider, null);
+			subject = new TestedQuickFixesHandler(provider, null);
 		}
 		
 		[Test()]
@@ -42,13 +42,10 @@ namespace MonoDevelop.Stereo.MoveToAnotherFileHandlerTest
 			Assert.IsTrue(info.Enabled, "Command info was not enabled as expected");
 		}
 	}
-	
-	
-	
 	[TestFixture]
 	public class Run
 	{
-		TestedMoveToAnotherFileHandler subject;
+		TestedQuickFixesHandler subject;
 		IProvideRefactoringTasks provider = MockRepository.GenerateStub<IProvideRefactoringTasks>();
 		IRefactorTask validTask = MockRepository.GenerateStub<IRefactorTask>();
 		IRefactorTask anotherValidTask = MockRepository.GenerateStub<IRefactorTask>();
@@ -63,7 +60,7 @@ namespace MonoDevelop.Stereo.MoveToAnotherFileHandlerTest
 			someValidTask.Stub(t=>t.IsValid()).Return(true);
 			invalidTask.Stub(t=>t.IsValid()).Return(false);
 			
-			subject = new TestedMoveToAnotherFileHandler(provider, controller);
+			subject = new TestedQuickFixesHandler(provider, controller);
 		}
 		
 		[TearDown]

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using MonoDevelop.Refactoring;
 using MonoDevelop.Stereo.Gui;
+using System.Linq;
 
 namespace MonoDevelop.Stereo.Refactoring.QuickFixes
 {
@@ -33,26 +34,11 @@ namespace MonoDevelop.Stereo.Refactoring.QuickFixes
 		
 		public void ProcessSelection(IEnumerable<IRefactorTask> tasks, RefactoringOptions options){
 			Options = options;
-			selectionDisplay.GetSelectedFix(tasks);			
+			var displayableTasks = tasks.ToList();
+			displayableTasks.Add(new CancelRefactoring());
+			displayableTasks.Reverse ();
+			selectionDisplay.GetSelectedFix(displayableTasks);
 		}
-	}
-	
-	public class Tmp : IRefactorTask
-	{
-		public bool IsValid ()
-		{
-			return true;
-		}
-	
-		public void Run (MonoDevelop.Refactoring.RefactoringOptions options)
-		{
-		}
-	
-		public string Title {
-			get {
-				return "Something stupid just for a test";
-			}
-		}		
 	}
 	
 	public interface IQuickFixesController

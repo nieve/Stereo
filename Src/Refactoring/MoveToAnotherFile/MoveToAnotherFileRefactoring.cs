@@ -44,11 +44,6 @@ namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 			return IsValid();
 		}
 		
-		public override void Run (RefactoringOptions options)
-		{
-			MessageService.ShowCustomDialog((Dialog) new QuickFixDialog(options, this));
-		}
-		
 		public override List<Change> PerformChanges (RefactoringOptions options, object properties)
 		{
 			List<Change> changes = new List<Change>();

@@ -55,10 +55,6 @@
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="QuickFixDialog.cs" />
-    <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.QuickFixDialog.cs" />
-    <Compile Include="SomeWidget.cs" />
-    <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.SomeWidget.cs" />
     <Compile Include="RenameNamespaceItemDialog.cs" />
     <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.RenameNamespaceItemDialog.cs" />
     <Compile Include="ISelectQuickFix.cs" />

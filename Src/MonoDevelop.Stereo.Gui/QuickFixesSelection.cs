@@ -2,6 +2,8 @@ using System;
 using MonoDevelop.Stereo.Refactoring.QuickFixes;
 using System.Collections.Generic;
 using Gtk;
+using System.Linq;
+using MonoDevelop.Ide;
 
 namespace MonoDevelop.Stereo.Gui
 {
@@ -17,16 +19,24 @@ namespace MonoDevelop.Stereo.Gui
 		public QuickFixesSelection () : 
 				base(Gtk.WindowType.Toplevel)
 		{
-//			this.Build ();
+			// Widget MonoDevelop.Stereo.Gui.QuickFixesSelection
+			this.Name = "MonoDevelop.Stereo.Gui.QuickFixesSelection";
+			this.KeepAbove = true;
+			
+			this.Opacity = 0.75;
+			this.DefaultWidth = 285;
+			this.DefaultHeight = 25;
+			
+			this.Decorated = false;
+			this.TypeHint = Gdk.WindowTypeHint.PopupMenu;
+			this.WindowPosition = WindowPosition.CenterAlways;
 		}
 
 		public void GetSelectedFix (IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks)
 		{
-			this.Remove(vTaskBox);
+			if (Children.Contains(vTaskBox))
+				this.Remove(vTaskBox);
 			global::Stetic.Gui.Initialize (this);
-			// Widget MonoDevelop.Stereo.Gui.QuickFixesSelection
-			this.Name = "MonoDevelop.Stereo.Gui.QuickFixesSelection";
-			this.Title = global::Mono.Unix.Catalog.GetString ("QuickFixesSelection");
 			
 			// Container child MonoDevelop.Stereo.Gui.QuickFixesSelection.Gtk.Container+ContainerChild
 			this.vTaskBox = new global::Gtk.VBox ();
@@ -40,6 +50,7 @@ namespace MonoDevelop.Stereo.Gui
 				btn.CanFocus = true;
 				btn.UseUnderline = true;
 				btn.Label = task.Title;
+				btn.SetAlignment(0.00f, 0.50f);
 				this.vTaskBox.Add (btn);
 				btn.Clicked += (sender, e) => {
 					Selected = tasksCache[((Button)sender).Label];
@@ -54,16 +65,28 @@ namespace MonoDevelop.Stereo.Gui
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 285;
-			this.DefaultHeight = 25;
-			
-			Decorated = false;
-			this.TypeHint = Gdk.WindowTypeHint.PopupMenu;
 			Selected = null;
-			WindowPosition = WindowPosition.Mouse;
 			
 			this.Show();
 		}
+	}
+	
+	public class CancelRefactoring : IRefactorTask
+	{
+		public bool IsValid ()
+		{
+			throw new NotImplementedException();
+		}
+	
+		public void Run (MonoDevelop.Refactoring.RefactoringOptions options)
+		{
+		}
+	
+		public string Title {
+			get {
+				return "Cancel";
+			}
+		}		
 	}
 }
 

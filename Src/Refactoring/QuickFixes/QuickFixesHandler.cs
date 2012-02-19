@@ -2,24 +2,22 @@ using System.Collections.Generic;
 using System;
 using MonoDevelop.Refactoring;
 using System.Linq;
-using MonoDevelop.Stereo.Refactoring.QuickFixes;
 
-namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
+namespace MonoDevelop.Stereo.Refactoring.QuickFixes
 {
-	public class MoveToAnotherFileHandler : AbstractRefactoringCommandHandler
+	public class QuickFixesHandler : AbstractRefactoringCommandHandler
 	{
-		MoveToAnotherFileRefactoring moveToAnotherFileRefactoring = new MoveToAnotherFileRefactoring();
 		IProvideRefactoringTasks provider;
 		IQuickFixesController controller;
 		IEnumerable<IRefactorTask> validTasks;
 		
-		public MoveToAnotherFileHandler ()
+		public QuickFixesHandler ()
 		{
 			provider = new RefactoringTasksProvider();
 			controller = new QuickFixesController();
 		}
 		
-		public MoveToAnotherFileHandler (IProvideRefactoringTasks provider, IQuickFixesController controller)
+		public QuickFixesHandler (IProvideRefactoringTasks provider, IQuickFixesController controller)
 		{
 			this.provider = provider;
 			this.controller = controller;
@@ -29,7 +27,6 @@ namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 		{
 			if (validTasks.Any())
 					controller.ProcessSelection(validTasks, options);
-	      	//moveToAnotherFileRefactoring.Run(options);
 		}
 		
 		protected override void Update (MonoDevelop.Components.Commands.CommandInfo info)
@@ -40,6 +37,4 @@ namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 			info.Enabled = validTasks.Any();
 		}
 	}
-	
-	
 }

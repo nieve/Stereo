@@ -10,9 +10,34 @@ namespace MonoDevelop.Stereo.QuickFixesControllerTest
 	[TestFixture]
 	public class ProcessSelection
 	{
-		ISelectQuickFix fixSelection = MockRepository.GenerateStub<ISelectQuickFix>();
+		FakeQuickFixSelector fixSelection = new FakeQuickFixSelector();
 		QuickFixesController subject;
 		IRefactorTask selectedTask = MockRepository.GenerateStub<IRefactorTask>();
+		
+		public class FakeQuickFixSelector : ISelectQuickFix
+		{
+			public event System.EventHandler Hidden;
+			IRefactorTask selected;
+			
+			public void InvokeHidden(){
+				Hidden(null,null);
+			}
+			
+			public void GetSelectedFix (System.Collections.Generic.IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks)
+			{
+				throw new System.NotImplementedException ();
+			}
+			
+			public void SetSelected(IRefactorTask task){
+				selected = task;
+			}
+	
+			public MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask Selected {
+				get {
+					return selected;
+				}
+			}
+		}
 		
 		[TestFixtureSetUp]
 		public void SetUp(){
@@ -21,29 +46,24 @@ namespace MonoDevelop.Stereo.QuickFixesControllerTest
 		
 		[TearDown]
 		public void TearDown(){
-			fixSelection.BackToRecord (BackToRecordOptions.All);
-			fixSelection.Replay ();
-			
 			selectedTask.BackToRecord (BackToRecordOptions.All);
 			selectedTask.Replay ();
 		}
 		
 		[Test]
-		public void Runs_selected_fix ()
-		{
-			fixSelection.Stub (fs=>fs.GetSelectedFix(Arg<IEnumerable<IRefactorTask>>.Is.Anything)).Return (selectedTask);
+		public void Runs_selected_fix () {
+			fixSelection.SetSelected(selectedTask);
 			
-			subject.ProcessSelection (null, null);
+			fixSelection.InvokeHidden();
 			
 			selectedTask.AssertWasCalled(t=>t.Run (null));
 		}
 		
 		[Test]
-		public void Runs_nothing_when_nothing_was_selected ()
-		{
-			fixSelection.Stub (fs=>fs.GetSelectedFix(Arg<IEnumerable<IRefactorTask>>.Is.Anything)).Return (null);
+		public void Runs_nothing_when_nothing_was_selected () {
+			fixSelection.SetSelected(null);
 			
-			subject.ProcessSelection (null, null);
+			fixSelection.InvokeHidden();
 			
 			selectedTask.AssertWasNotCalled(t=>t.Run (Arg<RefactoringOptions>.Is.Anything));
 		}

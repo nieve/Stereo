@@ -73,17 +73,17 @@ namespace MonoDevelop.Stereo.MoveToAnotherFileHandlerTest
 		}
 		
 		[Test]
-		public void Runs_the_only_valid_task() {
-			provider.Stub(p=>p.GetPossibleRefactoring()).Return(new List<IRefactorTask>{invalidTask, validTask}).Repeat.Once();
+		public void Doesnt_process_selection_when_no_valid_task_found() {
+			provider.Stub(p=>p.GetPossibleRefactoring()).Return(new List<IRefactorTask>{invalidTask}).Repeat.Once();
 			
 			subject.Update();
 			subject.Run();
 			
-			validTask.AssertWasCalled(t=>t.Run(Arg<RefactoringOptions>.Is.Anything));
+			controller.AssertWasNotCalled(c=>c.ProcessSelection(Arg<IEnumerable<IRefactorTask>>.Is.Anything, Arg<RefactoringOptions>.Is.Anything));
 		}
 		
 		[Test]
-		public void Doesnt_run_any_valid_task_when_more_than_one_valid_task_found() {
+		public void Doesnt_run_directly_any_valid_task_when_more_than_one_valid_task_found() {
 			provider.Stub(p=>p.GetPossibleRefactoring()).Return(new List<IRefactorTask>{validTask, anotherValidTask, invalidTask}).Repeat.Once();
 			
 			subject.Update();
@@ -95,7 +95,7 @@ namespace MonoDevelop.Stereo.MoveToAnotherFileHandlerTest
 		}
 		
 		[Test]
-		public void Runs_quick_fixes_controller_when_more_than_one_valid_task_found() {
+		public void Process_selection_when_valid_tasks_were_found() {
 			List<IRefactorTask> tasks = new List<IRefactorTask>{someValidTask,anotherValidTask,invalidTask};
 			provider.Stub(p=>p.GetPossibleRefactoring()).Return(tasks).Repeat.Once();
 			

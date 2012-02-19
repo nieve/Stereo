@@ -1,28 +1,25 @@
 using System;
-using MonoDevelop.Refactoring;
-using MonoDevelop.Ide.Gui;
-using MonoDevelop.Ide;
-using MonoDevelop.Core;
-using MonoDevelop.Ide.Gui.Content;
-using MonoDevelop.Projects.Dom.Parser;
-using MonoDevelop.Projects.Dom;
 using System.Collections.Generic;
-using Mono.TextEditor;
-using Mono.TextEditor.PopupWindow;
-using Gtk;
-using System.Linq;
 using System.Text;
+using Mono.TextEditor;
+using MonoDevelop.Ide;
+using MonoDevelop.Ide.Gui;
+using MonoDevelop.Projects.Dom;
+using MonoDevelop.Refactoring;
+using MonoDevelop.Stereo.Refactoring.QuickFixes;
 
 namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 {
-	public class GenerateNewTypeRefactoring : RefactoringOperation
+	public class GenerateNewTypeRefactoring : RefactoringOperation, IRefactorTask
 	{
 		INonexistantTypeContext context;
 		IResolveTypeContent fileFormatResolver;
 		string indent = "";
 		InsertionPoint insertionPoint = null;
 		TextEditorData data = null;
-
+		
+		public string Title{ get {return "Generate new type";}}
+		
 		public TextEditorData Data {
 			get {
 				return this.data;
@@ -62,6 +59,10 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		
 		public override bool IsValid(RefactoringOptions options)
 		{
+			return IsValid ();
+		}
+		
+		public bool IsValid(){
 			MemberResolveResult resolvedTypeName = context.GetResolvedTypeNameResult();
 			return resolvedTypeName != null && resolvedTypeName.ResolvedMember == null 
 				&& resolvedTypeName.ResolvedExpression != null && resolvedTypeName.ResolvedType.Type == null;

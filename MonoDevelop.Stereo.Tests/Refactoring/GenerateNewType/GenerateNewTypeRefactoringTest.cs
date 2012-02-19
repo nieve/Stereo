@@ -60,7 +60,7 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 		public void Returns_a_text_replace_change ()
 		{
 			changes = generateClassRefactoring.PerformChanges(null, null);
-			Assert.IsInstanceOfType(typeof(TextReplaceChange), changes[0]);
+			Assert.IsInstanceOf<TextReplaceChange>(changes[0]);
 		}
 		
 		[Test()]
@@ -99,7 +99,7 @@ namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 			};
 			ctx.Stub(p=>p.GetResolvedTypeNameResult()).Return(result);
 			
-			Assert.IsTrue(generateClassRefactoring.IsValid(null));
+			Assert.IsTrue(generateClassRefactoring.IsValid());
 		}
 	}
 }

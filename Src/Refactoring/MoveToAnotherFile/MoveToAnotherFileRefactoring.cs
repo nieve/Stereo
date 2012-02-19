@@ -6,13 +6,16 @@ using MonoDevelop.Ide;
 using MonoDevelop.Refactoring;
 using MonoDevelop.Stereo.Gui;
 using MonoDevelop.Stereo.Refactoring.GenerateNewType;
+using MonoDevelop.Stereo.Refactoring.QuickFixes;
 
-namespace MonoDevelop.Stereo.Refactoring
+namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 {
-	public class MoveToAnotherFileRefactoring : RefactoringOperation
+	public class MoveToAnotherFileRefactoring : RefactoringOperation, IRefactorTask
 	{
 		IMoveTypeContext context;
 		IResolveTypeContent fileFormatResolver;
+		
+		public string Title{ get {return "Move to another file";}}
 		
 		public MoveToAnotherFileRefactoring ()
 		{
@@ -26,8 +29,7 @@ namespace MonoDevelop.Stereo.Refactoring
 			fileFormatResolver = resolver;
 		}
 		
-		public override bool IsValid(RefactoringOptions options)
-		{
+		public bool IsValid() {
 			if (context.IsCurrentPositionTypeDeclarationUnmatchingFileName()) {
 				var types = context.GetTypes ();
 				if (types == null)
@@ -37,9 +39,9 @@ namespace MonoDevelop.Stereo.Refactoring
 			return false;
 		}
 		
-		public override void Run (RefactoringOptions options)
+		public override bool IsValid(RefactoringOptions options)
 		{
-			MessageService.ShowCustomDialog((Dialog) new QuickFixDialog(options, this));
+			return IsValid();
 		}
 		
 		public override List<Change> PerformChanges (RefactoringOptions options, object properties)

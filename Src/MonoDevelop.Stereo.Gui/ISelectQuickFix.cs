@@ -5,7 +5,9 @@ namespace MonoDevelop.Stereo.Refactoring.QuickFixes
 {
 	public interface ISelectQuickFix
 	{
-		IRefactorTask GetSelectedFix(IEnumerable<IRefactorTask> tasks);
+		void GetSelectedFix(IEnumerable<IRefactorTask> tasks);
+		event EventHandler Hidden;
+		IRefactorTask Selected {get;}
 	}
 }
 

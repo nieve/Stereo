@@ -97,14 +97,10 @@
     <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileRefactoring.cs" />
     <Compile Include="Refactoring\QuickFixes\RefactoringTasksProvider.cs" />
     <Compile Include="Refactoring\QuickFixes\QuickFixesController.cs" />
-    <Compile Include="gtk-gui\generated.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <EmbeddedResource Include="MonoDevelop.Stereo.addin.xml" />
-    <EmbeddedResource Include="gtk-gui\gui.stetic">
-      <LogicalName>gui.stetic</LogicalName>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Refactoring\" />
@@ -121,8 +117,5 @@
       <Project>{AF19E650-C170-48CA-B187-34A64D5F73FC}</Project>
       <Name>MonoDevelop.Stereo.Gui</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="gtk-gui\Stereo.QuickFixesSelectionWidget.cs" />
   </ItemGroup>
 </Project>

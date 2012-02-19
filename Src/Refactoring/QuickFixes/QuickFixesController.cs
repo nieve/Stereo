@@ -11,17 +11,29 @@ namespace MonoDevelop.Stereo.Refactoring.QuickFixes
 		
 		public QuickFixesController ()
 		{
-//			selectionDisplay = new QuickFixesSelectionWidget();
+			selectionDisplay = new QuickFixesSelection();
+			SetUpSelectionProcessing();
 		}
 		
 		public QuickFixesController (ISelectQuickFix selectionDisplay)
 		{
 			this.selectionDisplay = selectionDisplay;
+			SetUpSelectionProcessing();
 		}
 		
+		private void SetUpSelectionProcessing(){
+			selectionDisplay.Hidden += delegate {
+				IRefactorTask selectedFix = selectionDisplay.Selected;
+				if (selectedFix != null)
+					selectedFix.Run (Options);
+			};
+		}
+		
+		RefactoringOptions Options{set; get;}
+		
 		public void ProcessSelection(IEnumerable<IRefactorTask> tasks, RefactoringOptions options){
-			IRefactorTask selectedFix = selectionDisplay.GetSelectedFix(tasks);
-			if (selectedFix != null) selectedFix.Run(options);
+			Options = options;
+			selectionDisplay.GetSelectedFix(tasks);			
 		}
 	}
 	

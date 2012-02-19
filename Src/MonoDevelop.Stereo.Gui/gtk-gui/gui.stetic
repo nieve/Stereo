@@ -287,21 +287,17 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="MonoDevelop.Stereo.Gui.Tmp" design-size="400 300">
+  <widget class="Gtk.Window" id="MonoDevelop.Stereo.Gui.QuickFixesSelection" design-size="285 25">
     <property name="MemberName" />
-    <property name="Title" translatable="yes">Tmp</property>
+    <property name="Title" translatable="yes">QuickFixesSelection</property>
     <property name="WindowPosition">CenterOnParent</property>
     <child>
-      <placeholder />
-    </child>
-  </widget>
-  <widget class="Gtk.Bin" id="MonoDevelop.Stereo.Gui.QuickFixesSelectionWidget" design-size="146 127">
-    <property name="MemberName" />
-    <property name="Visible">False</property>
-    <child>
-      <widget class="Gtk.VButtonBox" id="vTaskBox">
+      <widget class="Gtk.VBox" id="vTaskBox">
         <property name="MemberName" />
-        <property name="Size">0</property>
+        <property name="Spacing">6</property>
+        <child>
+          <placeholder />
+        </child>
       </widget>
     </child>
   </widget>

@@ -16,11 +16,11 @@ namespace MonoDevelop.Stereo.QuickFixesControllerTest
 		
 		public class FakeQuickFixSelector : ISelectQuickFix
 		{
-			public event System.EventHandler Hidden;
+			public Action<ISelectQuickFix> OnHid {get;set;}
 			IRefactorTask selected;
 			
 			public void InvokeHidden(){
-				Hidden(null,null);
+				OnHid(this);
 			}
 			
 			public void GetSelectedFix (System.Collections.Generic.IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks)

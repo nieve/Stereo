@@ -96,6 +96,9 @@
     <Compile Include="Refactoring\QuickFixes\RefactoringTasksProvider.cs" />
     <Compile Include="Refactoring\QuickFixes\QuickFixesController.cs" />
     <Compile Include="Refactoring\QuickFixes\QuickFixesHandler.cs" />
+    <Compile Include="Refactoring\CreateDerivedType\CreateDerivedTypeHandler.cs" />
+    <Compile Include="Refactoring\CreateDerivedType\CreateDerivedTypeRefactoring.cs" />
+    <Compile Include="Infrastructure\Contexts\NonConcreteTypeContext.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -110,6 +113,7 @@
     <Folder Include="Infrastructure\Contexts\" />
     <Folder Include="Refactoring\MoveToAnotherFile\" />
     <Folder Include="Refactoring\QuickFixes\" />
+    <Folder Include="Refactoring\CreateDerivedType\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="MonoDevelop.Stereo.Gui\MonoDevelop.Stereo.Gui.csproj">

@@ -10,21 +10,15 @@ namespace MonoDevelop.Stereo.Refactoring.QuickFixes
 	{
 		ISelectQuickFix selectionDisplay;
 		
-		public QuickFixesController ()
+		public QuickFixesController () : this(new QuickFixesSelection())
 		{
-			selectionDisplay = new QuickFixesSelection();
-			SetUpSelectionProcessing();
 		}
 		
 		public QuickFixesController (ISelectQuickFix selectionDisplay)
 		{
 			this.selectionDisplay = selectionDisplay;
-			SetUpSelectionProcessing();
-		}
-		
-		private void SetUpSelectionProcessing(){
-			selectionDisplay.Hidden += delegate {
-				IRefactorTask selectedFix = selectionDisplay.Selected;
+			selectionDisplay.OnHid = (dialog) => {
+				IRefactorTask selectedFix = dialog.Selected;
 				if (selectedFix != null)
 					selectedFix.Run (Options);
 			};

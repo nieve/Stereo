@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Gtk;
 using System.Linq;
 using MonoDevelop.Ide;
+using MonoDevelop.Refactoring;
 
 namespace MonoDevelop.Stereo.Gui
 {
@@ -19,6 +20,11 @@ namespace MonoDevelop.Stereo.Gui
 		public QuickFixesSelection () : 
 				base(Gtk.WindowType.Toplevel)
 		{
+		}
+
+		public Action<ISelectQuickFix> OnHid {get;set;}
+		
+		private QuickFixesSelection(IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks) : this(){
 			// Widget MonoDevelop.Stereo.Gui.QuickFixesSelection
 			this.Name = "MonoDevelop.Stereo.Gui.QuickFixesSelection";
 			this.KeepAbove = true;
@@ -30,10 +36,7 @@ namespace MonoDevelop.Stereo.Gui
 			this.Decorated = false;
 			this.TypeHint = Gdk.WindowTypeHint.PopupMenu;
 			this.WindowPosition = WindowPosition.CenterAlways;
-		}
-
-		public void GetSelectedFix (IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks)
-		{
+			
 			if (Children.Contains(vTaskBox))
 				this.Remove(vTaskBox);
 			global::Stetic.Gui.Initialize (this);
@@ -68,6 +71,19 @@ namespace MonoDevelop.Stereo.Gui
 			Selected = null;
 			
 			this.Show();
+		}
+		
+		public Window GetDialog(IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks){
+			return new QuickFixesSelection(tasks);
+		}
+
+		public void GetSelectedFix (IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks)
+		{
+			var dialog = new QuickFixesSelection(tasks);
+			
+			dialog.Hidden += delegate(object sender, EventArgs e) {
+				OnHid(dialog);
+			};
 		}
 	}
 	

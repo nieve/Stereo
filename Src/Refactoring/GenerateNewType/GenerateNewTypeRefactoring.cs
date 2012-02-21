@@ -19,6 +19,7 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		TextEditorData data = null;
 		
 		public string Title{ get {return "Generate new type";}}
+		public int Position { get {return 0;}}
 		
 		public TextEditorData Data {
 			get {

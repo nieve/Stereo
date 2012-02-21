@@ -8,40 +8,30 @@ using MonoDevelop.Refactoring;
 namespace MonoDevelop.Stereo.QuickFixesControllerTest
 {
 	[TestFixture]
-	public class ProcessSelection
+	public class Ctor
 	{
-		FakeQuickFixSelector fixSelection = new FakeQuickFixSelector();
+		FakeQuickFixDisplayer fixSelection;
 		QuickFixesController subject;
-		IRefactorTask selectedTask = MockRepository.GenerateStub<IRefactorTask>();
+		static private IRefactorTask selectedTask = MockRepository.GenerateMock<IRefactorTask>();
 		
-		public class FakeQuickFixSelector : ISelectQuickFix
+		public class FakeQuickFixDisplayer : IDisplayQuickFixSelection
 		{
-			public Action<ISelectQuickFix> OnHid {get;set;}
-			IRefactorTask selected;
+			ISelectQuickFix selection = MockRepository.GenerateMock<ISelectQuickFix>();
 			
-			public void InvokeHidden(){
-				OnHid(this);
+			public Action<ISelectQuickFix> Hidden {get;set;}
+			
+			public FakeQuickFixDisplayer (IRefactorTask task) {
+				selection.Expect(s=>s.Selected).Return(task);
 			}
 			
-			public void GetSelectedFix (System.Collections.Generic.IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks)
+			public void InvokeHidden(){
+				Hidden(selection);
+			}
+			
+			public void DisplaySelectionDialog (System.Collections.Generic.IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks)
 			{
 				throw new System.NotImplementedException ();
 			}
-			
-			public void SetSelected(IRefactorTask task){
-				selected = task;
-			}
-	
-			public MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask Selected {
-				get {
-					return selected;
-				}
-			}
-		}
-		
-		[TestFixtureSetUp]
-		public void SetUp(){
-			subject = new QuickFixesController(fixSelection);
 		}
 		
 		[TearDown]
@@ -51,8 +41,9 @@ namespace MonoDevelop.Stereo.QuickFixesControllerTest
 		}
 		
 		[Test]
-		public void Runs_selected_fix () {
-			fixSelection.SetSelected(selectedTask);
+		public void Sets_up_hidden_to_run_selected_fix () {
+			fixSelection = new FakeQuickFixDisplayer(selectedTask);
+			subject = new QuickFixesController(fixSelection);
 			
 			fixSelection.InvokeHidden();
 			
@@ -60,13 +51,20 @@ namespace MonoDevelop.Stereo.QuickFixesControllerTest
 		}
 		
 		[Test]
-		public void Runs_nothing_when_nothing_was_selected () {
-			fixSelection.SetSelected(null);
+		public void Sets_up_hidden_to_run_nothing_when_nothing_was_selected () {
+			fixSelection = new FakeQuickFixDisplayer(null);
+			subject = new QuickFixesController(fixSelection);
 			
 			fixSelection.InvokeHidden();
 			
 			selectedTask.AssertWasNotCalled(t=>t.Run (Arg<RefactoringOptions>.Is.Anything));
 		}
+	}
+	
+	[TestFixture]
+	public class ProcessSelection
+	{
+		//TODO: add tests.
 	}
 }
 

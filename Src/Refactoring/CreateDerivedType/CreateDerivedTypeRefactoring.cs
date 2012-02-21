@@ -33,9 +33,8 @@ namespace MonoDevelop.Stereo.Refactoring.CreateDerivedType
 			return context.IsCurrentLocationNonConcreteType();
 		}
 		
-		public string Title  {
-			get {return "Create derived type";}
-		}
+		public string Title  { get {return "Create derived type";}}
+		public int Position { get {return 2;}}
 	}
 	
 	public interface ICreateDerivedTypeRefactoring

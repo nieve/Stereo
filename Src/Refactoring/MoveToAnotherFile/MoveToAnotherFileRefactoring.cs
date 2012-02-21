@@ -16,6 +16,7 @@ namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 		IResolveTypeContent fileFormatResolver;
 		
 		public string Title{ get {return "Move to another file";}}
+		public int Position { get {return 1;}}
 		
 		public MoveToAnotherFileRefactoring ()
 		{

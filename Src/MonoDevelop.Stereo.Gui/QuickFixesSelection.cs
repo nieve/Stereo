@@ -17,14 +17,7 @@ namespace MonoDevelop.Stereo.Gui
 		
 		Dictionary<string, IRefactorTask> tasksCache = new Dictionary<string, IRefactorTask>();
 		
-		public QuickFixesSelection () : 
-				base(Gtk.WindowType.Toplevel)
-		{
-		}
-
-		public Action<ISelectQuickFix> OnHid {get;set;}
-		
-		private QuickFixesSelection(IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks) : this(){
+		public QuickFixesSelection(IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks) : base(Gtk.WindowType.Toplevel){
 			// Widget MonoDevelop.Stereo.Gui.QuickFixesSelection
 			this.Name = "MonoDevelop.Stereo.Gui.QuickFixesSelection";
 			this.KeepAbove = true;
@@ -75,18 +68,10 @@ namespace MonoDevelop.Stereo.Gui
 		
 		public Window GetDialog(IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks){
 			return new QuickFixesSelection(tasks);
-		}
-
-		public void GetSelectedFix (IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks)
-		{
-			var dialog = new QuickFixesSelection(tasks);
-			
-			dialog.Hidden += delegate(object sender, EventArgs e) {
-				OnHid(dialog);
-			};
-		}
+		}		
 	}
 	
+	//TODO: move to another file.
 	public class CancelRefactoring : IRefactorTask
 	{
 		public bool IsValid ()
@@ -102,7 +87,9 @@ namespace MonoDevelop.Stereo.Gui
 			get {
 				return "Cancel";
 			}
-		}		
+		}
+		
+		public int Position { get {return int.MinValue;}}
 	}
 }
 

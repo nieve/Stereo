@@ -8,6 +8,7 @@ namespace MonoDevelop.Stereo.Refactoring.QuickFixes
 		bool IsValid();
 		void Run (RefactoringOptions options);
 		string Title {get;}
+		int Position {get;}
 	}
 }
 

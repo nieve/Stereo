@@ -1,32 +1,27 @@
 using System;
+using MonoDevelop.Stereo.Refactoring.QuickFixes;
 using System.Collections.Generic;
-using MonoDevelop.Stereo.Gui;
 
-namespace MonoDevelop.Stereo.Refactoring.QuickFixes
+namespace MonoDevelop.Stereo.Gui
 {
-	public interface ISelectQuickFix
-	{
-		IRefactorTask Selected {get;}
-	}
-	
-	//TODO: Move these 2 to another file.
 	public interface IDisplayQuickFixSelection
 	{
 		void DisplaySelectionDialog(IEnumerable<IRefactorTask> tasks);
-		Action<ISelectQuickFix> Hidden {get;set;}
+		Action<ISelectQuickFix> SelectionMade {get;set;}
 	}
 	
 	public class QuickFixSelectionDisplayer : IDisplayQuickFixSelection
 	{
-		public Action<ISelectQuickFix> Hidden {get;set;}
+		public Action<ISelectQuickFix> SelectionMade {get;set;}
 		
 		public void DisplaySelectionDialog (IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks)
 		{
 			var dialog = new QuickFixesSelection(tasks);
 			
 			dialog.Hidden += delegate(object sender, EventArgs e) {
-				Hidden(dialog);
+				SelectionMade(dialog);
 			};
+			dialog.Show();
 		}
 	}
 }

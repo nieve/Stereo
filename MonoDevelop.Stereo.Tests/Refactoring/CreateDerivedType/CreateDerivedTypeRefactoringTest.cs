@@ -2,6 +2,7 @@ using System;
 using NUnit.Framework;
 using MonoDevelop.Stereo.Refactoring.CreateDerivedType;
 using Rhino.Mocks;
+using MonoDevelop.Stereo.Refactoring.GenerateNewType;
 
 namespace MonoDevelop.Stereo.Tests.CreateDerivedTypeRefactoringTest
 {
@@ -10,10 +11,11 @@ namespace MonoDevelop.Stereo.Tests.CreateDerivedTypeRefactoringTest
 	{
 		CreateDerivedTypeRefactoring subject;
 		INonConcreteTypeContext ctx = MockRepository.GenerateStub<INonConcreteTypeContext>();
+		IResolveTypeContent resolver = MockRepository.GenerateStub<IResolveTypeContent>();
 		
 		[TestFixtureSetUp]
 		public void SetUp(){
-			subject = new CreateDerivedTypeRefactoring(ctx);
+			subject = new CreateDerivedTypeRefactoring(ctx, resolver);
 		}
 		
 		[Test]
@@ -22,6 +24,25 @@ namespace MonoDevelop.Stereo.Tests.CreateDerivedTypeRefactoringTest
 			ctx.Stub(c=>c.IsCurrentLocationNonConcreteType()).Return (true);
 			
 			Assert.IsTrue(subject.IsValid());
+		}
+	}
+	
+	[TestFixture]
+	public class Run
+	{
+		CreateDerivedTypeRefactoring subject;
+		INonConcreteTypeContext ctx = MockRepository.GenerateStub<INonConcreteTypeContext>();
+		IResolveTypeContent resolver = MockRepository.GenerateStub<IResolveTypeContent>();
+		
+		[TestFixtureSetUp]
+		public void SetUp(){
+			subject = new CreateDerivedTypeRefactoring(ctx, resolver);
+		}
+		
+		[Test]
+		public void Handles_interfaces ()
+		{
+			
 		}
 	}
 }

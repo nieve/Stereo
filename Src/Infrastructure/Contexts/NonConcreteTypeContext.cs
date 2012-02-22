@@ -1,4 +1,5 @@
 using System;
+using MonoDevelop.Projects.Dom;
 
 namespace MonoDevelop.Stereo
 {
@@ -13,11 +14,18 @@ namespace MonoDevelop.Stereo
 			}
 			return false;
 		}
+
+		public MonoDevelop.Projects.Dom.IType GetNonConcreteType ()
+		{
+			var result = GetResolvedResult();
+			return result.ResolvedType.Type;
+		}
 	}
 	
-	public interface INonConcreteTypeContext
+	public interface INonConcreteTypeContext : IDocumentContext
 	{
 		bool IsCurrentLocationNonConcreteType();
+		IType GetNonConcreteType();
 	}
 }
 

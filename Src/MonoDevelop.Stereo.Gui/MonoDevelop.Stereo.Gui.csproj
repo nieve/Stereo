@@ -57,10 +57,15 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="RenameNamespaceItemDialog.cs" />
     <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.RenameNamespaceItemDialog.cs" />
-    <Compile Include="ISelectQuickFix.cs" />
-    <Compile Include="IRefactorTask.cs" />
-    <Compile Include="QuickFixesSelection.cs" />
     <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.QuickFixesSelection.cs" />
+    <Compile Include="QuickFixes\IRefactorTask.cs" />
+    <Compile Include="QuickFixes\ISelectQuickFix.cs" />
+    <Compile Include="QuickFixes\QuickFixesSelection.cs" />
+    <Compile Include="QuickFixes\CancelRefactoring.cs" />
+    <Compile Include="QuickFixes\QuickFixSelectionDisplayer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="QuickFixes\" />
+  </ItemGroup>
 </Project>

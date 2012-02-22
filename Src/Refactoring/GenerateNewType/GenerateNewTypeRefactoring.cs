@@ -10,13 +10,52 @@ using MonoDevelop.Stereo.Refactoring.QuickFixes;
 
 namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 {
-	public class GenerateNewTypeRefactoring : RefactoringOperation, IRefactorTask
+	public class AppendingNewTypeRefactoringOperation : RefactoringOperation
+	{
+		protected TextEditorData data = null;
+		protected string indent = "";
+		
+		protected InsertionPoint GetInsertionPoint (MonoDevelop.Ide.Gui.Document document, IType type)
+		{
+			data = document.Editor;
+			if (data == null) {
+				throw new System.ArgumentNullException ("data");
+			}
+			var parsedDocument = document.ParsedDocument;
+			if (parsedDocument == null) {
+				throw new System.ArgumentNullException ("parsedDocument");
+			}
+			if (type == null) {
+				throw new System.ArgumentNullException ("type");
+			}
+			type = (parsedDocument.CompilationUnit.GetTypeAt (type.Location) ?? type);
+			DomRegion domRegion = type.BodyRegion;
+			var start = type.BodyRegion.Start.Line;
+			indent = data.GetLine(start).GetIndentation(data.Document);
+			DomLocation domLocation = domRegion.End;
+			int num = data.LocationToOffset (domLocation.Line, 1);
+			while (num < data.Length && data.GetCharAt(num) != '}') {
+				num++;
+			}
+			num++;
+			DocumentLocation documentLocation = data.OffsetToLocation (num);
+			
+			LineSegment lineAfterClassEnd = data.GetLine (domLocation.Line + 1);
+			NewLineInsertion lineAfter;
+			if (lineAfterClassEnd != null && lineAfterClassEnd.EditableLength == lineAfterClassEnd.GetIndentation (data.Document).Length)
+				lineAfter = NewLineInsertion.BlankLine;
+			else
+				lineAfter = NewLineInsertion.None;
+			
+			return new InsertionPoint (documentLocation, NewLineInsertion.None, lineAfter);
+		}
+	}
+	
+	public class GenerateNewTypeRefactoring : AppendingNewTypeRefactoringOperation, IRefactorTask
 	{
 		INonexistantTypeContext context;
 		IResolveTypeContent fileFormatResolver;
-		string indent = "";
 		InsertionPoint insertionPoint = null;
-		TextEditorData data = null;
 		
 		public string Title{ get {return "Generate new type";}}
 		public int Position { get {return 0;}}
@@ -82,41 +121,6 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 				insertionPoint = GetInsertionPoint(openDocument, declaringType);
 				base.Run(options);
 			}
-		}
-		
-		private InsertionPoint GetInsertionPoint (MonoDevelop.Ide.Gui.Document document, IType type)
-		{
-			data = document.Editor;
-			if (data == null) {
-				throw new System.ArgumentNullException ("data");
-			}
-			var parsedDocument = document.ParsedDocument;
-			if (parsedDocument == null) {
-				throw new System.ArgumentNullException ("parsedDocument");
-			}
-			if (type == null) {
-				throw new System.ArgumentNullException ("type");
-			}
-			type = (parsedDocument.CompilationUnit.GetTypeAt (type.Location) ?? type);
-			DomRegion domRegion = type.BodyRegion;
-			var start = type.BodyRegion.Start.Line;
-			indent = data.GetLine(start).GetIndentation(data.Document);
-			DomLocation domLocation = domRegion.End;
-			int num = data.LocationToOffset (domLocation.Line, 1);
-			while (num < data.Length && data.GetCharAt(num) != '}') {
-				num++;
-			}
-			num++;
-			DocumentLocation documentLocation = data.OffsetToLocation (num);
-			
-			LineSegment lineAfterClassEnd = data.GetLine (domLocation.Line + 1);
-			NewLineInsertion lineAfter;
-			if (lineAfterClassEnd != null && lineAfterClassEnd.EditableLength == lineAfterClassEnd.GetIndentation (data.Document).Length)
-				lineAfter = NewLineInsertion.BlankLine;
-			else
-				lineAfter = NewLineInsertion.None;
-			
-			return new InsertionPoint (documentLocation, NewLineInsertion.None, lineAfter);
 		}
 				
 		public override List<Change> PerformChanges (RefactoringOptions options, object properties)

@@ -62,34 +62,7 @@ namespace MonoDevelop.Stereo.Gui
 				this.Child.ShowAll ();
 			}
 			Selected = null;
-			
-			this.Show();
 		}
-		
-		public Window GetDialog(IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks){
-			return new QuickFixesSelection(tasks);
-		}		
-	}
-	
-	//TODO: move to another file.
-	public class CancelRefactoring : IRefactorTask
-	{
-		public bool IsValid ()
-		{
-			throw new NotImplementedException();
-		}
-	
-		public void Run (MonoDevelop.Refactoring.RefactoringOptions options)
-		{
-		}
-	
-		public string Title {
-			get {
-				return "Cancel";
-			}
-		}
-		
-		public int Position { get {return int.MinValue;}}
 	}
 }
 

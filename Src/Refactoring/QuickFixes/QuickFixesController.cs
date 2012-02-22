@@ -8,16 +8,16 @@ namespace MonoDevelop.Stereo.Refactoring.QuickFixes
 {
 	public class QuickFixesController : IQuickFixesController
 	{
-		IDisplayQuickFixSelection selectionDisplay;
+		IDisplayQuickFixSelection selectionDisplayer;
 		
 		public QuickFixesController () : this(new QuickFixSelectionDisplayer())
 		{
 		}
 		
-		public QuickFixesController (IDisplayQuickFixSelection selectionDisplay)
+		public QuickFixesController (IDisplayQuickFixSelection selectionDisplayer)
 		{
-			this.selectionDisplay = selectionDisplay;
-			selectionDisplay.Hidden = (dialog) => {
+			this.selectionDisplayer = selectionDisplayer;
+			this.selectionDisplayer.SelectionMade = (dialog) => {
 				IRefactorTask selectedFix = dialog.Selected;
 				if (selectedFix != null)
 					selectedFix.Run (Options);
@@ -31,7 +31,7 @@ namespace MonoDevelop.Stereo.Refactoring.QuickFixes
 			var displayableTasks = tasks.ToList();
 			displayableTasks.Add(new CancelRefactoring());
 			var orderedTasks = displayableTasks.OrderBy(t=>t.Position);
-			selectionDisplay.DisplaySelectionDialog(orderedTasks);
+			selectionDisplayer.DisplaySelectionDialog(orderedTasks);
 		}
 	}
 	

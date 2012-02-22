@@ -1,9 +1,12 @@
 using System;
+using System.Linq;
 using MonoDevelop.Stereo.Refactoring.QuickFixes;
 using Rhino.Mocks;
 using NUnit.Framework;
 using System.Collections.Generic;
 using MonoDevelop.Refactoring;
+using MonoDevelop.Stereo.Gui;
+using System.Linq.Expressions;
 
 namespace MonoDevelop.Stereo.QuickFixesControllerTest
 {
@@ -18,14 +21,14 @@ namespace MonoDevelop.Stereo.QuickFixesControllerTest
 		{
 			ISelectQuickFix selection = MockRepository.GenerateMock<ISelectQuickFix>();
 			
-			public Action<ISelectQuickFix> Hidden {get;set;}
+			public Action<ISelectQuickFix> SelectionMade {get;set;}
 			
 			public FakeQuickFixDisplayer (IRefactorTask task) {
 				selection.Expect(s=>s.Selected).Return(task);
 			}
 			
 			public void InvokeHidden(){
-				Hidden(selection);
+				SelectionMade(selection);
 			}
 			
 			public void DisplaySelectionDialog (System.Collections.Generic.IEnumerable<MonoDevelop.Stereo.Refactoring.QuickFixes.IRefactorTask> tasks)
@@ -64,7 +67,40 @@ namespace MonoDevelop.Stereo.QuickFixesControllerTest
 	[TestFixture]
 	public class ProcessSelection
 	{
-		//TODO: add tests.
+		QuickFixesController subject;
+		IDisplayQuickFixSelection selectionDisplayer = MockRepository.GenerateStub<IDisplayQuickFixSelection>();
+		
+		[TestFixtureSetUp]
+		public void SetUp(){
+			subject = new QuickFixesController(selectionDisplayer);
+		}
+		
+		[Test]
+		public void Adds_cancael_option_before_displaying ()
+		{
+			var someTask = MockRepository.GenerateStub<IRefactorTask>();
+			var tasks = new List<IRefactorTask>{someTask};
+			
+			subject.ProcessSelection (tasks, null);
+			
+			Expression<Predicate<IEnumerable<IRefactorTask>>> cancelOptionAdded = 
+				ts=>ts.Count() == 2 && ts.Contains(someTask) && ts.Any(t=>t is CancelRefactoring);
+			selectionDisplayer.AssertWasCalled(d=>d.DisplaySelectionDialog(Arg<IEnumerable<IRefactorTask>>.Matches(cancelOptionAdded)));
+		}
+		
+		[Test]
+		public void Orders_tasks_before_displaying ()
+		{
+			var someTask = MockRepository.GenerateMock<IRefactorTask>();
+			someTask.Expect(t=>t.Position).Return(int.MinValue + 1);
+			var tasks = new List<IRefactorTask>{someTask};
+			
+			subject.ProcessSelection (tasks, null);
+			
+			Expression<Predicate<IEnumerable<IRefactorTask>>> cancelOptionAdded = 
+				ts=>ts.First () is CancelRefactoring && ts.Last() == someTask;
+			selectionDisplayer.AssertWasCalled(d=>d.DisplaySelectionDialog(Arg<IEnumerable<IRefactorTask>>.Matches(cancelOptionAdded)));
+		}
 	}
 }
 

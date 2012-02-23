@@ -1,8 +1,8 @@
-using System;
-using NUnit.Framework;
+using MonoDevelop.Projects.CodeGeneration;
 using MonoDevelop.Stereo.Refactoring.CreateDerivedType;
+using MonoDevelop.Stereo.Refactoring.NewTypeFormatProviders;
+using NUnit.Framework;
 using Rhino.Mocks;
-using MonoDevelop.Stereo.Refactoring.GenerateNewType;
 
 namespace MonoDevelop.Stereo.Tests.CreateDerivedTypeRefactoringTest
 {
@@ -12,10 +12,11 @@ namespace MonoDevelop.Stereo.Tests.CreateDerivedTypeRefactoringTest
 		CreateDerivedTypeRefactoring subject;
 		INonConcreteTypeContext ctx = MockRepository.GenerateStub<INonConcreteTypeContext>();
 		IResolveTypeContent resolver = MockRepository.GenerateStub<IResolveTypeContent>();
+		INameValidator validator = MockRepository.GenerateStub<INameValidator>();
 		
 		[TestFixtureSetUp]
 		public void SetUp(){
-			subject = new CreateDerivedTypeRefactoring(ctx, resolver);
+			subject = new CreateDerivedTypeRefactoring(ctx, resolver, validator);
 		}
 		
 		[Test]
@@ -33,10 +34,11 @@ namespace MonoDevelop.Stereo.Tests.CreateDerivedTypeRefactoringTest
 		CreateDerivedTypeRefactoring subject;
 		INonConcreteTypeContext ctx = MockRepository.GenerateStub<INonConcreteTypeContext>();
 		IResolveTypeContent resolver = MockRepository.GenerateStub<IResolveTypeContent>();
+		INameValidator validator = MockRepository.GenerateStub<INameValidator>();
 		
 		[TestFixtureSetUp]
 		public void SetUp(){
-			subject = new CreateDerivedTypeRefactoring(ctx, resolver);
+			subject = new CreateDerivedTypeRefactoring(ctx, resolver, validator);
 		}
 		
 		[Test]

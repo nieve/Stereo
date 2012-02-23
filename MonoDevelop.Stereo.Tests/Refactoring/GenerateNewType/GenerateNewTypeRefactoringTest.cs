@@ -1,13 +1,13 @@
-using NUnit.Framework;
-using System;
-using MonoDevelop.Stereo.Refactoring.GenerateNewType;
-using Rhino.Mocks;
+using System.Collections.Generic;
+using Mono.TextEditor;
+using MonoDevelop.Core;
 using MonoDevelop.Projects.Dom;
 using MonoDevelop.Refactoring;
 using MonoDevelop.Stereo;
-using MonoDevelop.Core;
-using System.Collections.Generic;
-using Mono.TextEditor;
+using MonoDevelop.Stereo.Refactoring.GenerateNewType;
+using MonoDevelop.Stereo.Refactoring.NewTypeFormatProviders;
+using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace MonoDevelop.Stereo.GenerateNewTypeRefactoringTest {
 	[TestFixture]

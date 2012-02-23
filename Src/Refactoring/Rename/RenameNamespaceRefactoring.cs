@@ -12,19 +12,18 @@ using System;
 
 namespace MonoDevelop.Stereo.Refactoring.Rename
 {
-	public class RenameNamespaceRefactoring : RenameRefactoring
+	public class RenameNamespaceRefactoring : RenameRefactoring, IRefactorWithNaming
 	{
 		IFindNamespaceReference finder;
-		public RenameNamespaceRefactoring ()
-		{
-			this.Name = "Rename Namespace";
-			finder = new NamespaceReferenceFinder();
-		}
+		INameValidator validator;
 		
-		public RenameNamespaceRefactoring (IFindNamespaceReference namespaceRefFinder)
+		public RenameNamespaceRefactoring () : this(new NamespaceReferenceFinder(), new NamespaceValidator()) {	}
+		
+		public RenameNamespaceRefactoring (IFindNamespaceReference namespaceRefFinder, INameValidator validator)
 		{
 			this.Name = "Rename Namespace";
 			finder = namespaceRefFinder;
+			this.validator = validator;
 		}
 		
 		public override bool IsValid (RefactoringOptions options)
@@ -37,9 +36,13 @@ namespace MonoDevelop.Stereo.Refactoring.Rename
 	    	return "_Rename";
 	    }
 		
+		public string OperationTitle  {
+			get{return "Rename Namespace";}
+		}
+		
 		public override void Run (RefactoringOptions options)
 		{
-			MessageService.ShowCustomDialog((Dialog) new RenameNamespaceItemDialog(options, this));
+			MessageService.ShowCustomDialog((Dialog) new RefactoringNamingDialog(options, this, new NamespaceValidator()));
 		}
 		
 		public override List<Change> PerformChanges (RefactoringOptions options, object prop)

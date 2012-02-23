@@ -1,19 +1,17 @@
 using System;
 using System.Globalization;
 
-namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
+namespace MonoDevelop.Stereo.Refactoring.NewTypeFormatProviders
 {
 	public interface IResolveTypeContent
 	{
 		string GetNewTypeContent(string typeName, string indent, string eol);
-		string GetNewTypeFileContent(string typeContent, string nspace, string eol);
 	}
 	
 	internal delegate string FileFormatResolving(string typeName, string indent, string eol);
 	
 	public class TypeContentResolver : IResolveTypeContent
 	{
-		static string fileFormat= @"namespace {{0}} {{{{{0}}}}}";
 		static string interfaceFileFormat = "<indent>public interface {0} {{<eol><indent>\t<eol><indent>}}";
 		static string classFormat = "<indent>public class {0} {{<eol><indent>\t<eol><indent>}}";
 		
@@ -25,6 +23,8 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 			return null;
 		};
 		
+//		static FileFormatResolving derivedTypeFormat = (name, indent, eol) => {};
+		
 		static FileFormatResolving defaultClassFormat = (name, indent, eol) => {
 			var clsfrmt = classFormat.Replace("<indent>", indent);
 			clsfrmt = clsfrmt.Replace("<eol>", eol);
@@ -32,13 +32,6 @@ namespace MonoDevelop.Stereo.Refactoring.GenerateNewType
 		};
 		
 		FileFormatResolving[] resolvings = new []{interfaceFormat};
-		
-		public string GetNewTypeFileContent(string typeContent, string nspace, string eol){
-			typeContent = eol + typeContent + eol;
-			typeContent = typeContent.Replace("{", "{{").Replace("}", "}}");
-			var preNspace = fileFormat.ToFormat(typeContent);
-			return preNspace.ToFormat (nspace);
-		}
 		
 		public string GetNewTypeContent (string typeName, string indent, string eol)
 		{

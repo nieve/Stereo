@@ -1,58 +1,58 @@
-using System;
 using System.Collections.Generic;
-using MonoDevelop.Refactoring;
-using MonoDevelop.Stereo.Refactoring.QuickFixes;
-using MonoDevelop.Stereo.Refactoring.GenerateNewType;
+using System.Text;
+using Gtk;
+using Mono.TextEditor;
 using MonoDevelop.Ide;
 using MonoDevelop.Ide.Gui;
-using Mono.TextEditor;
-using MonoDevelop.Projects.Dom;
-using System.Text;
+using MonoDevelop.Projects.CodeGeneration;
+using MonoDevelop.Refactoring;
+using MonoDevelop.Stereo.Gui;
+using MonoDevelop.Stereo.Refactoring.GenerateNewType;
+using MonoDevelop.Stereo.Refactoring.NewTypeFormatProviders;
+using MonoDevelop.Stereo.Refactoring.QuickFixes;
 
 namespace MonoDevelop.Stereo.Refactoring.CreateDerivedType
 {
 	public interface ICreateDerivedTypeRefactoring : IRefactorTask {}
 	
-	public class CreateDerivedTypeRefactoring : AppendingNewTypeRefactoringOperation, ICreateDerivedTypeRefactoring
+	public class CreateDerivedTypeRefactoring : AppendingNewTypeRefactoringOperation, ICreateDerivedTypeRefactoring, IRefactorWithNaming
 	{
 		INonConcreteTypeContext context;
 		InsertionPoint insertionPoint = null;
-		IType type;
 		IResolveTypeContent fileFormatResolver;
+		INameValidator validator;
 		
-		public CreateDerivedTypeRefactoring ()
-		{
-			context = new NonConcreteTypeContext();
-			fileFormatResolver = new TypeContentResolver();
-		}		
+		public CreateDerivedTypeRefactoring () : this(new NonConcreteTypeContext(), new TypeContentResolver(), new TypeNameValidator()) { }		
 		
-		public CreateDerivedTypeRefactoring (INonConcreteTypeContext context, IResolveTypeContent resolver)
+		public CreateDerivedTypeRefactoring (INonConcreteTypeContext context, IResolveTypeContent resolver, INameValidator validator)
 		{
 			this.context = context;
 			fileFormatResolver = resolver;
+			this.validator = validator;
+		}
+		
+		public string OperationTitle  {
+			get{return "Insert new derived type name";}
 		}
 		
 		public override void Run (RefactoringOptions options)
 		{
-			type = context.GetNonConcreteType();
-			MonoDevelop.Ide.Gui.Document doc = options.Document;
-			var fileName = doc.FileName;
-			MonoDevelop.Ide.Gui.Document openDocument = IdeApp.Workbench.OpenDocument(fileName, (OpenDocumentOptions) 39);
-			if (openDocument == null) {
-				MessageService.ShowError(string.Format("Can't open file {0}.", fileName));
-			}
-			else {
-				insertionPoint = GetInsertionPoint(openDocument, type);
-				base.Run(options);
-			}
+			MessageService.ShowCustomDialog((Dialog) new RefactoringNamingDialog(options, this, validator));
 		}
 		
-		public override List<Change> PerformChanges (RefactoringOptions options, object properties)
+		public override List<Change> PerformChanges (RefactoringOptions options, object prop)
 		{
+			string name = (string) prop;
+			var type = context.GetNonConcreteType();
+			var fileName = type.CompilationUnit.FileName;
+			MonoDevelop.Ide.Gui.Document openDocument = IdeApp.Workbench.OpenDocument(fileName, (OpenDocumentOptions) 39);
+			if (openDocument == null) MessageService.ShowError(string.Format("Can't open file {0}.", fileName));
+			else insertionPoint = GetInsertionPoint(openDocument, type);
+			
 			List<Change> changes = new List<Change>();
-			var newTypeName = "Test : " + type.Name;
+			var newTypeName = name + " : " + type.Name;
 			var textReplaceChange = new TextReplaceChange();
-			textReplaceChange.FileName = context.GetCurrentFilePath();
+			textReplaceChange.FileName = fileName;
 			textReplaceChange.RemovedChars = 0;
 			int num = data.Document.LocationToOffset(insertionPoint.Location);
 			textReplaceChange.Offset = num;
@@ -62,7 +62,7 @@ namespace MonoDevelop.Stereo.Refactoring.CreateDerivedType
 			contentBuilder.Append(data.EolMarker);
 			contentBuilder.Append(data.EolMarker);
 			
-			// TODO: Add methods implementations & ask user for new concrete type name
+			// TODO: Add methods implementations
 			var content = fileFormatResolver.GetNewTypeContent(newTypeName, indent, data.EolMarker);
 			contentBuilder.Append(content);
 			

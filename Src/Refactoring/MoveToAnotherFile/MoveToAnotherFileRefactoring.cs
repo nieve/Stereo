@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Gtk;
-using MonoDevelop.Ide;
 using MonoDevelop.Refactoring;
-using MonoDevelop.Stereo.Gui;
-using MonoDevelop.Stereo.Refactoring.GenerateNewType;
+using MonoDevelop.Stereo.Refactoring.NewTypeFormatProviders;
 using MonoDevelop.Stereo.Refactoring.QuickFixes;
 
 namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
@@ -13,21 +10,17 @@ namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 	public class MoveToAnotherFileRefactoring : RefactoringOperation, IRefactorTask
 	{
 		IMoveTypeContext context;
-		IResolveTypeContent fileFormatResolver;
+		IProvideNewTypeFileContent fileFormatProvider;
 		
 		public string Title{ get {return "Move to another file";}}
 		public int Position { get {return 1;}}
 		
-		public MoveToAnotherFileRefactoring ()
-		{
-			context = new MoveTypeContext();
-			fileFormatResolver = new TypeContentResolver();
-		}
+		public MoveToAnotherFileRefactoring () : this(new MoveTypeContext(), new NewTypeFileContentProvider()) { }
 		
-		public MoveToAnotherFileRefactoring (IMoveTypeContext ctx, IResolveTypeContent resolver)
+		public MoveToAnotherFileRefactoring (IMoveTypeContext ctx, IProvideNewTypeFileContent provider)
 		{
 			context = ctx;
-			fileFormatResolver = resolver;
+			fileFormatProvider = provider;
 		}
 		
 		public bool IsValid() {
@@ -60,7 +53,7 @@ namespace MonoDevelop.Stereo.Refactoring.MoveToAnotherFile
 			var body = resType.Type.BodyRegion;
 			var content = editor.GetTextBetween(body.Start.Line, 1, body.End.Line, body.End.Column);
 			var contentLength = content.Length;
-			content = fileFormatResolver.GetNewTypeFileContent(content, nspace, editor.EolMarker);
+			content = fileFormatProvider.GetFormat(content, nspace, editor.EolMarker);
 			CreateFileChange createFileChange = new CreateFileChange(@"{0}\{1}.cs".ToFormat(currentDir, typeName), content);
 			changes.Add(createFileChange);
 			

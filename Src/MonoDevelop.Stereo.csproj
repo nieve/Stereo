@@ -85,7 +85,6 @@
     <Compile Include="Refactoring\Rename\NamespaceValidator.cs" />
     <Compile Include="Infrastructure\ExtractProjectFiles.cs" />
     <Compile Include="Refactoring\GenerateNewType\GenerateNewTypeRefactoring.cs" />
-    <Compile Include="Refactoring\GenerateNewType\TypeContentResolver.cs" />
     <Compile Include="TextEditor\DuplicateTextHandler.cs" />
     <Compile Include="TextEditor\DuplicateText.cs" />
     <Compile Include="Infrastructure\Contexts\DocumentContext.cs" />
@@ -99,6 +98,9 @@
     <Compile Include="Refactoring\CreateDerivedType\CreateDerivedTypeHandler.cs" />
     <Compile Include="Refactoring\CreateDerivedType\CreateDerivedTypeRefactoring.cs" />
     <Compile Include="Infrastructure\Contexts\NonConcreteTypeContext.cs" />
+    <Compile Include="Refactoring\AppendingNewTypeRefactoringOperation.cs" />
+    <Compile Include="Refactoring\NewTypeFormatProviders\NewTypeFileContentProvider.cs" />
+    <Compile Include="Refactoring\NewTypeFormatProviders\TypeContentResolver.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -114,6 +116,7 @@
     <Folder Include="Refactoring\MoveToAnotherFile\" />
     <Folder Include="Refactoring\QuickFixes\" />
     <Folder Include="Refactoring\CreateDerivedType\" />
+    <Folder Include="Refactoring\NewTypeFormatProviders\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="MonoDevelop.Stereo.Gui\MonoDevelop.Stereo.Gui.csproj">

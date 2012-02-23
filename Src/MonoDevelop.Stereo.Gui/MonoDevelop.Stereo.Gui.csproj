@@ -55,17 +55,21 @@
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="RenameNamespaceItemDialog.cs" />
-    <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.RenameNamespaceItemDialog.cs" />
     <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.QuickFixesSelection.cs" />
     <Compile Include="QuickFixes\IRefactorTask.cs" />
     <Compile Include="QuickFixes\ISelectQuickFix.cs" />
     <Compile Include="QuickFixes\QuickFixesSelection.cs" />
     <Compile Include="QuickFixes\CancelRefactoring.cs" />
     <Compile Include="QuickFixes\QuickFixSelectionDisplayer.cs" />
+    <Compile Include="RefactoringNamingDialog.cs" />
+    <Compile Include="gtk-gui\MonoDevelop.Stereo.Gui.RefactoringNamingDialog.cs" />
+    <Compile Include="IRefactorWithNaming.cs" />
+    <Compile Include="NamingValidators\NamespaceValidator.cs" />
+    <Compile Include="NamingValidators\TypeNameValidator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="QuickFixes\" />
+    <Folder Include="NamingValidators\" />
   </ItemGroup>
 </Project>

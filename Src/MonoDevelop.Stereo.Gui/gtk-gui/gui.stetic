@@ -10,7 +10,7 @@
     <widget-library name="../../../lib/MonoDevelop.Refactoring.dll" />
     <widget-library name="../../../lib/MonoDevelop.Ide.dll" />
   </import>
-  <widget class="Gtk.Dialog" id="MonoDevelop.Stereo.Gui.RenameNamespaceItemDialog" design-size="400 165">
+  <widget class="Gtk.Dialog" id="MonoDevelop.Stereo.Gui.RefactoringNamingDialog" design-size="400 165">
     <property name="MemberName" />
     <property name="WindowPosition">CenterOnParent</property>
     <property name="Buttons">3</property>

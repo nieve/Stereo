@@ -7,6 +7,7 @@ namespace MonoDevelop.Stereo
 	{
 		public bool IsCurrentLocationNonConcreteType ()
 		{
+			//TODO: Works only for interfaces currently. make it work for abstracts as well.
 			var result = GetResolvedResult();
 			if (result.ResolvedType != null) {
 				var type = result.ResolvedType.Type;

@@ -10,18 +10,20 @@ using MonoDevelop.Ide;
 
 namespace MonoDevelop.Stereo.Gui
 {
-	public partial class RenameNamespaceItemDialog : Gtk.Dialog
+	public partial class RefactoringNamingDialog : Gtk.Dialog
 	{
-		RenameRefactoring rename;
+		IRefactorWithNaming refactorOperation;
 		RefactoringOptions options;
+		INameValidator nameValidator;
 		
-		public RenameNamespaceItemDialog (RefactoringOptions options, RenameRefactoring rename)
+		public RefactoringNamingDialog (RefactoringOptions options, IRefactorWithNaming refactorOperation, INameValidator nameValidator)
 		{
 			this.options = options;
-			this.rename = rename;
+			this.refactorOperation = refactorOperation;
+			this.nameValidator = nameValidator;
 			Initialize();
 			
-			this.Title = GettextCatalog.GetString ("Rename Namespace");
+			this.Title = GettextCatalog.GetString (refactorOperation.OperationTitle);
 			
 			entry.SelectRegion (0, -1);
 			
@@ -212,7 +214,7 @@ namespace MonoDevelop.Stereo.Gui
 		{
 			var properties = Properties;
 			((Widget)this).Destroy ();
-			List<Change> changes = rename.PerformChanges (options, properties);
+			List<Change> changes = refactorOperation.PerformChanges (options, properties);
 			IProgressMonitor monitor = IdeApp.Workbench.ProgressMonitors.GetBackgroundProgressMonitor (this.Title, null);
 			RefactoringService.AcceptChanges (monitor, options.Dom, changes);
 		}
@@ -221,38 +223,8 @@ namespace MonoDevelop.Stereo.Gui
 		{
 			var properties = Properties;
 			((Widget)this).Destroy ();
-			List<Change> changes = rename.PerformChanges (options, properties);
+			List<Change> changes = refactorOperation.PerformChanges (options, properties);
 			MessageService.ShowCustomDialog (new RefactoringPreviewDialog (options.Dom, changes));
-		}
-	}
-	
-	public interface INamespaceValidator
-	{
-		ValidationResult ValidateName (INode visitable, string name);
-	}
-	
-	public class NamespaceValidator : INameValidator
-	{
-		public NamespaceValidator ()
-		{
-		}
-
-		public ValidationResult ValidateName (INode visitable, string name)
-		{
-			if (string.IsNullOrEmpty(name))
-				return ValidationResult.CreateError(GettextCatalog.GetString("Name must not be empty."));
-			char c1 = name[0];
-			if (!char.IsLetter(c1) && (int) c1 != 95)
-				return ValidationResult.CreateError(GettextCatalog.GetString("Name must start with a letter or '_'"));
-			char lc = name[name.Length - 1];
-			if (!char.IsLetterOrDigit(lc) && (int) lc != 95)
-				return ValidationResult.CreateError("Name can only end with a letter, digit and '_'");
-			for (int index = 1; index < name.Length - 1; ++index) {
-				char c2 = name[index];
-				if (!char.IsLetterOrDigit(c2) && c2 != '.' && (int) c2 != 95)
-					return ValidationResult.CreateError("Name can only contain letters, digits, dots and '_'");
-			}
-			return ValidationResult.Valid;
 		}
 	}
 }

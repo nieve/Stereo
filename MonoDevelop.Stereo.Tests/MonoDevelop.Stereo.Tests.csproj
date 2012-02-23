@@ -58,13 +58,14 @@
     <Compile Include="Refactoring\Rename\NamespaceValidatorTest.cs" />
     <Compile Include="Refactoring\Rename\RenameNamespaceRefactoringTest.cs" />
     <Compile Include="Refactoring\GenerateNewType\GenerateNewTypeRefactoringTest.cs" />
-    <Compile Include="Refactoring\GenerateNewType\TypeContentResolverTest.cs" />
     <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileRefactoringTest.cs" />
     <Compile Include="TextEditor\DuplicateTextHandlerTest.cs" />
     <Compile Include="Refactoring\MoveToAnotherFile\MoveToAnotherFileHandlerTest.cs" />
     <Compile Include="Refactoring\QuickFixes\RefactoringTasksProviderTest.cs" />
     <Compile Include="Refactoring\QuickFixes\QuickFixesControllerTest.cs" />
     <Compile Include="Refactoring\CreateDerivedType\CreateDerivedTypeRefactoringTest.cs" />
+    <Compile Include="Refactoring\NewTypeFormatProviders\NewTypeFileContentProviderTest.cs" />
+    <Compile Include="Refactoring\NewTypeFormatProviders\TypeContentResolverTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -75,6 +76,7 @@
     <Folder Include="TextEditor\" />
     <Folder Include="Refactoring\QuickFixes\" />
     <Folder Include="Refactoring\CreateDerivedType\" />
+    <Folder Include="Refactoring\NewTypeFormatProviders\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Src\MonoDevelop.Stereo.csproj">

@@ -118,10 +118,4 @@
     <Folder Include="Refactoring\CreateDerivedType\" />
     <Folder Include="Refactoring\NewTypeFormatProviders\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="MonoDevelop.Stereo.Gui\MonoDevelop.Stereo.Gui.csproj">
-      <Project>{AF19E650-C170-48CA-B187-34A64D5F73FC}</Project>
-      <Name>MonoDevelop.Stereo.Gui</Name>
-    </ProjectReference>
-  </ItemGroup>
 </Project>

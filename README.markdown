@@ -1,3 +1,9 @@
+# Moved provisionally to my MonoDevelop fork
+
+Due to breaking changes being currently added to the refactoring functionalities on the newresolver branch of MonoDevelop, I've decided to move my efforts inside the MonoDevelop source code for the time being. This version can be found on my newstereo branch here: https://github.com/nieve/monodevelop/tree/newstereo
+The work on the dev branch was taken as is and moved into the new branch on MD.
+Move to another file is already baked in on the newresolver branch & I had to change the Quick Fixes shortcut to Ctrl|Alt|Enter.
+
 # MonoDevelop.Stereo
 
 An attempt to add some resharper/refactoring functionalities to MonoDevelop Add-In, 
